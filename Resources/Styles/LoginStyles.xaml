@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Login Page Container Style -->
+    <Style x:Key="LoginContainerStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="{StaticResource Background}"/>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="RowSpacing" Value="24"/>
+    </Style>
+
+    <!-- Login Content Style -->
+    <Style x:Key="LoginContentStyle" TargetType="VerticalStackLayout">
+        <Setter Property="MaximumWidthRequest" Value="448"/>
+        <Setter Property="Spacing" Value="24"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+    </Style>
+
+    <!-- Title Style -->
+    <Style x:Key="LoginTitleStyle" TargetType="Label">
+        <Setter Property="Text" Value="Aether Panel"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="TextColor" Value="{StaticResource Foreground}"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+        <Setter Property="FontFamily" Value="system-ui"/>
+    </Style>
+
+    <!-- Title Divider -->
+    <Style x:Key="TitleDividerStyle" TargetType="BoxView">
+        <Setter Property="HeightRequest" Value="2"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource Border}"/>
+        <Setter Property="Margin" Value="0,0,0,24"/>
+        <Setter Property="CornerRadius" Value="1"/>
+    </Style>
+
+    <!-- Simple Entry Style (using Border for Entry in MAUI) -->
+    <Style x:Key="LoginEntryStyle" TargetType="Border">
+        <Setter Property="Stroke" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 12"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+    </Style>
+    
+    <!-- Entry Style inside Border -->
+    <Style x:Key="LoginInnerEntryStyle" TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{StaticResource Foreground}"/>
+        <Setter Property="PlaceholderColor" Value="{StaticResource Placeholder}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontFamily" Value="system-ui"/>
+        <Setter Property="HeightRequest" Value="44"/>
+        <Setter Property="Margin" Value="0"/>
+    </Style>
+
+    <!-- Primary Button Style -->
+    <Style x:Key="LoginPrimaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}"/>
+        <Setter Property="TextColor" Value="{StaticResource White}"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="BorderWidth" Value="0"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="HeightRequest" Value="44"/>
+        <Setter Property="Padding" Value="20,10"/>
+        <Setter Property="WidthRequest" Value="400"/>
+        <Setter Property="FontFamily" Value="system-ui"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Shadow">
+                                <Setter.Value>
+                                    <Shadow Offset="0,4" Radius="6" Opacity="0.1" Brush="{StaticResource BlackBrush}"/>
+                                </Setter.Value>
+                            </Setter>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource PrimaryDark}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.95"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource Gray700}"/>
+                            <Setter Property="Opacity" Value="0.4"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Secondary Button Style -->
+    <Style x:Key="LoginSecondaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{StaticResource Primary}"/>
+        <Setter Property="BorderColor" Value="Transparent"/>
+        <Setter Property="BorderWidth" Value="0"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="HeightRequest" Value="44"/>
+        <Setter Property="Padding" Value="20,10"/>
+        <Setter Property="FontFamily" Value="system-ui"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="#263B82F6"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.95"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Error Label Style -->
+    <Style x:Key="ErrorLabelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource Error}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontFamily" Value="system-ui"/>
+        <Setter Property="Margin" Value="0,4,0,0"/>
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <!-- Entry Container Style -->
+    <Style x:Key="EntryContainerStyle" TargetType="Grid">
+        <Setter Property="RowSpacing" Value="0"/>
+        <Setter Property="Margin" Value="0,0,0,8"/>
+    </Style>
+
+    <!-- Animation Fade In Style -->
+    <Style x:Key="FadeInAnimationStyle" TargetType="VisualElement">
+        <Setter Property="Opacity" Value="0"/>
+    </Style>
+
+</ResourceDictionary>

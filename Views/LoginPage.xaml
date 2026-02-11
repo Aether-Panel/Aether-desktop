@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Aether.Controls"
+             x:Class="Aether.Views.LoginPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid x:Name="MainContainer" Style="{StaticResource LoginContainerStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top spacing for centered content -->
+
+
+        <!-- Main Login Content -->
+        <VerticalStackLayout Grid.Row="1" 
+                             x:Name="LoginContent"
+                             Style="{StaticResource LoginContentStyle}"
+                             Spacing="24"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+
+            <!-- Title Section -->
+            <VerticalStackLayout Spacing="8" Margin="0,0,0,24">
+                <Label x:Name="TitleLabel"
+                       Text="Aether Panel"
+                       Style="{StaticResource LoginTitleStyle}"/>
+                <Image Source="aether_icon.png"
+                       HeightRequest="120"
+                       HorizontalOptions="Center"/>
+                <BoxView Style="{StaticResource TitleDividerStyle}"/>
+            </VerticalStackLayout>
+
+            <!-- Form Section -->
+            <VerticalStackLayout x:Name="FormSection" Spacing="16">
+                
+                <!-- Username Entry -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Entry x:Name="UsernameEntry"
+                               Style="{StaticResource LoginInnerEntryStyle}"
+                               Placeholder="Usuario o correo electrónico"
+                               Keyboard="Email"
+                               Text="{Binding Username}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Password Entry -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+
+                            
+                            <!-- Entry -->
+                            <Entry x:Name="PasswordEntry"
+                                   Style="{StaticResource LoginInnerEntryStyle}"
+                                   Placeholder="Contraseña"
+                                   IsPassword="True"
+                                   Text="{Binding Password}"
+                                   Grid.Column="1"
+                                   Margin="0,0,12,0"/>
+                            
+                            <!-- Password Toggle -->
+                            <Button Text="Show" 
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource Placeholder}"
+                                   BorderColor="Transparent"
+                                   WidthRequest="36"
+                                   HeightRequest="36"
+                                   Padding="0"
+                                   Margin="0,0,12,0"
+                                   Grid.Column="2"
+                                   Clicked="OnPasswordToggleClicked"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Error Message -->
+                <Label x:Name="ErrorMessage"
+                       Style="{StaticResource ErrorLabelStyle}"/>
+            </VerticalStackLayout>
+
+            <!-- Button Section -->
+            <VerticalStackLayout x:Name="ButtonSection" Spacing="12">
+                
+                <!-- Login Button -->
+                <controls:PrimaryButton x:Name="LoginButton"
+                                        Text="Iniciar Sesión"
+                                        Clicked="OnLoginButtonClicked"/>
+                
+                <!-- Register Button -->
+                <controls:SecondaryButton x:Name="RegisterButton"
+                                          Text="¿No tienes cuenta? Regístrate"
+                                          Clicked="OnRegisterButtonClicked"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+        <!-- Bottom spacing -->
+        <BoxView Grid.Row="2" HeightRequest="40"/>
+
+    </Grid>
+
+</ContentPage>
