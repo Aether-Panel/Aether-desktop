@@ -6,10 +6,6 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <Grid x:Name="MainContainer" Style="{StaticResource LoginContainerStyle}">
         <Grid.RowDefinitions>
@@ -48,7 +44,7 @@
                     <Border Style="{StaticResource LoginEntryStyle}">
                         <Entry x:Name="UsernameEntry"
                                Style="{StaticResource LoginInnerEntryStyle}"
-                               Placeholder="Usuario o correo electrónico"
+                               Placeholder="correo electrónico"
                                Keyboard="Email"
                                Text="{Binding Username}"/>
                     </Border>
