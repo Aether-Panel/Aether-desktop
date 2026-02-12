@@ -12,10 +12,4 @@
         ContentTemplate="{DataTemplate views:LoginPage}"
         Route="LoginPage" />
     
-    <!-- Uncomment this line to make MainPage the initial page after login -->
-    <!--
-    <ShellContent
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-    -->
 </Shell>
