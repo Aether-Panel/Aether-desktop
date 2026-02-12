@@ -1,10 +1,11 @@
-
 namespace Aether.Controls;
 
 partial class PrimaryButton : Button
 {
     public static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(PrimaryButton), false,
         propertyChanged: OnIsLoadingChanged);
+
+    private string _originalText;
 
     public bool IsLoading
     {
@@ -30,22 +31,17 @@ partial class PrimaryButton : Button
     {
         if (isLoading)
         {
+            _originalText = Text;
+            Text = "...";
             IsEnabled = false;
             Opacity = 0.7;
-
-            // Add loading animation
-            var loadingAnimation = new Animation();
-            loadingAnimation.Add(0, 1, new Animation(v => Rotation = v, 0, 360));
-            loadingAnimation.Commit(this, "LoadingAnimation", 16, 2000, Easing.Linear, null, () => true);
         }
         else
         {
+            if (Text == "...") Text = _originalText;
+
             IsEnabled = true;
             Opacity = 1.0;
-
-            // Remove loading animation
-            this.AbortAnimation("LoadingAnimation");
-            Rotation = 0;
         }
     }
 
