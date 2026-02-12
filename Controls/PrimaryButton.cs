@@ -1,94 +1,86 @@
-using Microsoft.Maui.Controls;
 
-namespace Aether.Controls
+namespace Aether.Controls;
+
+partial class PrimaryButton : Button
 {
-    public class PrimaryButton : Button
+    public static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(PrimaryButton), false,
+        propertyChanged: OnIsLoadingChanged);
+
+    public bool IsLoading
     {
-        public static readonly BindableProperty IsLoadingProperty =
-            BindableProperty.Create(nameof(IsLoading), typeof(bool), typeof(PrimaryButton), false,
-                propertyChanged: OnIsLoadingChanged);
+        get => (bool)GetValue(IsLoadingProperty);
+        set => SetValue(IsLoadingProperty, value);
+    }
 
-        public bool IsLoading
+    public PrimaryButton()
+    {
+        Style = (Style)Application.Current.Resources["LoginPrimaryButtonStyle"];
+        SetDynamicResource(StyleProperty, "LoginPrimaryButtonStyle");
+
+        // Add animations
+        Clicked += PrimaryButton_ClickedAsync;
+    }
+
+    private static void OnIsLoadingChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is PrimaryButton button) button.UpdateLoadingState((bool)newValue);
+    }
+
+    private void UpdateLoadingState(bool isLoading)
+    {
+        if (isLoading)
         {
-            get => (bool)GetValue(IsLoadingProperty);
-            set => SetValue(IsLoadingProperty, value);
+            IsEnabled = false;
+            Opacity = 0.7;
+
+            // Add loading animation
+            var loadingAnimation = new Animation();
+            loadingAnimation.Add(0, 1, new Animation(v => Rotation = v, 0, 360));
+            loadingAnimation.Commit(this, "LoadingAnimation", 16, 2000, Easing.Linear, null, () => true);
         }
-
-        public PrimaryButton()
+        else
         {
-            Style = (Style)Application.Current.Resources["LoginPrimaryButtonStyle"];
-            this.SetDynamicResource(Button.StyleProperty, "LoginPrimaryButtonStyle");
-            
-            // Add animations
-            this.Clicked += PrimaryButton_Clicked;
-        }
+            IsEnabled = true;
+            Opacity = 1.0;
 
-        private static void OnIsLoadingChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            if (bindable is PrimaryButton button)
-            {
-                button.UpdateLoadingState((bool)newValue);
-            }
-        }
-
-        private void UpdateLoadingState(bool isLoading)
-        {
-            if (isLoading)
-            {
-                this.IsEnabled = false;
-                this.Opacity = 0.7;
-                
-                // Add loading animation
-                var loadingAnimation = new Animation();
-                loadingAnimation.Add(0, 1, new Animation(v => this.Rotation = v, 0, 360));
-                loadingAnimation.Commit(this, "LoadingAnimation", 16, 2000, Easing.Linear, null, () => true);
-            }
-            else
-            {
-                this.IsEnabled = true;
-                this.Opacity = 1.0;
-                
-                // Remove loading animation
-                this.AbortAnimation("LoadingAnimation");
-                this.Rotation = 0;
-            }
-        }
-
-        private async void PrimaryButton_Clicked(object sender, EventArgs e)
-        {
-            // Add click animation
-            await this.ScaleToAsync(0.95, 100, Easing.SinOut);
-            await this.ScaleToAsync(1.0, 100, Easing.SinIn);
-        }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            
-            // Ensure consistent width
-            if (width > 0 && this.WidthRequest == -1)
-            {
-                this.WidthRequest = Math.Min(width, 400);
-            }
+            // Remove loading animation
+            this.AbortAnimation("LoadingAnimation");
+            Rotation = 0;
         }
     }
 
-    public class SecondaryButton : Button
+    private async void PrimaryButton_ClickedAsync(object sender, EventArgs e)
     {
-        public SecondaryButton()
-        {
-            Style = (Style)Application.Current.Resources["LoginSecondaryButtonStyle"];
-            this.SetDynamicResource(Button.StyleProperty, "LoginSecondaryButtonStyle");
-            
-            // Add animations
-            this.Clicked += SecondaryButton_Clicked;
-        }
+        // Add click animation
+        await this.ScaleToAsync(0.95, 100, Easing.SinOut);
+        await this.ScaleToAsync(1.0, 100, Easing.SinIn);
+    }
 
-        private async void SecondaryButton_Clicked(object sender, EventArgs e)
-        {
-            // Add click animation
-            await this.ScaleToAsync(0.95, 100, Easing.SinOut);
-            await this.ScaleToAsync(1.0, 100, Easing.SinIn);
-        }
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+
+        // Ensure consistent width
+        if (width > 0 && WidthRequest == -1) WidthRequest = Math.Min(width, 400);
+
+    }
+}
+
+partial class SecondaryButton : Button
+{
+    public SecondaryButton()
+    {
+        Style = (Style)Application.Current.Resources["LoginSecondaryButtonStyle"];
+        SetDynamicResource(StyleProperty, "LoginSecondaryButtonStyle");
+
+        // Add animations
+        Clicked += SecondaryButton_ClickedAsync;
+    }
+
+    private async void SecondaryButton_ClickedAsync(object sender, EventArgs e)
+    {
+        // Add click animation
+        await this.ScaleToAsync(0.95, 100, Easing.SinOut);
+        await this.ScaleToAsync(1.0, 100, Easing.SinIn);
     }
 }
