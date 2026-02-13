@@ -1,7 +1,6 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
-namespace Aether;
+namespace Aether.Platforms.iOS;
 
 public class Program
 {

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Aether;
+namespace Aether.Platforms.MacCatalyst;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Aether;
+namespace Aether.Platforms.iOS;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
