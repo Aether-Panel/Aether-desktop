@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Aether.Controls"
-             x:Class="Aether.Views.LoginPage"
+             x:Class="Aether.Features.Login.LoginPage"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
