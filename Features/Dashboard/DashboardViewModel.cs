@@ -85,7 +85,10 @@ partial class DashboardViewModel : BindableObject
     {
         bool confirm = await Shell.Current.DisplayAlertAsync("Cerrar Sesión", "¿Estás seguro que deseas salir?", "Sí", "Cancelar");
 
-        if (confirm) await Shell.Current.GoToAsync("//LoginPage");
-
+        if (confirm)
+        {
+            Services.AuthService.Instance.Logout();
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
     }
 }

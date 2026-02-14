@@ -9,15 +9,16 @@
     xmlns:connection="clr-namespace:Aether.Features.Connection"
     xmlns:dashboard="clr-namespace:Aether.Features.Dashboard"
     Shell.NavBarIsVisible="False"
+    Shell.FlyoutBehavior="Disabled"
     Title="Aether">
-
-    <ShellContent
-        ContentTemplate="{DataTemplate connection:ConnectionPage}"
-        Route="ConnectionPage" />
 
     <ShellContent
         ContentTemplate="{DataTemplate login:LoginPage}"
         Route="LoginPage" />
+
+    <ShellContent
+        ContentTemplate="{DataTemplate connection:ConnectionPage}"
+        Route="ConnectionPage" />
     
     <ShellContent
         ContentTemplate="{DataTemplate register:RegisterPage}"
@@ -28,3 +29,4 @@
         Route="DashboardPage" />
     
 </Shell>
+

@@ -7,4 +7,15 @@ public partial class DashboardPage : ContentPage
 		InitializeComponent();
         BindingContext = new DashboardViewModel();
 	}
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Auth guard: redirect to login if not authenticated
+        if (!Services.AuthService.Instance.IsAuthenticated)
+        {
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
+    }
 }
