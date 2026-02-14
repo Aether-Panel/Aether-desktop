@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Aether.Controls"
+             x:Class="Aether.Features.Register.RegisterPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <Grid x:Name="MainContainer" Style="{StaticResource LoginContainerStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Main Content -->
+        <VerticalStackLayout Grid.Row="1" 
+                             x:Name="RegisterContent"
+                             Style="{StaticResource LoginContentStyle}"
+                             Spacing="24"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+
+            <!-- Title Section -->
+            <VerticalStackLayout Spacing="8" Margin="0,0,0,12">
+                <Label x:Name="TitleLabel"
+                       Text="Crear Cuenta"
+                       Style="{StaticResource LoginTitleStyle}"/>
+                <Image Source="aether_icon.png"
+                       HeightRequest="120"
+                       HorizontalOptions="Center"/>
+                <BoxView Style="{StaticResource TitleDividerStyle}"/>
+            </VerticalStackLayout>
+
+            <!-- Form Section -->
+            <VerticalStackLayout x:Name="FormSection" Spacing="16">
+                
+                <!-- Username -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Entry x:Name="UsernameEntry"
+                               Style="{StaticResource LoginInnerEntryStyle}"
+                               Placeholder="Nombre de Usuario"
+                               Text="{Binding Username}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Email -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Entry x:Name="EmailEntry"
+                               Style="{StaticResource LoginInnerEntryStyle}"
+                               Placeholder="Correo Electrónico"
+                               Keyboard="Email"
+                               Text="{Binding Email}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Password -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Entry x:Name="PasswordEntry"
+                                   Style="{StaticResource LoginInnerEntryStyle}"
+                                   Placeholder="Contraseña"
+                                   IsPassword="True"
+                                   Text="{Binding Password}"
+                                   Grid.Column="0"
+                                   Margin="0,0,12,0"/>
+                            
+                            <Button Text="👁" 
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource Placeholder}"
+                                   BorderColor="Transparent"
+                                   WidthRequest="36"
+                                   HeightRequest="36"
+                                   Padding="0"
+                                   Margin="0,0,12,0"
+                                   Grid.Column="1"
+                                   Clicked="OnPasswordToggleClicked"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Confirm Password -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Entry x:Name="ConfirmPasswordEntry"
+                                   Style="{StaticResource LoginInnerEntryStyle}"
+                                   Placeholder="Confirmar Contraseña"
+                                   IsPassword="True"
+                                   Text="{Binding ConfirmPassword}"
+                                   Grid.Column="0"
+                                   Margin="0,0,12,0"/>
+                                   
+                             <Button Text="👁" 
+                                   BackgroundColor="Transparent"
+                                   TextColor="{StaticResource Placeholder}"
+                                   BorderColor="Transparent"
+                                   WidthRequest="36"
+                                   HeightRequest="36"
+                                   Padding="0"
+                                   Margin="0,0,12,0"
+                                   Grid.Column="1"
+                                   Clicked="OnConfirmPasswordToggleClicked"
+                                   VerticalOptions="Center"
+                                   HorizontalOptions="Center"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ErrorLabelStyle}">
+                    <Label.Triggers>
+                         <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage.Length, FallbackValue=0}" Value="0">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </VerticalStackLayout>
+
+            <!-- Button Section -->
+            <VerticalStackLayout x:Name="ButtonSection" Spacing="12">
+                
+                <!-- Register Button -->
+                <controls:PrimaryButton x:Name="RegisterButton"
+                                        Text="Registrarse"
+                                        Clicked="OnRegisterButtonClicked"/>
+                
+                <!-- Back Button -->
+                <controls:SecondaryButton x:Name="BackButton"
+                                          Text="Ya tengo cuenta"
+                                          Clicked="OnBackButtonClicked"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+        
+         <!-- Bottom spacing -->
+        <BoxView Grid.Row="2" HeightRequest="40"/>
+
+    </Grid>
+</ContentPage>

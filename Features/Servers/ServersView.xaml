@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Aether.Features.Servers"
+             x:Class="Aether.Features.Servers.ServersView">
+
+    <ContentView.BindingContext>
+        <vm:ServersViewModel />
+    </ContentView.BindingContext>
+
+    <Grid RowDefinitions="Auto, *">
+        
+        <!-- Header Actions (Optional, since main header is in Dashboard) -->
+        <Grid Grid.Row="0" Padding="20,0,20,10" ColumnDefinitions="*, Auto">
+             <Button Grid.Column="1"
+                    Text="+"
+                    WidthRequest="40"
+                    HeightRequest="40"
+                    CornerRadius="20"
+                    Padding="0"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="20"/>
+        </Grid>
+
+        <!-- Servers List -->
+        <CollectionView Grid.Row="1" 
+                        ItemsSource="{Binding Servers}"
+                        Margin="10">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" 
+                                 Span="2" 
+                                 HorizontalItemSpacing="10" 
+                                 VerticalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+            
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border StrokeShape="RoundRectangle 12"
+                            StrokeThickness="0"
+                            BackgroundColor="{StaticResource Surface}"
+                            Padding="16">
+                        <Grid RowDefinitions="Auto, Auto, Auto, Auto" RowSpacing="8">
+                            
+                            <!-- Header: Icon & Status -->
+                            <Grid ColumnDefinitions="*, Auto">
+                                <Label Text="{Binding Icon}" 
+                                       FontSize="24"
+                                       VerticalOptions="Center"/>
+                                
+                                <Border Grid.Column="1"
+                                        StrokeShape="RoundRectangle 8"
+                                        BackgroundColor="#204CAF50"
+                                        StrokeThickness="0"
+                                        Padding="8,4">
+                                    <Label Text="{Binding Status}" 
+                                           TextColor="#4CAF50"
+                                           FontSize="10"
+                                           FontAttributes="Bold"/>
+                                </Border>
+                            </Grid>
+                            
+                            <!-- Name -->
+                            <Label Grid.Row="1"
+                                   Text="{Binding Name}"
+                                   FontAttributes="Bold"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextPrimary}"
+                                   LineBreakMode="TailTruncation"/>
+                            
+                            <!-- Details -->
+                            <VerticalStackLayout Grid.Row="2" Spacing="4">
+                                <Label Text="{Binding Type}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource TextSecondary}"/>
+                                <Label Text="{Binding Address}"
+                                       FontSize="12"
+                                       TextColor="{StaticResource TextSecondary}"
+                                       FontFamily="Consolas, Monospace"/>
+                            </VerticalStackLayout>
+                            
+                            <!-- Footer: Node -->
+                            <Border Grid.Row="3"
+                                    BackgroundColor="{StaticResource Background}"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 6"
+                                    Padding="8,4"
+                                    HorizontalOptions="Start"
+                                    Margin="0,8,0,0">
+                                <Label Text="{Binding Node}"
+                                       FontSize="10"
+                                       TextColor="{StaticResource TextSecondary}"/>
+                            </Border>
+                            
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            
+            <CollectionView.EmptyView>
+                <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                    <Label Text="🔌" FontSize="40" HorizontalOptions="Center"/>
+                    <Label Text="No se encontraron servidores" 
+                           TextColor="{StaticResource TextSecondary}"/>
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+        
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="2" 
+              BackgroundColor="#80000000"
+              IsVisible="{Binding IsLoading}">
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               Color="{StaticResource Primary}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"/>
+        </Grid>
+        
+    </Grid>
+</ContentView>

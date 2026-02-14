@@ -4,12 +4,27 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Aether"
-    xmlns:views="clr-namespace:Aether.Features.Login"
+    xmlns:login="clr-namespace:Aether.Features.Login"
+    xmlns:register="clr-namespace:Aether.Features.Register"
+    xmlns:connection="clr-namespace:Aether.Features.Connection"
+    xmlns:dashboard="clr-namespace:Aether.Features.Dashboard"
     Shell.NavBarIsVisible="False"
     Title="Aether">
 
     <ShellContent
-        ContentTemplate="{DataTemplate views:LoginPage}"
+        ContentTemplate="{DataTemplate connection:ConnectionPage}"
+        Route="ConnectionPage" />
+
+    <ShellContent
+        ContentTemplate="{DataTemplate login:LoginPage}"
         Route="LoginPage" />
+    
+    <ShellContent
+        ContentTemplate="{DataTemplate register:RegisterPage}"
+        Route="RegisterPage" />
+
+    <ShellContent
+        ContentTemplate="{DataTemplate dashboard:DashboardPage}"
+        Route="DashboardPage" />
     
 </Shell>

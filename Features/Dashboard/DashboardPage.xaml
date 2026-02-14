@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Aether.Features.Dashboard.DashboardPage"
+             BackgroundColor="{StaticResource Background}"
+             Shell.NavBarIsVisible="False">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding SidebarWidth, Mode=OneWay}"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <Border Grid.Column="0" 
+                BackgroundColor="{StaticResource Surface}"
+                StrokeThickness="0"
+                Padding="0">
+            <Grid RowDefinitions="Auto, *, Auto, Auto">
+                
+                <!-- Logo Area -->
+                <VerticalStackLayout Grid.Row="0" Spacing="10" Padding="0,20">
+                     <Image Source="aether_icon.png"
+                           HeightRequest="40"
+                           WidthRequest="40"
+                           HorizontalOptions="Center"/>
+                    <Label Text="AETHER" 
+                           FontSize="12" 
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextSecondary}"
+                           HorizontalOptions="Center"
+                           IsVisible="{Binding IsSidebarExpanded}"/>
+                </VerticalStackLayout>
+
+                <!-- Navigation Items -->
+                <VerticalStackLayout Grid.Row="1" Spacing="4" Padding="10">
+                    
+                    <!-- Servers -->
+                    <Border StrokeThickness="0" BackgroundColor="Transparent" Padding="10">
+                         <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
+                            <Label Text="🖥️" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="Servidores" VerticalOptions="Center" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsSidebarExpanded}"/>
+                        </Grid>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="Servers"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    
+                    <!-- Uptime -->
+                    <Border StrokeThickness="0" BackgroundColor="Transparent" Padding="10">
+                         <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
+                            <Label Text="📈" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="Uptime" VerticalOptions="Center" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsSidebarExpanded}"/>
+                        </Grid>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="Uptime"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    
+                     <!-- Admin -->
+                    <Border StrokeThickness="0" BackgroundColor="Transparent" Padding="10">
+                         <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
+                            <Label Text="🛡️" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            <Label Grid.Column="1" Text="Administración" VerticalOptions="Center" TextColor="{StaticResource TextPrimary}" IsVisible="{Binding IsSidebarExpanded}"/>
+                        </Grid>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding NavigateCommand}" CommandParameter="Admin"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <!-- Collapse Toggle -->
+                 <Border Grid.Row="2" StrokeThickness="0" BackgroundColor="Transparent" Padding="10,10,10,5">
+                     <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
+                        <Label Text="{Binding SidebarButtonIcon}" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center"/>
+                         <Label Grid.Column="1" Text="Contraer" VerticalOptions="Center" TextColor="{StaticResource TextSecondary}" IsVisible="{Binding IsSidebarExpanded}"/>
+                    </Grid>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleSidebarCommand}"/>
+                    </Border.GestureRecognizers>
+                </Border>
+
+                <!-- Logout -->
+                <Border Grid.Row="3" StrokeThickness="0" BackgroundColor="Transparent" Padding="10,5,10,20">
+                     <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
+                        <Label Text="🚪" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#F44336"/>
+                        <Label Grid.Column="1" Text="Cerrar Sesión" VerticalOptions="Center" TextColor="#F44336" IsVisible="{Binding IsSidebarExpanded}"/>
+                    </Grid>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Border.GestureRecognizers>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" RowDefinitions="Auto, *">
+            <!-- Top Header -->
+            <Grid Grid.Row="0"  Padding="20">
+                <Label Text="{Binding CurrentTitle}" 
+                       Style="{StaticResource LoginTitleStyle}"
+                       FontSize="24"/>
+            </Grid>
+            
+            <!-- Dynamic View -->
+            <ContentView Grid.Row="1" Content="{Binding CurrentView}"/>
+        </Grid>
+
+    </Grid>
+</ContentPage>

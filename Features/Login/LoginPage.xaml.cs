@@ -58,14 +58,15 @@ public partial class LoginPage : ContentPage
         await Task.Delay(1500);
 
         // Mock authentication - accept any non-empty credentials
-        if (viewModel.Username.Length >= 3 && viewModel.Password.Length >= 6)
+        // Mock authentication - accept specific hardcoded credentials
+        if (viewModel.Username == "admin@admin.com" && viewModel.Password == "admin123")
         {
-            // Success - navigate to main app
-            await Application.Current.Windows[0].Page.DisplayAlertAsync("¡Bienvenido!",
-                $"Inicio de sesión exitoso. Bienvenido {viewModel.Username}!", "OK");
+            // Success - navigate to Servers Page
+            // await Application.Current.Windows[0].Page.DisplayAlert("¡Bienvenido!",
+            //     $"Inicio de sesión exitoso. Bienvenido {viewModel.Username}!", "OK");
 
-            // Navigate to MainPage (you can change this to your main app page)
-            Application.Current.Windows[0].Page = new AppShell();
+            // Navigate to DashboardPage
+            await Shell.Current.GoToAsync("//DashboardPage");
         }
         else
         {
@@ -79,8 +80,10 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private async void OnRegisterButtonClicked(object sender, EventArgs e) => await Application.Current.Windows[0].Page.
-        DisplayAlertAsync("Registro", "La funcionalidad de registro estará disponible próximamente.", "OK");
+    private async void OnRegisterButtonClicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("//RegisterPage");
+    }
 
 
     private void OnPasswordToggleClicked(object sender, EventArgs e)

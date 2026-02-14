@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Aether.Controls"
+             x:Class="Aether.Features.Connection.ConnectionPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="{StaticResource Background}">
+
+    <Grid x:Name="MainContainer" Style="{StaticResource LoginContainerStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Main Content -->
+        <VerticalStackLayout Grid.Row="1" 
+                             x:Name="ConnectionContent"
+                             Style="{StaticResource LoginContentStyle}"
+                             Spacing="24"
+                             VerticalOptions="Center"
+                             HorizontalOptions="Center">
+
+            <!-- Title Section -->
+            <VerticalStackLayout Spacing="8" Margin="0,0,0,24">
+                <Label x:Name="TitleLabel"
+                       Text="Configurar Servidor"
+                       Style="{StaticResource LoginTitleStyle}"/>
+                <Label Text="Ingrese los datos de conexión"
+                       TextColor="{StaticResource Placeholder}"
+                       HorizontalTextAlignment="Center"
+                       FontSize="14"/>
+                <BoxView Style="{StaticResource TitleDividerStyle}"/>
+            </VerticalStackLayout>
+
+            <!-- Form Section -->
+            <VerticalStackLayout x:Name="FormSection" Spacing="16">
+
+                <!-- Host/IP Entry -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Entry x:Name="HostEntry"
+                               Style="{StaticResource LoginInnerEntryStyle}"
+                               Placeholder="IP o Dominio (ej: 192.168.1.50)"
+                               Text="{Binding Host}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Port Entry -->
+                <Grid Style="{StaticResource EntryContainerStyle}">
+                    <Border Style="{StaticResource LoginEntryStyle}">
+                        <Entry x:Name="PortEntry"
+                               Style="{StaticResource LoginInnerEntryStyle}"
+                               Placeholder="Puerto (ej: 8080) [Opcional]"
+                               Keyboard="Numeric"
+                               Text="{Binding Port}"/>
+                    </Border>
+                </Grid>
+
+                <!-- Error Message -->
+                <Label Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ErrorLabelStyle}">
+                    <Label.Triggers>
+                         <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage.Length, FallbackValue=0}" Value="0">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage}" Value="{x:Null}">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                        <DataTrigger TargetType="Label" Binding="{Binding ErrorMessage.Length}" Value="0">
+                             <!-- Duplicate trigger to ensure coverage, but cleaner checks are better. 
+                                  Actually, simpler approach: default IsVisible=True, trigger False if empty -->
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+            </VerticalStackLayout>
+
+            <!-- Button Section -->
+            <VerticalStackLayout x:Name="ButtonSection" Spacing="12">
+                <controls:PrimaryButton x:Name="ConnectButton"
+                                        Text="Conectar"
+                                        Clicked="OnConnectClicked"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

@@ -40,7 +40,7 @@ partial class PrimaryButton : Button
         {
             if (Text == "...") Text = _originalText;
 
-            IsEnabled = true;
+            IsEnabled = false;
             Opacity = 1.0;
         }
     }
