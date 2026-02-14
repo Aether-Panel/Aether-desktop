@@ -2,115 +2,355 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Aether.Controls"
+             xmlns:features="clr-namespace:Aether.Features.Login"
              x:Class="Aether.Features.Login.LoginPage"
+             x:DataType="features:LoginViewModel"
              Shell.NavBarIsVisible="False"
              BackgroundColor="{StaticResource Background}">
 
-
-    <Grid x:Name="MainContainer" Style="{StaticResource LoginContainerStyle}">
+    <Grid x:Name="MainContainer" RowSpacing="0" Padding="0" BackgroundColor="{StaticResource Background}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="56"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Top spacing for centered content -->
+        <!-- ═══════════════ HEADER BAR ═══════════════ -->
+        <Grid Grid.Row="0" 
+              BackgroundColor="{StaticResource Secondary}" 
+              Padding="24,0">
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Image Source="aether_logo.png"
+                       HeightRequest="34"
+                       WidthRequest="34"
+                       Aspect="AspectFit"/>
+                <Label Text="Aether Panel"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Foreground}"
+                       VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+        </Grid>
 
-
-        <!-- Main Login Content -->
-        <VerticalStackLayout Grid.Row="1" 
-                             x:Name="LoginContent"
-                             Style="{StaticResource LoginContentStyle}"
+        <!-- ═══════════════ LOGIN FORM ═══════════════ -->
+        <VerticalStackLayout x:Name="LoginContent"
+                             Grid.Row="1"
                              Spacing="24"
                              VerticalOptions="Center"
-                             HorizontalOptions="Center">
+                             HorizontalOptions="Center"
+                             WidthRequest="420"
+                             Padding="0,40">
 
-            <!-- Title Section -->
-            <VerticalStackLayout Spacing="8" Margin="0,0,0,24">
+            <!-- Logo + Title + Subtitle -->
+            <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+
                 <Label x:Name="TitleLabel"
-                       Text="Aether Panel"
-                       Style="{StaticResource LoginTitleStyle}"/>
-                <Image Source="aether_icon.png"
-                       HeightRequest="120"
+                       Text="Bienvenido de vuelta"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource Foreground}"
                        HorizontalOptions="Center"/>
-                <BoxView Style="{StaticResource TitleDividerStyle}"/>
+                <Label Text="Inicia sesión en tu panel de administración"
+                       FontSize="13"
+                       TextColor="{StaticResource Placeholder}"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,8"/>
             </VerticalStackLayout>
 
-            <!-- Form Section -->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="{StaticResource Border}"
+                     Opacity="0.5"
+                     Margin="0,0,0,4"/>
+
+            <!-- Form Fields -->
             <VerticalStackLayout x:Name="FormSection" Spacing="16">
-                
-                <!-- Username Entry -->
-                <Grid Style="{StaticResource EntryContainerStyle}">
-                    <Border Style="{StaticResource LoginEntryStyle}">
+
+                <!-- Email Entry (with icon, matching password style) -->
+                <Border StrokeShape="RoundRectangle 8"
+                        Stroke="{StaticResource BorderBrush}"
+                        StrokeThickness="1.5"
+                        BackgroundColor="{StaticResource Secondary}"
+                        Padding="0">
+                    <Grid ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Envelope Icon (SVG) -->
+                        <Image Source="hi_envelope.png"
+                               HeightRequest="16"
+                               WidthRequest="16"
+                               Opacity="0.5"
+                               Aspect="AspectFit"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Grid.Column="0"/>
+
                         <Entry x:Name="UsernameEntry"
-                               Style="{StaticResource LoginInnerEntryStyle}"
-                               Placeholder="correo electrónico"
+                               BackgroundColor="Transparent"
+                               TextColor="{StaticResource Foreground}"
+                               PlaceholderColor="{StaticResource Placeholder}"
+                               FontSize="14"
+                               HeightRequest="46"
+                               Margin="0"
+                               Placeholder="Email"
                                Keyboard="Email"
-                               Text="{Binding Username}"/>
-                    </Border>
-                </Grid>
+                               Text="{Binding Username}"
+                               Grid.Column="1"/>
+                    </Grid>
+                </Border>
+                <Label x:Name="EmailValidationLabel"
+                       Text="Email no válido"
+                       TextColor="{StaticResource Error}"
+                       FontSize="12"
+                       IsVisible="False"
+                       Margin="4,-8,0,0"/>
 
                 <!-- Password Entry -->
-                <Grid Style="{StaticResource EntryContainerStyle}">
-                    <Border Style="{StaticResource LoginEntryStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            
+                <Border StrokeShape="RoundRectangle 8"
+                        Stroke="{StaticResource BorderBrush}"
+                        StrokeThickness="1.5"
+                        BackgroundColor="{StaticResource Secondary}"
+                        Padding="0">
+                    <Grid ColumnSpacing="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="46"/>
+                        </Grid.ColumnDefinitions>
 
-                            
-                            <!-- Entry -->
-                            <Entry x:Name="PasswordEntry"
-                                   Style="{StaticResource LoginInnerEntryStyle}"
-                                   Placeholder="Contraseña"
-                                   IsPassword="True"
-                                   Text="{Binding Password}"
-                                   Grid.Column="1"
-                                   Margin="0,0,12,0"/>
-                            
-                            <!-- Password Toggle -->
-                            <Button Text="Show" 
-                                   BackgroundColor="Transparent"
-                                   TextColor="{StaticResource Placeholder}"
-                                   BorderColor="Transparent"
-                                   WidthRequest="36"
-                                   HeightRequest="36"
-                                   Padding="0"
-                                   Margin="0,0,12,0"
-                                   Grid.Column="2"
-                                   Clicked="OnPasswordToggleClicked"
-                                   VerticalOptions="Center"
-                                   HorizontalOptions="Center"/>
-                        </Grid>
-                    </Border>
+                        <!-- Lock Icon (SVG) -->
+                        <Image Source="hi_lock.png"
+                               HeightRequest="16"
+                               WidthRequest="16"
+                               Opacity="0.5"
+                               Aspect="AspectFit"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Grid.Column="0"/>
+
+                        <Entry x:Name="PasswordEntry"
+                               BackgroundColor="Transparent"
+                               TextColor="{StaticResource Foreground}"
+                               PlaceholderColor="{StaticResource Placeholder}"
+                               FontSize="14"
+                               HeightRequest="46"
+                               Margin="0"
+                               Placeholder="Contraseña"
+                               IsPassword="True"
+                               Text="{Binding Password}"
+                               Grid.Column="1"/>
+
+                        <!-- Password Toggle Eye (SVG) -->
+                        <Image Source="hi_eye.png"
+                               HeightRequest="20"
+                               WidthRequest="20"
+                               Opacity="0.5"
+                               Aspect="AspectFit"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               Grid.Column="2">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnPasswordToggleClicked"/>
+                            </Image.GestureRecognizers>
+                        </Image>
+                    </Grid>
+                </Border>
+                <Label x:Name="PasswordValidationLabel"
+                       Text="La contraseña debe tener al menos 8 caracteres"
+                       TextColor="{StaticResource Error}"
+                       FontSize="12"
+                       IsVisible="False"
+                       Margin="4,-8,0,0"/>
+
+                <!-- Remember me + Forgot Password row -->
+                <Grid Margin="0,-4,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <HorizontalStackLayout Grid.Column="0" Spacing="6" VerticalOptions="Center">
+                        <CheckBox Color="{StaticResource Primary}" 
+                                  Scale="0.8"
+                                  VerticalOptions="Center"/>
+                        <Label Text="Recordarme"
+                               FontSize="12"
+                               TextColor="{StaticResource Placeholder}"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+
+                    <Label Grid.Column="2"
+                           Text="¿Olvidaste tu contraseña?"
+                           FontSize="12"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnForgotPasswordClicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
                 </Grid>
 
-                <!-- Error Message -->
+                <!-- General Error Message -->
                 <Label x:Name="ErrorMessage"
-                       Style="{StaticResource ErrorLabelStyle}"/>
+                       TextColor="{StaticResource Error}"
+                       FontSize="12"
+                       IsVisible="False"/>
             </VerticalStackLayout>
 
             <!-- Button Section -->
-            <VerticalStackLayout x:Name="ButtonSection" Spacing="12">
-                
-                <!-- Login Button -->
+            <VerticalStackLayout x:Name="ButtonSection" Spacing="16">
                 <controls:PrimaryButton x:Name="LoginButton"
                                         Text="Iniciar Sesión"
                                         Clicked="OnLoginButtonClicked"/>
-                
-                <!-- Register Button -->
-                <controls:SecondaryButton x:Name="RegisterButton"
-                                          Text="¿No tienes cuenta? Regístrate"
-                                          Clicked="OnRegisterButtonClicked"/>
+
+                <!-- OR Separator -->
+                <Grid Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <BoxView Grid.Column="0" HeightRequest="1" 
+                             BackgroundColor="{StaticResource Border}" 
+                             VerticalOptions="Center"
+                             Opacity="0.5"/>
+                    <Label Grid.Column="1" Text="o" 
+                           FontSize="12" 
+                           TextColor="{StaticResource Placeholder}" 
+                           Margin="16,0"
+                           VerticalOptions="Center"/>
+                    <BoxView Grid.Column="2" HeightRequest="1" 
+                             BackgroundColor="{StaticResource Border}" 
+                             VerticalOptions="Center"
+                             Opacity="0.5"/>
+                </Grid>
+
+                <!-- Register CTA -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                    <Label Text="¿No tienes cuenta?"
+                           FontSize="13"
+                           TextColor="{StaticResource Placeholder}"
+                           VerticalOptions="Center"/>
+                    <Label Text="Regístrate"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnRegisterButtonClicked"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
 
         </VerticalStackLayout>
 
-        <!-- Bottom spacing -->
-        <BoxView Grid.Row="2" HeightRequest="40"/>
+        <!-- ═══════════════ FOOTER ═══════════════ -->
+        <VerticalStackLayout Grid.Row="2" BackgroundColor="{StaticResource Secondary}" Padding="0">
+
+            <Grid Padding="32,28" ColumnSpacing="32">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{OnIdiom Phone=*, Default=2*}"/>
+                    <ColumnDefinition Width="{OnIdiom Phone=Auto, Default=*}"/>
+                    <ColumnDefinition Width="{OnIdiom Phone=Auto, Default=*}"/>
+                    <ColumnDefinition Width="{OnIdiom Phone=Auto, Default=*}"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Brand -->
+                <VerticalStackLayout Grid.Column="0" 
+                                     Grid.ColumnSpan="{OnIdiom Phone=4, Default=1}"
+                                     Spacing="4"
+                                     HorizontalOptions="{OnIdiom Phone=Center, Default=Start}">
+                    <HorizontalStackLayout Spacing="12" Margin="0,0,0,8" HorizontalOptions="{OnIdiom Phone=Center, Default=Start}">
+                        <Image Source="aether_logo.png"
+                               HeightRequest="64"
+                               WidthRequest="64"
+                               Aspect="AspectFit"/>
+                        <Label Text="Aether Panel"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource Foreground}"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <Label Text="Plataforma de gestión de servidores de nueva generación. Potente, moderna y fácil de usar."
+                           FontSize="11"
+                           TextColor="{StaticResource Placeholder}"
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="{OnIdiom Phone=Center, Default=Start}"
+                           MaximumWidthRequest="260"/>
+
+                    <!-- Social Media Icons -->
+                    <HorizontalStackLayout Spacing="16" Margin="0,12,0,0" HorizontalOptions="{OnIdiom Phone=Center, Default=Start}">
+                        <Image Source="bi_github.png" HeightRequest="18" WidthRequest="18" Opacity="0.6"/>
+                        <Image Source="bi_discord.png" HeightRequest="18" WidthRequest="18" Opacity="0.6"/>
+                        <Image Source="bi_twitter.png" HeightRequest="18" WidthRequest="18" Opacity="0.6"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+
+                <!-- Navegación -->
+                <VerticalStackLayout Grid.Column="1" Spacing="4" IsVisible="{OnIdiom Phone=False, Default=True}" WidthRequest="100">
+                    <Label Text="Navegación" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Foreground}" Margin="0,0,0,8"/>
+                </VerticalStackLayout>
+
+                <!-- Recursos -->
+                <VerticalStackLayout Grid.Column="2" Spacing="4" IsVisible="{OnIdiom Phone=False, Default=True}" WidthRequest="100">
+                    <Label Text="Recursos" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Foreground}" Margin="0,0,0,8"/>
+                    <Label Text="Documentación" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="API" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="Comunidad" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="Estado del Sistema" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                </VerticalStackLayout>
+
+                <!-- Soporte -->
+                <VerticalStackLayout Grid.Column="3" Spacing="4" IsVisible="{OnIdiom Phone=False, Default=True}" WidthRequest="100">
+                    <Label Text="Soporte" FontSize="14" FontAttributes="Bold" TextColor="{StaticResource Foreground}" Margin="0,0,0,8"/>
+                    <Label Text="Contacto" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="Centro de Ayuda" FontSize="12" TextColor="{StaticResource Placeholder}"/>
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Divider -->
+            <BoxView HeightRequest="1" BackgroundColor="{StaticResource Border}" Margin="32,0"/>
+
+            <!-- Copyright -->
+            <FlexLayout Padding="32,12" 
+                        Wrap="Wrap" 
+                        JustifyContent="SpaceBetween" 
+                        AlignItems="Center"
+                        Direction="Row">
+                
+                <Label FontSize="11" TextColor="{StaticResource Placeholder}" Margin="0,4">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="© 2026 "/>
+                            <Span Text="Aether Panel" TextColor="{StaticResource Primary}"/>
+                            <Span Text=". Todos los derechos reservados."/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <HorizontalStackLayout Spacing="12" Margin="0,4">
+                    <Label Text="Privacidad" FontSize="11" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="·" FontSize="11" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="Términos" FontSize="11" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="·" FontSize="11" TextColor="{StaticResource Placeholder}"/>
+                    <Label Text="Cookies" FontSize="11" TextColor="{StaticResource Placeholder}"/>
+                </HorizontalStackLayout>
+
+                <Label FontSize="11" TextColor="{StaticResource Placeholder}" Margin="0,4">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Powered by  "/>
+                            <Span Text="SkyPanel v1.0" TextColor="{StaticResource Primary}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </FlexLayout>
+
+        </VerticalStackLayout>
 
     </Grid>
 

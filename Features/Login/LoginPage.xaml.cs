@@ -7,6 +7,36 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
         BindingContext = new LoginViewModel();
         SetupAnimations();
+        CustomizeEntryHandlers();
+    }
+
+    private static void CustomizeEntryHandlers()
+    {
+        // Remove the native Windows TextBox border so only the XAML Border wrapper is visible
+#if WINDOWS
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoBorder", (handler, view) =>
+        {
+            if (handler.PlatformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                textBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+                textBox.Padding = new Microsoft.UI.Xaml.Thickness(0);
+
+                // Remove focus visual border too
+                textBox.Resources["TextControlBorderThemeThicknessFocused"] = new Microsoft.UI.Xaml.Thickness(0);
+                textBox.Resources["TextControlBorderThemeThickness"] = new Microsoft.UI.Xaml.Thickness(0);
+            }
+        });
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("TransparentBg", (handler, view) =>
+        {
+            if (handler.PlatformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
+            {
+                textBox.Background = null;
+                textBox.Resources["TextControlBackground"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                textBox.Resources["TextControlBackgroundPointerOver"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+                textBox.Resources["TextControlBackgroundFocused"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
+            }
+        });
+#endif
     }
 
     private void SetupAnimations()
@@ -35,36 +65,42 @@ public partial class LoginPage : ContentPage
     {
         var viewModel = BindingContext as LoginViewModel;
 
-        // Hide any previous error messages
+        // Hide any previous error/validation messages
         ErrorMessage.IsVisible = false;
+        EmailValidationLabel.IsVisible = false;
+        PasswordValidationLabel.IsVisible = false;
+
+        // Per-field validation
+        bool hasErrors = false;
+
+        if (string.IsNullOrWhiteSpace(viewModel.Username) || (!string.IsNullOrWhiteSpace(viewModel.Username) && !viewModel.Username.Contains("@")))
+        {
+            EmailValidationLabel.IsVisible = true;
+            hasErrors = true;
+        }
+
+        if (string.IsNullOrWhiteSpace(viewModel.Password) || viewModel.Password.Length < 8)
+        {
+            PasswordValidationLabel.IsVisible = true;
+            hasErrors = true;
+        }
+
+        if (hasErrors)
+        {
+            // Shake animation for error
+            await ShakeAnimationAsync(LoginButton);
+            return;
+        }
 
         // Show loading state
         LoginButton.IsLoading = true;
 
-        // Basic validation
-        if (string.IsNullOrWhiteSpace(viewModel.Username) || string.IsNullOrWhiteSpace(viewModel.Password))
+        // Validate against JSON credentials
+        var isValid = await Services.AuthService.Instance.ValidateCredentialsAsync(
+            viewModel.Username, viewModel.Password);
+
+        if (isValid)
         {
-            ErrorMessage.Text = "Por favor, complete todos los campos.";
-            ErrorMessage.IsVisible = true;
-            LoginButton.IsLoading = false;
-
-            // Shake animation for error
-            await ShakeAnimationAsync(LoginButton);
-
-            return;
-        }
-
-        // Simulate login process (mock)
-        await Task.Delay(1500);
-
-        // Mock authentication - accept any non-empty credentials
-        // Mock authentication - accept specific hardcoded credentials
-        if (viewModel.Username == "admin@admin.com" && viewModel.Password == "admin123")
-        {
-            // Success - navigate to Servers Page
-            // await Application.Current.Windows[0].Page.DisplayAlert("¡Bienvenido!",
-            //     $"Inicio de sesión exitoso. Bienvenido {viewModel.Username}!", "OK");
-
             // Navigate to DashboardPage
             await Shell.Current.GoToAsync("//DashboardPage");
         }
@@ -85,14 +121,15 @@ public partial class LoginPage : ContentPage
         await Shell.Current.GoToAsync("//RegisterPage");
     }
 
+    private async void OnForgotPasswordClicked(object sender, EventArgs e) => await DisplayAlertAsync("Recuperar contraseña",
+        "Se enviará un enlace de recuperación a tu correo electrónico.", "Aceptar");
+
 
     private void OnPasswordToggleClicked(object sender, EventArgs e)
     {
         PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
-
-        var button = (Button)sender;
-
-        button.Text = PasswordEntry.IsPassword ? "👁" : "👁‍🗨";
+        var image = (Image)sender;
+        image.Opacity = PasswordEntry.IsPassword ? 0.5 : 1.0;
     }
 
     private static async Task ShakeAnimationAsync(VisualElement element)
@@ -113,4 +150,3 @@ public partial class LoginPage : ContentPage
         if (width < 400) MainContainer.Padding = new Thickness(16, 20, 16, 20);
     }
 }
-
