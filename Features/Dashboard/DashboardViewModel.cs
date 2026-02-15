@@ -28,7 +28,8 @@ partial class DashboardViewModel : BindableObject
 
     public GridLength SidebarWidth => IsSidebarExpanded ? new GridLength(250) : new GridLength(70);
 
-    public string SidebarButtonIcon => "menu.png";
+    // Keep instance-bound so bindings update when the sidebar state changes.
+    public string SidebarButtonIcon => IsSidebarExpanded ? "menu.png" : "menu.png";
 
     public object CurrentView
     {
