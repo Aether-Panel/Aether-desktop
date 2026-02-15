@@ -2,7 +2,7 @@ using Aether.Features.Servers;
 
 namespace Aether.Features.Dashboard;
 
-public class DashboardViewModel : BindableObject
+partial class DashboardViewModel : BindableObject
 {
     private bool _isSidebarExpanded = true;
     private object _currentView;
@@ -26,7 +26,7 @@ public class DashboardViewModel : BindableObject
     }
 
     public GridLength SidebarWidth => IsSidebarExpanded ? new GridLength(250) : new GridLength(70);
-    
+
     public string SidebarButtonIcon => IsSidebarExpanded ? "◀" : "▶";
 
     public object CurrentView
@@ -65,36 +65,27 @@ public class DashboardViewModel : BindableObject
         CurrentView = ServersView;
 
         ToggleSidebarCommand = new Command(() => IsSidebarExpanded = !IsSidebarExpanded);
-        
+
         NavigateCommand = new Command<string>(OnNavigate);
         LogoutCommand = new Command(OnLogout);
     }
 
     private void OnNavigate(string destination)
     {
-        switch (destination)
+        (CurrentView, CurrentTitle) = destination switch
         {
-            case "Servers":
-                CurrentView = ServersView;
-                CurrentTitle = "Mis Servidores";
-                break;
-            case "Uptime":
-                CurrentView = UptimeView;
-                CurrentTitle = "Uptime";
-                break;
-            case "Admin":
-                CurrentView = AdminView;
-                CurrentTitle = "Administración";
-                break;
-        }
+            "Servers" => (ServersView, "Mis Servidores"),
+            "Uptime" => (UptimeView, "Uptime"),
+            "Admin" => (AdminView, "Administración"),
+            _ => (CurrentView, CurrentTitle)
+        };
     }
 
     private async void OnLogout()
     {
-        bool confirm = await Application.Current.MainPage.DisplayAlert("Cerrar Sesión", "¿Estás seguro que deseas salir?", "Sí", "Cancelar");
-        if (confirm)
-        {
-            await Shell.Current.GoToAsync("//LoginPage");
-        }
+        bool confirm = await Shell.Current.DisplayAlertAsync("Cerrar Sesión", "¿Estás seguro que deseas salir?", "Sí", "Cancelar");
+
+        if (confirm) await Shell.Current.GoToAsync("//LoginPage");
+
     }
 }

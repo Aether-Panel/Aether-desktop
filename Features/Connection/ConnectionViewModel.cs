@@ -1,6 +1,6 @@
 namespace Aether.Features.Connection;
 
-public class ConnectionViewModel : BindableObject
+partial class ConnectionViewModel : BindableObject
 {
     private string _host;
     private string _port;

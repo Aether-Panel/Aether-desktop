@@ -1,6 +1,6 @@
 namespace Aether.Features.Register;
 
-public class RegisterViewModel : BindableObject
+partial class RegisterViewModel : BindableObject
 {
     private string _username;
     private string _email;
@@ -79,9 +79,7 @@ public class RegisterViewModel : BindableObject
         try
         {
             // Validations
-            if (string.IsNullOrWhiteSpace(Username) || 
-                string.IsNullOrWhiteSpace(Email) || 
-                string.IsNullOrWhiteSpace(Password) || 
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) || 
                 string.IsNullOrWhiteSpace(ConfirmPassword))
             {
                 ErrorMessage = "Por favor, complete todos los campos.";
@@ -107,8 +105,8 @@ public class RegisterViewModel : BindableObject
             await Task.Delay(1500);
 
             // Success
-            await Application.Current.MainPage.DisplayAlert("Éxito", "Cuenta creada correctamente", "OK");
-            
+            await Shell.Current.DisplayAlertAsync("Éxito", "Cuenta creada correctamente", "OK");
+
             // Navigate back to Login
             await Shell.Current.GoToAsync("..");
         }

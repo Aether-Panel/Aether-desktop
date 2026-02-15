@@ -2,7 +2,7 @@ namespace Aether.Features.Register;
 
 public partial class RegisterPage : ContentPage
 {
-    private RegisterViewModel _viewModel;
+    private readonly RegisterViewModel _viewModel;
 
     public RegisterPage()
     {

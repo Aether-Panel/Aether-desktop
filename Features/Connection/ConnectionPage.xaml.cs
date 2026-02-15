@@ -2,7 +2,7 @@ namespace Aether.Features.Connection;
 
 public partial class ConnectionPage : ContentPage
 {
-    private ConnectionViewModel _viewModel;
+    private readonly ConnectionViewModel _viewModel;
 
     public ConnectionPage()
     {
