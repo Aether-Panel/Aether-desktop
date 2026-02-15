@@ -5,10 +5,12 @@ import { Folder, File as FileIcon, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 
-const fileContentSamples = {
+const CodeEditor = dynamic(() => import('./code-editor'), { ssr: false });
+
+const fileContentSamples: Record<string, string> = {
   'next.config.js': `/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -68,13 +70,45 @@ const files: FileItem[] = [
   { name: 'README.md', type: 'file', size: '0.8 KB', modified: '1 week ago', content: fileContentSamples['README.md'] },
 ];
 
+const getLanguageFromFilename = (filename: string) => {
+    const extension = filename.split('.').pop();
+    switch (extension) {
+        case 'js':
+            return 'javascript';
+        case 'json':
+            return 'json';
+        case 'md':
+            return 'markdown';
+        case 'py':
+            return 'python';
+        case 'yaml':
+        case 'yml':
+            return 'yaml';
+        default:
+            return 'plaintext';
+    }
+};
+
 export default function FileManagerView() {
   const [editingFile, setEditingFile] = useState<FileItem | null>(null);
+  const [editedContent, setEditedContent] = useState<string>('');
 
   const handleFileClick = (file: FileItem) => {
-    if (file.type === 'file') {
+    if (file.type === 'file' && file.content) {
+      setEditedContent(file.content);
       setEditingFile(file);
     }
+  };
+  
+  const handleCloseDialog = () => {
+    setEditingFile(null);
+    setEditedContent('');
+  };
+
+  const handleSaveChanges = () => {
+    console.log(`Saving changes for ${editingFile?.name}:`, editedContent);
+    // Here you would typically make an API call to save the file on the server.
+    handleCloseDialog();
   };
 
   return (
@@ -129,24 +163,29 @@ export default function FileManagerView() {
         </CardContent>
       </Card>
 
-      <Dialog open={!!editingFile} onOpenChange={(open) => !open && setEditingFile(null)}>
-        <DialogContent className="max-w-4xl h-[80vh] flex flex-col">
+      <Dialog open={!!editingFile} onOpenChange={(open) => !open && handleCloseDialog()}>
+        <DialogContent className="max-w-6xl h-[85vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Editing: {editingFile?.name}</DialogTitle>
             <DialogDescription>
-              This is a mock editor. Changes will not be saved.
+              Changes are not saved in this demo.
             </DialogDescription>
           </DialogHeader>
-          <Textarea
-            key={editingFile?.name}
-            defaultValue={editingFile?.content ?? ''}
-            className="flex-grow font-mono text-sm resize-none"
-          />
+          <div className="flex-grow min-h-0">
+            {editingFile && (
+              <CodeEditor
+                key={editingFile.name}
+                language={getLanguageFromFilename(editingFile.name)}
+                value={editedContent}
+                onChange={(value) => setEditedContent(value || '')}
+              />
+            )}
+          </div>
           <DialogFooter className="mt-4">
-            <Button variant="outline" onClick={() => setEditingFile(null)}>
+            <Button variant="outline" onClick={handleCloseDialog}>
               Cancel
             </Button>
-            <Button onClick={() => setEditingFile(null)}>
+            <Button onClick={handleSaveChanges}>
               Save Changes
             </Button>
           </DialogFooter>
