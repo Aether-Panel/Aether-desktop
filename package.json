@@ -44,7 +44,6 @@
     "firebase": "^11.9.1",
     "genkit": "^1.28.0",
     "lucide-react": "^0.475.0",
-    "monaco-themes": "^0.4.4",
     "next": "15.5.9",
     "patch-package": "^8.0.0",
     "react": "^19.2.1",
