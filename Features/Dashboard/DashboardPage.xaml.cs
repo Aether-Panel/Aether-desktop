@@ -8,6 +8,20 @@ public partial class DashboardPage : ContentPage
         BindingContext = new DashboardViewModel();
 	}
 
+
+    
+    private async void OnMenuClicked(object sender, EventArgs e)
+    {
+        if (sender is not ImageButton button)
+        {
+            return;
+        }
+
+        /// is an animation when you click on the menu icon
+        await button.ScaleTo(0.9, 80, Easing.CubicOut);
+        await button.ScaleTo(1, 120, Easing.CubicOut);
+    }
+
     protected override async void OnAppearing()
     {
         base.OnAppearing();

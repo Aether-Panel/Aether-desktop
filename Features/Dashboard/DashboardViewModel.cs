@@ -27,7 +27,7 @@ partial class DashboardViewModel : BindableObject
 
     public GridLength SidebarWidth => IsSidebarExpanded ? new GridLength(250) : new GridLength(70);
 
-    public string SidebarButtonIcon => IsSidebarExpanded ? "◀" : "▶";
+    public string SidebarButtonIcon => "menu.png";
 
     public object CurrentView
     {
