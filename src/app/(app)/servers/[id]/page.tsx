@@ -31,15 +31,15 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
     <div className="flex flex-col gap-8">
       <PageHeader title={server.name} description={`Detailed metrics and status for ${server.ipAddress}`} />
 
-      <Tabs defaultValue="overview" className="w-full">
+      <Tabs defaultValue="console" className="w-full">
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="overview">
-            <Network className="mr-2 h-4 w-4" />
-            Overview
-          </TabsTrigger>
           <TabsTrigger value="console">
             <Terminal className="mr-2 h-4 w-4" />
             Console
+          </TabsTrigger>
+          <TabsTrigger value="overview">
+            <Network className="mr-2 h-4 w-4" />
+            Overview
           </TabsTrigger>
           <TabsTrigger value="files">
             <Folder className="mr-2 h-4 w-4" />
@@ -50,6 +50,9 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             Settings
           </TabsTrigger>
         </TabsList>
+        <TabsContent value="console">
+          <ConsoleView />
+        </TabsContent>
         <TabsContent value="overview" className="mt-6 space-y-8">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -94,9 +97,6 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
           </div>
           <MetricsCharts serverMetrics={server.metrics} />
           <AISummary initialAlerts={server.alerts} />
-        </TabsContent>
-        <TabsContent value="console">
-          <ConsoleView />
         </TabsContent>
         <TabsContent value="files">
           <FileManagerView />
