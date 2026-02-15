@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const databases = [
     { name: 'db_production', user: 'prod_user', connections: 5, size: '1.2 GB' },
@@ -44,7 +45,15 @@ export default function DatabaseView() {
                     <Label htmlFor="db-host" className="text-right">
                       Database Host
                     </Label>
-                    <Input id="db-host" defaultValue="panel" className="col-span-3" />
+                    <Select defaultValue="panel">
+                      <SelectTrigger className="col-span-3">
+                        <SelectValue placeholder="Select a host" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="panel">Panel (localhost)</SelectItem>
+                        <SelectItem value="remote">Remote MySQL Server</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
                 <DialogFooter>
