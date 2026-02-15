@@ -99,9 +99,9 @@ export default function DashboardPage() {
               {userServers.map((server) => (
                 <TableRow key={server.id}>
                   <TableCell className="font-medium">
-                    <div className="flex items-center">
+                    <Link href={`/servers/${server.id}`} className="hover:underline">
                       {server.name}
-                    </div>
+                    </Link>
                   </TableCell>
                   <TableCell>
                     <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
