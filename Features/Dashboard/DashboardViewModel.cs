@@ -7,6 +7,7 @@ partial class DashboardViewModel : BindableObject
     private bool _isSidebarExpanded = true;
     private object _currentView;
     private string _currentTitle = "Mis Servidores";
+    private bool _isLogoutModalVisible;
 
     // View Instances
     public ServersView ServersView { get; private set; }
@@ -49,10 +50,22 @@ partial class DashboardViewModel : BindableObject
         }
     }
 
+    public bool IsLogoutModalVisible
+    {
+        get => _isLogoutModalVisible;
+        set
+        {
+            _isLogoutModalVisible = value;
+            OnPropertyChanged(nameof(IsLogoutModalVisible));
+        }
+    }
+
     // Commands
     public Command ToggleSidebarCommand { get; }
     public Command NavigateCommand { get; }
     public Command LogoutCommand { get; }
+    public Command ConfirmLogoutCommand { get; }
+    public Command CancelLogoutCommand { get; }
 
     public DashboardViewModel()
     {
@@ -67,7 +80,9 @@ partial class DashboardViewModel : BindableObject
         ToggleSidebarCommand = new Command(() => IsSidebarExpanded = !IsSidebarExpanded);
 
         NavigateCommand = new Command<string>(OnNavigate);
-        LogoutCommand = new Command(OnLogout);
+        LogoutCommand = new Command(ShowLogoutModal);
+        ConfirmLogoutCommand = new Command(OnConfirmLogout);
+        CancelLogoutCommand = new Command(HideLogoutModal);
     }
 
     private void OnNavigate(string destination)
@@ -81,14 +96,20 @@ partial class DashboardViewModel : BindableObject
         };
     }
 
-    private async void OnLogout()
+    private void ShowLogoutModal()
     {
-        bool confirm = await Shell.Current.DisplayAlertAsync("Cerrar Sesión", "¿Estás seguro que deseas salir?", "Sí", "Cancelar");
+        IsLogoutModalVisible = true;
+    }
 
-        if (confirm)
-        {
-            Services.AuthService.Instance.Logout();
-            await Shell.Current.GoToAsync("//LoginPage");
-        }
+    private void HideLogoutModal()
+    {
+        IsLogoutModalVisible = false;
+    }
+
+    private async void OnConfirmLogout()
+    {
+        IsLogoutModalVisible = false;
+        Services.AuthService.Instance.Logout();
+        await Shell.Current.GoToAsync("//LoginPage", true);
     }
 }

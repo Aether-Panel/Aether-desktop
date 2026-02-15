@@ -13,7 +13,7 @@
 
         <!-- Sidebar -->
         <Border Grid.Column="0" 
-                BackgroundColor="#0f172a"
+                BackgroundColor="#1e293b"
                 StrokeThickness="0"
                 Padding="0">
             <Grid RowDefinitions="Auto, *, Auto, Auto">
@@ -114,6 +114,35 @@
             
             <!-- Dynamic View -->
             <ContentView Grid.Row="1" Content="{Binding CurrentView}"/>
+        </Grid>
+
+        <!-- Logout Modal -->
+        <Grid BackgroundColor="#020617"
+              IsVisible="{Binding IsLogoutModalVisible}">
+            <VerticalStackLayout HorizontalOptions="Center"
+                                 VerticalOptions="Center"
+                                 Spacing="12"
+                                 Padding="24">
+                <Image Source="aether_logo.png"
+                       HeightRequest="32"
+                       Aspect="AspectFit"
+                       HorizontalOptions="Center"/>
+                <Label Text="Cerrar sesión"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="White"/>
+                <Label Text="¿Quieres salir ahora? Te llevaremos al inicio de sesión."
+                       HorizontalOptions="Center"
+                       HorizontalTextAlignment="Center"
+                       TextColor="White"/>
+                <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
+                    <Button Text="Cancelar"
+                            Command="{Binding CancelLogoutCommand}"/>
+                    <Button Text="Salir"
+                            Command="{Binding ConfirmLogoutCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </Grid>
 
     </Grid>
