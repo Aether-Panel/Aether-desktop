@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/button';
 import { PlusCircle } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 const databases = [
     { name: 'db_production', user: 'prod_user', connections: 5, size: '1.2 GB' },
@@ -19,10 +22,36 @@ export default function DatabaseView() {
                 <CardTitle>Bases de Datos</CardTitle>
                 <CardDescription>Gestiona las bases de datos para este servidor.</CardDescription>
             </div>
-            <Button>
-                <PlusCircle className="mr-2" />
-                Nueva Base de Datos
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>
+                    <PlusCircle className="mr-2" />
+                    Nueva Base de Datos
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Crear Nueva Base de Datos</DialogTitle>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="db-name" className="text-right">
+                      Nombre de la Base de Datos
+                    </Label>
+                    <Input id="db-name" placeholder="Nombre de la Base de Datos" className="col-span-3" />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="db-host" className="text-right">
+                      Database Host
+                    </Label>
+                    <Input id="db-host" defaultValue="panel" className="col-span-3" />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Crear Base de Datos</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
         </div>
       </CardHeader>
       <CardContent>
