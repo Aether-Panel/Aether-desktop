@@ -164,7 +164,7 @@ export default function FileManagerView() {
       </Card>
 
       <Dialog open={!!editingFile} onOpenChange={(open) => !open && handleCloseDialog()}>
-        <DialogContent className="max-w-6xl h-[85vh] flex flex-col">
+        <DialogContent className="w-[90vw] max-w-[90vw] h-[90vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>Editing: {editingFile?.name}</DialogTitle>
             <DialogDescription>
