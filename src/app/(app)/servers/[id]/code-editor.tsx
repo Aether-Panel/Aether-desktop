@@ -2,7 +2,7 @@
 
 import { Editor, useMonaco } from '@monaco-editor/react';
 import { useEffect } from 'react';
-import tokyoNightStorm from 'monaco-themes/themes/Tokyo Night Storm.json';
+import tokyoNight from 'monaco-themes/themes/Tokyo Night.json';
 import { Loader2 } from 'lucide-react';
 
 interface CodeEditorProps {
@@ -16,8 +16,8 @@ export default function CodeEditor({ language, value, onChange }: CodeEditorProp
   
   useEffect(() => {
     if (monaco) {
-      monaco.editor.defineTheme('tokyo-night-storm', tokyoNightStorm as any);
-      monaco.editor.setTheme('tokyo-night-storm');
+      monaco.editor.defineTheme('tokyo-night', tokyoNight as any);
+      monaco.editor.setTheme('tokyo-night');
     }
   }, [monaco]);
 
@@ -28,7 +28,7 @@ export default function CodeEditor({ language, value, onChange }: CodeEditorProp
         language={language}
         value={value}
         onChange={onChange}
-        theme="tokyo-night-storm"
+        theme="tokyo-night"
         loading={
           <div className="flex h-full w-full flex-col items-center justify-center gap-4">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
