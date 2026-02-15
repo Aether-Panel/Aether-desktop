@@ -1,4 +1,5 @@
 using Aether.Features.Servers;
+using Microsoft.Maui.Devices;
 
 namespace Aether.Features.Dashboard;
 
@@ -26,7 +27,16 @@ partial class DashboardViewModel : BindableObject
         }
     }
 
-    public GridLength SidebarWidth => IsSidebarExpanded ? new GridLength(250) : new GridLength(70);
+    public GridLength SidebarWidth
+    {
+        get
+        {
+            bool isPhone = DeviceInfo.Idiom == DeviceIdiom.Phone;
+            double expanded = isPhone ? 200 : 250;
+            double collapsed = isPhone ? 60 : 70;
+            return IsSidebarExpanded ? new GridLength(expanded) : new GridLength(collapsed);
+        }
+    }
 
     // Keep instance-bound so bindings update when the sidebar state changes.
     public string SidebarButtonIcon => IsSidebarExpanded ? "menu.png" : "menu.png";
@@ -70,6 +80,8 @@ partial class DashboardViewModel : BindableObject
 
     public DashboardViewModel()
     {
+        _isSidebarExpanded = DeviceInfo.Idiom != DeviceIdiom.Phone;
+
         // Initialize Views
         ServersView = new ServersView();
         UptimeView = new ContentView { Content = new Label { Text = "Uptime Monitor (Próximamente)", VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center } };

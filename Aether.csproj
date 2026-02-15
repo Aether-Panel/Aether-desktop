@@ -45,10 +45,11 @@
 		<MauiIcon Include="Resources\Images\aether_icon.png" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Images\aether_icon.png" Color="#020617" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\*" Exclude="Resources\Images\aether_icon.png" />
+		<MauiImage Include="Resources\Images\**\*.png;Resources\Images\**\*.jpg;Resources\Images\**\*.jpeg;Resources\Images\**\*.svg"
+		           Exclude="Resources\Images\aether_icon.png" />
 		<MauiImage Include="Resources\AppIcon\*.svg" />
 		
 		<!-- Custom Fonts -->

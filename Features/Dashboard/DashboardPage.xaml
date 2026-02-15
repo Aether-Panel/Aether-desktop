@@ -19,14 +19,14 @@
             <Grid RowDefinitions="Auto, *, Auto, Auto">
                 
                 <!-- Logo Area -->
-                <VerticalStackLayout Grid.Row="0" Spacing="10" Padding="0,20">
+                <VerticalStackLayout Grid.Row="0" Spacing="10" Padding="{OnIdiom Phone='0,12', Default='0,20'}">
                     <Image Source="aether_icon.png"
-                           HeightRequest="40"
-                           WidthRequest="40"
+                           HeightRequest="{OnIdiom Phone=32, Default=40}"
+                           WidthRequest="{OnIdiom Phone=32, Default=40}"
                            HorizontalOptions="Center"/>
                     <Image Source="aether_logo.png"
-                           HeightRequest="32"
-                           WidthRequest="120"
+                           HeightRequest="{OnIdiom Phone=24, Default=32}"
+                           WidthRequest="{OnIdiom Phone=96, Default=120}"
                            Aspect="AspectFit"
                            HorizontalOptions="Center"
                            IsVisible="{Binding IsSidebarExpanded}"/>
@@ -53,7 +53,7 @@
                 </VerticalStackLayout>
 
                 <!-- Navigation Items -->
-                <VerticalStackLayout Grid.Row="1" Spacing="4" Padding="10">
+                <VerticalStackLayout Grid.Row="1" Spacing="4" Padding="{OnIdiom Phone='6,10', Default='10'}">
                     
                     <!-- Servers -->
                     <Border StrokeThickness="0" BackgroundColor="Transparent" Padding="10">
@@ -106,10 +106,27 @@
         <!-- Main Content Area -->
         <Grid Grid.Column="1" RowDefinitions="Auto, *">
             <!-- Top Header -->
-            <Grid Grid.Row="0"  Padding="20">
-                <Label Text="{Binding CurrentTitle}" 
+            <Grid Grid.Row="0"
+                  Padding="{OnIdiom Phone='12,16', Default='20'}"
+                  ColumnDefinitions="Auto, *"
+                  ColumnSpacing="12">
+                <ImageButton Source="{Binding SidebarButtonIcon}"
+                             Command="{Binding ToggleSidebarCommand}"
+                             Clicked="OnMenuClicked"
+                             HeightRequest="20"
+                             WidthRequest="20"
+                             Aspect="AspectFit"
+                             BackgroundColor="Transparent"
+                             BorderWidth="0"
+                             Padding="0"
+                             HorizontalOptions="Start"
+                             VerticalOptions="Center"
+                             IsVisible="{OnIdiom Phone=True, Default=False}"/>
+                <Label Grid.Column="1"
+                       Text="{Binding CurrentTitle}"
                        Style="{StaticResource LoginTitleStyle}"
-                       FontSize="24"/>
+                       FontSize="{OnIdiom Phone=20, Default=24}"
+                       VerticalOptions="Center"/>
             </Grid>
             
             <!-- Dynamic View -->
