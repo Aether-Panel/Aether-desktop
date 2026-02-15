@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database } from 'lucide-react';
+import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database, Archive } from 'lucide-react';
 import AISummary from './ai-summary';
 import MetricsCharts from './metrics-charts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -12,6 +12,7 @@ import FileManagerView from './file-manager-view';
 import SettingsView from './settings-view';
 import UsersView from './users-view';
 import DatabaseView from './database-view';
+import BackupsView from './backups-view';
 
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
@@ -34,7 +35,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
       <PageHeader title={server.name} description={`Detailed metrics and status for ${server.ipAddress}`} />
 
       <Tabs defaultValue="console" className="w-full">
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-7">
           <TabsTrigger value="console">
             <Terminal className="mr-2 h-4 w-4" />
             Console
@@ -58,6 +59,10 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
           <TabsTrigger value="database">
             <Database className="mr-2 h-4 w-4" />
             Base de datos
+          </TabsTrigger>
+          <TabsTrigger value="backups">
+            <Archive className="mr-2 h-4 w-4" />
+            Copia de seguridad
           </TabsTrigger>
         </TabsList>
         <TabsContent value="console">
@@ -119,6 +124,9 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
         </TabsContent>
         <TabsContent value="database">
           <DatabaseView />
+        </TabsContent>
+        <TabsContent value="backups">
+          <BackupsView />
         </TabsContent>
       </Tabs>
     </div>
