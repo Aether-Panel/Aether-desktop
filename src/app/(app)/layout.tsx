@@ -25,6 +25,7 @@ import {
 import { LayoutDashboard, LogOut, Server, Settings, Users, Shield } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/logo';
+import Link from 'next/link';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { role, user, logout } = useAuth();
@@ -48,12 +49,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               item.roles.includes(role!) ? (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
-                    href={item.href}
-                    isActive={pathname === item.href}
+                    asChild
+                    isActive={pathname.startsWith(item.href)}
                     tooltip={item.label}
                   >
-                    <item.icon />
-                    <span>{item.label}</span>
+                    <Link href={item.href}>
+                      <item.icon />
+                      <span>{item.label}</span>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ) : null
