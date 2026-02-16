@@ -1,7 +1,7 @@
 'use client';
 import { useAuth } from '@/app/providers';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Fragment } from 'react';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -9,10 +9,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Copy, Info, PlusCircle } from 'lucide-react';
+import { Check, Copy, Info, PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
 
 type DatabaseHost = {
   id: string;
@@ -25,6 +26,39 @@ type DatabaseHost = {
 const initialHosts: DatabaseHost[] = [
     { id: 'host-1', name: 'Panel Local', host: '127.0.0.1', port: 3306, user: 'root' }
 ];
+
+const stepTitles = ['Credenciales', 'Instrucciones', 'Configuración'];
+
+const Stepper = ({ currentStep, steps }: { currentStep: number, steps: string[] }) => (
+    <div className="flex items-start justify-between px-4 py-2">
+        {steps.map((step, index) => (
+            <Fragment key={step}>
+                <div className="flex flex-col items-center gap-2 w-24 text-center">
+                    <div
+                        className={cn(
+                            "flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition-colors duration-300",
+                            currentStep > index + 1 ? "bg-primary text-primary-foreground" :
+                            currentStep === index + 1 ? "border-2 border-primary text-primary" : "bg-muted text-muted-foreground"
+                        )}
+                    >
+                        {currentStep > index + 1 ? <Check className="h-5 w-5" /> : index + 1}
+                    </div>
+                    <p className={cn(
+                        "text-xs transition-colors duration-300",
+                        currentStep === index + 1 ? "text-foreground font-semibold" : "text-muted-foreground"
+                    )}>{step}</p>
+                </div>
+                {index < steps.length - 1 && (
+                    <div className={cn(
+                        "flex-1 h-0.5 mt-4 transition-colors duration-300",
+                        currentStep > index + 1 ? "bg-primary" : "bg-border"
+                    )} />
+                )}
+            </Fragment>
+        ))}
+    </div>
+);
+
 
 export default function DatabaseHostsPage() {
   const { role } = useAuth();
@@ -69,13 +103,15 @@ export default function DatabaseHostsPage() {
   const handleDialogChange = (open: boolean) => {
     setIsAddDialogOpen(open);
     if (!open) {
-      setCurrentStep(1);
-      setNewHostName('');
-      setNewHostHost('0.0.0.0');
-      setNewHostPort('3306');
-      setNewHostUser('root');
-      setNewHostPassword('');
-      setNewHostMaxDatabases('0');
+      setTimeout(() => {
+        setCurrentStep(1);
+        setNewHostName('');
+        setNewHostHost('0.0.0.0');
+        setNewHostPort('3306');
+        setNewHostUser('root');
+        setNewHostPassword('');
+        setNewHostMaxDatabases('0');
+      }, 300); // Delay reset to allow for closing animation
     }
   }
 
@@ -88,24 +124,13 @@ export default function DatabaseHostsPage() {
     return (
         <div className="flex items-center gap-2 rounded-md bg-muted p-2 font-mono text-sm">
             <pre className="flex-grow overflow-x-auto"><code>{command}</code></pre>
-            <Button variant="ghost" size="sm" onClick={handleCopy}>
-                <Copy className="h-4 w-4 mr-2" />
-                Copiar
+            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={handleCopy}>
+                <Copy className="h-4 w-4" />
+                <span className="sr-only">Copiar</span>
             </Button>
         </div>
     );
   };
-
-  const stepTitles = ['Credenciales', 'Instrucciones', 'Configuración'];
-
-  const StepperHeader = () => (
-    <DialogHeader>
-        <DialogTitle>Add New Database Host</DialogTitle>
-        <DialogDescription>
-            Step {currentStep} of 3: {stepTitles[currentStep-1]}
-        </DialogDescription>
-    </DialogHeader>
-  );
 
   if (!isMounted || role !== 'admin') {
     return (
@@ -126,10 +151,18 @@ export default function DatabaseHostsPage() {
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-3xl">
-                <StepperHeader />
-                <div className="py-4 max-h-[60vh] overflow-y-auto pr-4">
+                <DialogHeader>
+                    <DialogTitle>Add New Database Host</DialogTitle>
+                    <DialogDescription>
+                        Follow the steps to connect a new database host.
+                    </DialogDescription>
+                </DialogHeader>
+
+                <Stepper currentStep={currentStep} steps={stepTitles} />
+
+                <div key={currentStep} className="py-4 max-h-[60vh] overflow-y-auto px-1 animate-in fade-in-50 duration-500">
                     {currentStep === 1 && (
-                         <div className="space-y-6">
+                         <div className="space-y-6 px-4">
                             <Alert>
                                 <Info className="h-4 w-4" />
                                 <AlertTitle>Información</AlertTitle>
@@ -162,7 +195,7 @@ export default function DatabaseHostsPage() {
                         </div>
                     )}
                     {currentStep === 2 && (
-                         <div className="space-y-6">
+                         <div className="space-y-6 px-4">
                              <Card>
                                 <CardHeader>
                                     <CardTitle>Instrucciones</CardTitle>
@@ -204,7 +237,7 @@ export default function DatabaseHostsPage() {
                         </div>
                     )}
                     {currentStep === 3 && (
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-2 gap-6 px-4">
                              <div className="space-y-2">
                                 <Label htmlFor="host-name">Nombre del Host</Label>
                                 <Input
