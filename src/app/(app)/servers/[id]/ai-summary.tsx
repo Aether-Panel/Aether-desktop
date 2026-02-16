@@ -7,24 +7,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { AlertCircle, Lightbulb, ListChecks, Loader2, Sparkles } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
-type AISummaryProps = {
-  alerts: string[];
-};
-
-export default function AISummary({ alerts }: AISummaryProps) {
+export default function AISummary() {
+  const [logsToAnalyze, setLogsToAnalyze] = useState('');
   const [summary, setSummary] = useState('');
   const [tips, setTips] = useState<{ suggestions: string[]; rootCauses: string[] } | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSummarize = async () => {
-    const logs = alerts.join('\n');
-    if (!logs) return;
+    if (!logsToAnalyze) return;
     setLoading(true);
     setSummary('');
     setTips(null);
     try {
-      const { summary: newSummary } = await summarizeServerAlerts({ logs });
+      const { summary: newSummary } = await summarizeServerAlerts({ logs: logsToAnalyze });
       setSummary(newSummary);
 
       const newTips = await generateTroubleshootingTips({ alertSummary: newSummary });
@@ -45,17 +43,27 @@ export default function AISummary({ alerts }: AISummaryProps) {
           <CardTitle>AI Console Analysis</CardTitle>
         </div>
         <CardDescription>
-          Analyze the console output above to get an AI-powered summary and troubleshooting tips.
+          Copy and paste specific logs from the console into the text area below to get an AI-powered summary and troubleshooting tips.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <Button onClick={handleSummarize} disabled={loading || alerts.length === 0}>
+        <div className="grid w-full gap-2">
+          <Label htmlFor="logs-input">Logs to Analyze</Label>
+          <Textarea
+            id="logs-input"
+            placeholder="Paste logs here..."
+            value={logsToAnalyze}
+            onChange={(e) => setLogsToAnalyze(e.target.value)}
+            className="min-h-[120px] font-mono text-xs"
+          />
+        </div>
+        <Button onClick={handleSummarize} disabled={loading || !logsToAnalyze}>
           {loading ? (
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
           ) : (
             <Sparkles className="mr-2 h-4 w-4" />
           )}
-          Analyze Console
+          Analyze Logs
         </Button>
 
         {loading && (
@@ -67,7 +75,7 @@ export default function AISummary({ alerts }: AISummaryProps) {
         {!loading && !summary && (
            <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
             <Sparkles className="h-8 w-8 text-muted-foreground" />
-            <p className="text-muted-foreground">Ready to provide insights.</p>
+            <p className="text-muted-foreground">Ready to provide insights once you paste some logs.</p>
           </div>
         )}
         {summary && (

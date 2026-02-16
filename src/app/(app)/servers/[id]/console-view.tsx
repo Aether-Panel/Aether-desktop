@@ -87,8 +87,6 @@ export default function ConsoleView() {
     addLog('> Kill signal sent. Server is being forcefully terminated.');
   };
 
-  const logMessagesForAI = logs.map(log => log.message);
-
   return (
     <>
       <Card className="mt-6">
@@ -158,7 +156,7 @@ export default function ConsoleView() {
         </CardContent>
       </Card>
       <div className="mt-6">
-        <AISummary alerts={logMessagesForAI} />
+        <AISummary />
       </div>
     </>
   );
