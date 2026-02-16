@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Send } from 'lucide-react';
+import { Play, RefreshCw, Send, Skull, Square } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ConsoleView() {
@@ -41,24 +41,44 @@ export default function ConsoleView() {
     }
   };
 
+  const getLogColor = (log: string) => {
+    if (log.startsWith('$')) return 'text-blue-400';
+    if (log.includes('[ERROR]')) return 'text-red-500';
+    if (log.includes('[WARN]')) return 'text-yellow-500';
+    if (log.startsWith('>')) return 'text-gray-400';
+    return ''; // Inherit from parent
+  };
+
   return (
     <Card className="mt-6">
       <CardHeader>
-        <CardTitle>Live Console</CardTitle>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <CardTitle>Live Console</CardTitle>
+          <div className="flex items-center gap-2">
+            <Button variant="outline">
+              <Play className="mr-2 h-4 w-4" />
+              Start
+            </Button>
+            <Button variant="outline">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Restart
+            </Button>
+            <Button variant="outline">
+              <Square className="mr-2 h-4 w-4" />
+              Stop
+            </Button>
+            <Button variant="destructive">
+              <Skull className="mr-2 h-4 w-4" />
+              Kill
+            </Button>
+          </div>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => (
-              <p key={index} className="whitespace-pre-wrap">
-                <span className={
-                    log.startsWith('$') ? 'text-blue-400' :
-                    log.includes('[ERROR]') ? 'text-red-500' : 
-                    log.includes('[WARN]') ? 'text-yellow-500' : 
-                    'text-green-400'
-                }>
-                  {`[${new Date().toLocaleTimeString()}] `}
-                </span>
+              <p key={index} className={`whitespace-pre-wrap ${getLogColor(log)}`}>
                 {log}
               </p>
             ))}
