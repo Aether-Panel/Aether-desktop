@@ -33,6 +33,7 @@ export default function NodesPage() {
   const router = useRouter();
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [isMounted, setIsMounted] = useState(false);
+  const [useDifferentHost, setUseDifferentHost] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -94,7 +95,11 @@ export default function NodesPage() {
                 </div>
               </div>
               <div className="items-top flex space-x-2">
-                <Checkbox id="use-different-host" />
+                <Checkbox 
+                  id="use-different-host" 
+                  checked={useDifferentHost}
+                  onCheckedChange={(checked) => setUseDifferentHost(Boolean(checked))}
+                />
                 <div className="grid gap-1.5 leading-none">
                   <label
                     htmlFor="use-different-host"
@@ -107,6 +112,18 @@ export default function NodesPage() {
                   </p>
                 </div>
               </div>
+              {useDifferentHost && (
+                <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+                  <div className="space-y-2">
+                    <Label htmlFor="private-host">Anfitrión Privado</Label>
+                    <Input id="private-host" placeholder="Anfitrión Privado" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="private-port">Puerto Privado</Label>
+                    <Input id="private-port" type="number" defaultValue="8080" />
+                  </div>
+                </div>
+              )}
             </div>
             <DialogFooter>
               <Button type="submit">Crear Nodo</Button>
