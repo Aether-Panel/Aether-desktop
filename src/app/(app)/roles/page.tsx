@@ -23,24 +23,38 @@ type Role = {
 const initialRoles: Role[] = [
   {
     name: 'admin',
-    description: 'Administrators have full access to all features, including user and server management.',
-    permissions: ['View Dashboard', 'Manage Servers', 'Manage Users', 'Manage Roles', 'View Assigned Servers'],
+    description: 'Acceso total a todas las funciones y configuraciones del panel.',
+    permissions: ['Conceder todos los permisos'],
   },
   {
     name: 'user',
-    description: 'Users have access to the dashboard and servers assigned to them.',
-    permissions: ['View Dashboard', 'View Assigned Servers'],
+    description: 'Acceso básico para iniciar sesión y gestionar su propia cuenta.',
+    permissions: ['Iniciar sesión', 'Editar mi cuenta'],
   },
 ];
 
 const allPermissions = [
-    'View Dashboard',
-    'Manage Servers',
-    'Manage Users',
-    'Manage Roles',
-    'View Assigned Servers',
-    'Edit Server Files',
-    'Access Server Console',
+    "Conceder todos los permisos",
+    "Iniciar sesión",
+    "Editar mi cuenta",
+    "Administrar mis clientes OAuth2",
+    "Editar configuración del panel",
+    "Crear nuevos servidores",
+    "Ver Nodos",
+    "Crear nuevos nodos",
+    "Editar nodos existentes",
+    "Desplegar nodos",
+    "Eliminar nodos",
+    "Ver lista de todos los usuarios",
+    "Ver información de usuarios",
+    "Editar información de usuarios",
+    "Ver permisos de usuario",
+    "Editar permisos de usuario",
+    "Ver plantillas",
+    "Crear/Editar/Eliminar plantillas locales",
+    "Ver repositorios de plantillas",
+    "Añadir repositorios de plantillas",
+    "Eliminar repositorios de plantillas",
 ];
 
 export default function RolesPage() {
