@@ -4,7 +4,6 @@ import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database, Archive, Shield, Puzzle } from 'lucide-react';
-import AISummary from './ai-summary';
 import MetricsCharts from './metrics-charts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ConsoleView from './console-view';
@@ -121,7 +120,6 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             </Card>
           </div>
           <MetricsCharts serverMetrics={server.metrics} />
-          <AISummary initialAlerts={server.alerts} />
         </TabsContent>
         <TabsContent value="files">
           <FileManagerView />

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Play, RefreshCw, Send, Skull, Square } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import AISummary from './ai-summary';
 
 type LogEntry = {
   time: string;
@@ -30,8 +31,6 @@ const initialLogMessages = [
     "Worker thread restarted successfully."
 ];
 
-const getCurrentTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
 export default function ConsoleView() {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [command, setCommand] = useState('');
@@ -47,7 +46,7 @@ export default function ConsoleView() {
   }, []);
 
   const addLog = (message: string) => {
-      setLogs(prevLogs => [...prevLogs, { time: getCurrentTime(), message }]);
+      setLogs(prevLogs => [...prevLogs, { time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }), message }]);
   };
 
   const handleSendCommand = () => {
@@ -88,70 +87,79 @@ export default function ConsoleView() {
     addLog('> Kill signal sent. Server is being forcefully terminated.');
   };
 
+  const logMessagesForAI = logs.map(log => log.message);
+
   return (
-    <Card className="mt-6">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>Live Console</CardTitle>
-        <div className="flex items-center gap-2">
-            <Button size="sm" variant="default">
-                <Play className="mr-2 h-4 w-4" />
-                Iniciar
-            </Button>
-            <Button size="sm" variant="outline">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Reiniciar
-            </Button>
-            {!showKill ? (
-              <Button size="sm" variant="outline" onClick={handleStopClick}>
-                  <Square className="mr-2 h-4 w-4" />
-                  Detener
+    <>
+      <Card className="mt-6">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Live Console</CardTitle>
+          <div className="flex items-center gap-2">
+              <Button size="sm" variant="default">
+                  <Play className="mr-2 h-4 w-4" />
+                  Iniciar
               </Button>
-            ) : (
-              <Button size="sm" variant="destructive" onClick={handleKillClick}>
-                  <Skull className="mr-2 h-4 w-4" />
-                  Kill
+              <Button size="sm" variant="outline">
+                  <RefreshCw className="mr-2 h-4 w-4" />
+                  Reiniciar
               </Button>
-            )}
-        </div>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
-          <ScrollArea className="h-full w-full">
-            {logs.map((log, index) => {
-                const colorClass = getLogColor(log.message);
-                const messageColorClass = colorClass === 'text-green-400' ? '' : colorClass;
-                return (
-                    <p key={index} className="whitespace-pre-wrap">
-                        <span className={`${colorClass || 'text-gray-500'} mr-4`}>
-                            [{log.time}]
-                        </span>
-                        <span className={messageColorClass}>
-                          {log.message}
-                        </span>
-                    </p>
-                )
-            })}
-            <div className="flex items-center">
-                <span className="text-green-400 mr-2">$</span>
-                <div className="w-2 h-4 bg-green-400 animate-pulse"></div>
-            </div>
-          </ScrollArea>
-        </div>
-        <div className="mt-4 flex w-full items-center space-x-2">
-            <Input
-              type="text"
-              placeholder="Enter a command..."
-              className="font-mono"
-              value={command}
-              onChange={(e) => setCommand(e.target.value)}
-              onKeyDown={handleKeyPress}
-            />
-            <Button type="submit" onClick={handleSendCommand}>
-              <Send className="mr-2 h-4 w-4" />
-              Enviar
-            </Button>
-        </div>
-      </CardContent>
-    </Card>
+              {!showKill ? (
+                <Button size="sm" variant="outline" onClick={handleStopClick}>
+                    <Square className="mr-2 h-4 w-4" />
+                    Detener
+                </Button>
+              ) : (
+                <Button size="sm" variant="destructive" onClick={handleKillClick}>
+                    <Skull className="mr-2 h-4 w-4" />
+                    Kill
+                </Button>
+              )}
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
+            <ScrollArea className="h-full w-full">
+              {logs.map((log, index) => {
+                  const colorClass = getLogColor(log.message);
+                  const messageIsGood = colorClass === 'text-green-400';
+                  const timeColorClass = colorClass;
+                  const messageColorClass = messageIsGood ? '' : colorClass;
+                  return (
+                      <p key={index} className="whitespace-pre-wrap">
+                          <span className={`${timeColorClass || 'text-gray-500'} mr-4`}>
+                              [{log.time}]
+                          </span>
+                          <span className={messageColorClass}>
+                            {log.message}
+                          </span>
+                      </p>
+                  )
+              })}
+              <div className="flex items-center">
+                  <span className="text-green-400 mr-2">$</span>
+                  <div className="w-2 h-4 bg-green-400 animate-pulse"></div>
+              </div>
+            </ScrollArea>
+          </div>
+          <div className="mt-4 flex w-full items-center space-x-2">
+              <Input
+                type="text"
+                placeholder="Enter a command..."
+                className="font-mono"
+                value={command}
+                onChange={(e) => setCommand(e.target.value)}
+                onKeyDown={handleKeyPress}
+              />
+              <Button type="submit" onClick={handleSendCommand}>
+                <Send className="mr-2 h-4 w-4" />
+                Enviar
+              </Button>
+          </div>
+        </CardContent>
+      </Card>
+      <div className="mt-6">
+        <AISummary alerts={logMessagesForAI} />
+      </div>
+    </>
   );
 }
