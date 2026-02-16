@@ -52,9 +52,10 @@ export default function ConsoleView() {
   return (
     <Card className="mt-6">
       <CardHeader>
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <CardTitle>Live Console</CardTitle>
-          <div className="flex items-center gap-2">
+        <CardTitle>Live Console</CardTitle>
+      </CardHeader>
+      <div className="border-t border-b px-6 py-4">
+        <div className="flex items-center gap-2">
             <Button variant="outline">
               <Play className="mr-2 h-4 w-4" />
               Start
@@ -71,10 +72,9 @@ export default function ConsoleView() {
               <Skull className="mr-2 h-4 w-4" />
               Kill
             </Button>
-          </div>
         </div>
-      </CardHeader>
-      <CardContent>
+      </div>
+      <CardContent className="pt-6">
         <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => (
