@@ -1,3 +1,4 @@
+'use client';
 import { nodes } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
@@ -6,8 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Cpu, HardDrive, MemoryStick, Server as ServerIcon, CheckCircle, Code, Info } from 'lucide-react';
+import { Cpu, HardDrive, MemoryStick, Server as ServerIcon, CheckCircle, Code, Info, Trash2, Rocket } from 'lucide-react';
 import Link from 'next/link';
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Separator } from '@/components/ui/separator';
 
 export default function NodeDetailPage({ params }: { params: { id: string } }) {
   const node = nodes.find(n => n.id === params.id);
@@ -15,6 +21,14 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
   if (!node) {
     notFound();
   }
+
+  const [editName, setEditName] = useState(node.name);
+  const [editPublicHost, setEditPublicHost] = useState(node.publicHost);
+  const [editPublicPort, setEditPublicPort] = useState(String(node.publicPort));
+  const [editSftpPort, setEditSftpPort] = useState(String(node.sftpPort));
+  const [editUseDifferentHost, setEditUseDifferentHost] = useState(node.useDifferentHost);
+  const [editPrivateHost, setEditPrivateHost] = useState(node.privateHost || '');
+  const [editPrivatePort, setEditPrivatePort] = useState(String(node.privatePort || '8080'));
 
   const onlineServers = node.serversOnNode.filter(s => s.status === 'online').length;
   const offlineServers = node.serversOnNode.length - onlineServers;
@@ -173,7 +187,66 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
                             </AlertDescription>
                         </Alert>
                     ) : (
-                        <Button className="w-full">Editar Nodo</Button>
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-node-name">Nombre</Label>
+                                <Input id="edit-node-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-public-host">Anfitrión público</Label>
+                                <Input id="edit-public-host" value={editPublicHost} onChange={(e) => setEditPublicHost(e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-public-port">Puerto público</Label>
+                                <Input id="edit-public-port" type="number" value={editPublicPort} onChange={(e) => setEditPublicPort(e.target.value)} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="edit-sftp-port">Puerto SFTP</Label>
+                                <Input id="edit-sftp-port" type="number" value={editSftpPort} onChange={(e) => setEditSftpPort(e.target.value)} />
+                            </div>
+                            <div className="items-top flex space-x-2">
+                                <Checkbox 
+                                    id="edit-use-different-host" 
+                                    checked={editUseDifferentHost}
+                                    onCheckedChange={(checked) => setEditUseDifferentHost(Boolean(checked))}
+                                />
+                                <div className="grid gap-1.5 leading-none">
+                                    <label
+                                        htmlFor="edit-use-different-host"
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Usar un host/puerto diferente para la comunicación entre servidores
+                                    </label>
+                                    <p className="text-sm text-muted-foreground">
+                                        Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                                    </p>
+                                </div>
+                            </div>
+                            {editUseDifferentHost && (
+                                <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+                                    <div className="space-y-2">
+                                    <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
+                                    <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />
+                                    </div>
+                                    <div className="space-y-2">
+                                    <Label htmlFor="edit-private-port">Puerto Privado</Label>
+                                    <Input id="edit-private-port" type="number" value={editPrivatePort} onChange={(e) => setEditPrivatePort(e.target.value)} />
+                                    </div>
+                                </div>
+                            )}
+                            <Button className="w-full">Actualizar Nodo</Button>
+                            <Separator />
+                            <div className="flex flex-col space-y-2">
+                                <Button variant="destructive" className="w-full">
+                                    <Trash2 className="mr-2" />
+                                    Borrar Nodo
+                                </Button>
+                                <Button variant="secondary" className="w-full">
+                                    <Rocket className="mr-2" />
+                                    Desplegar Nodo
+                                </Button>
+                            </div>
+                        </div>
                     )}
                 </CardContent>
             </Card>
