@@ -7,13 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Cpu, HardDrive, MemoryStick, Server as ServerIcon, CheckCircle, Code, Info, Trash2, Rocket } from 'lucide-react';
+import { Cpu, HardDrive, MemoryStick, Server as ServerIcon, CheckCircle, Code, Info, Trash2, Rocket, Copy } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
 
 export default function NodeDetailPage({ params }: { params: { id: string } }) {
   const node = nodes.find(n => n.id === params.id);
@@ -30,6 +32,9 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
   const [editPrivateHost, setEditPrivateHost] = useState(node.privateHost || '');
   const [editPrivatePort, setEditPrivatePort] = useState(String(node.privatePort || '8080'));
 
+  const [isDeployDialogOpen, setIsDeployDialogOpen] = useState(false);
+  const { toast } = useToast();
+
   const onlineServers = node.serversOnNode.filter(s => s.status === 'online').length;
   const offlineServers = node.serversOnNode.length - onlineServers;
 
@@ -39,6 +44,50 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
         {value ? <p className="font-medium text-right text-wrap">{value}</p> : children}
     </div>
   );
+
+  const CopyableCode = ({ command }: { command: string }) => {
+    const handleCopy = () => {
+        navigator.clipboard.writeText(command);
+        toast({ title: 'Copiado al portapapeles' });
+    };
+
+    return (
+        <div className="flex items-center gap-2 rounded-md bg-muted p-2 my-2 font-mono text-sm">
+            <pre className="flex-grow overflow-x-auto"><code>{command}</code></pre>
+            <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={handleCopy}>
+                <Copy className="h-4 w-4" />
+                <span className="sr-only">Copiar</span>
+            </Button>
+        </div>
+    );
+  };
+
+  const deployConfigJson = node ? JSON.stringify({
+    "logs": "/var/log/AetherPanel",
+    "web": {
+      "host": "0.0.0.0:8080"
+    },
+    "token": {
+      "public": "http://192.168.0.12:8080/auth/publickey"
+    },
+    "panel": {
+      "enable": false
+    },
+    "daemon": {
+      "auth": {
+        "url": "http://192.168.0.12:8080/oauth2/token",
+        "clientId": `.node_${node.id.split('-')[1]}`,
+        "clientSecret": "7bdb03bbfbd44aeda8e2a4fc52035c38",
+        "publicKey": ""
+      },
+      "data": {
+        "root": "/var/lib/AetherPanel"
+      },
+      "sftp": {
+        "host": `0.0.0.0:${node.sftpPort}`
+      }
+    }
+  }, null, 2) : '';
 
   return (
     <div className="flex flex-col gap-8">
@@ -241,7 +290,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
                                     <Trash2 className="mr-2" />
                                     Borrar Nodo
                                 </Button>
-                                <Button variant="secondary" className="w-full">
+                                <Button variant="secondary" className="w-full" onClick={() => setIsDeployDialogOpen(true)}>
                                     <Rocket className="mr-2" />
                                     Desplegar Nodo
                                 </Button>
@@ -252,6 +301,57 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             </Card>
         </div>
       </div>
+      <Dialog open={isDeployDialogOpen} onOpenChange={setIsDeployDialogOpen}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Deploy Node: {node.name}</DialogTitle>
+            <DialogDescription>
+              Sigue estos pasos para configurar y conectar tu nuevo nodo.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 max-h-[70vh] overflow-y-auto pr-4 space-y-6">
+            {/* Step 1 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">1</div>
+                <div>
+                    <h4 className="font-semibold">Paso 1: Instala AetherPanel en el nuevo servidor.</h4>
+                    <p className="text-sm text-muted-foreground">Consulta la documentación para más detalles.</p>
+                </div>
+            </div>
+            {/* Step 2 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">2</div>
+                <div>
+                    <h4 className="font-semibold">Paso 2: Detén el servicio de AetherPanel.</h4>
+                    <p className="text-sm text-muted-foreground">Si se inició durante la instalación, ejecuta el siguiente comando:</p>
+                    <CopyableCode command="sudo systemctl stop AetherPanel" />
+                </div>
+            </div>
+            {/* Step 3 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">3</div>
+                <div>
+                    <h4 className="font-semibold">Paso 3: Reemplaza el archivo de configuración.</h4>
+                    <p className="text-sm text-muted-foreground">El archivo se encuentra en <code className="bg-muted px-1 rounded-sm">/etc/AetherPanel/config.json</code>. Reemplaza su contenido con lo siguiente:</p>
+                    <CopyableCode command={deployConfigJson} />
+                </div>
+            </div>
+            {/* Step 4 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">4</div>
+                <div>
+                    <h4 className="font-semibold">Paso 4: Habilita y reinicia el servicio.</h4>
+                    <p className="text-sm text-muted-foreground">Ejecuta el siguiente comando para completar la configuración:</p>
+                     <CopyableCode command="sudo systemctl enable --now AetherPanel" />
+                     <p className="mt-4 text-sm font-semibold text-green-500">¡Tu nuevo nodo está configurado y listo para usar!</p>
+                </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDeployDialogOpen(false)}>Cerrar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
