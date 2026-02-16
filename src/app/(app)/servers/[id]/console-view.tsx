@@ -26,6 +26,7 @@ export default function ConsoleView() {
     "Worker thread restarted successfully."
   ]);
   const [command, setCommand] = useState('');
+  const [showKill, setShowKill] = useState(false);
 
   const handleSendCommand = () => {
     if (command.trim() === '') return;
@@ -49,6 +50,16 @@ export default function ConsoleView() {
     return ''; // Inherit from parent
   };
 
+  const handleStopClick = () => {
+    setShowKill(true);
+    setLogs(prev => [...prev, '> Stop signal sent. If the server does not stop, you can force kill it.']);
+  };
+
+  const handleKillClick = () => {
+    setShowKill(false);
+    setLogs(prev => [...prev, '> Kill signal sent. Server is being forcefully terminated.']);
+  };
+
   return (
     <Card className="mt-6">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -62,14 +73,17 @@ export default function ConsoleView() {
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Reiniciar
             </Button>
-            <Button size="sm" variant="outline">
-                <Square className="mr-2 h-4 w-4" />
-                Detener
-            </Button>
-            <Button size="sm" variant="destructive">
-                <Skull className="mr-2 h-4 w-4" />
-                Kill
-            </Button>
+            {!showKill ? (
+              <Button size="sm" variant="outline" onClick={handleStopClick}>
+                  <Square className="mr-2 h-4 w-4" />
+                  Detener
+              </Button>
+            ) : (
+              <Button size="sm" variant="destructive" onClick={handleKillClick}>
+                  <Skull className="mr-2 h-4 w-4" />
+                  Kill
+              </Button>
+            )}
         </div>
       </CardHeader>
       <CardContent className="pt-6">
