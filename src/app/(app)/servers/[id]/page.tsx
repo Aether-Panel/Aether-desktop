@@ -14,6 +14,7 @@ import DatabaseView from './database-view';
 import BackupsView from './backups-view';
 import AdminView from './admin-view';
 import PluginsView from './plugins-view';
+import { ServerAddress } from './server-address';
 
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
@@ -33,7 +34,10 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title={server.name} description={`Detailed metrics and status for ${server.ipAddress}`} />
+      <div>
+        <PageHeader title={server.name} />
+        <ServerAddress ip={server.ipAddress} port={server.port} />
+      </div>
 
       <Tabs defaultValue="console" className="w-full">
         <TabsList className="grid w-full grid-cols-9">
