@@ -36,9 +36,9 @@ const Stepper = ({ currentStep, steps }: { currentStep: number, steps: string[] 
                 <div className="flex flex-col items-center gap-2 w-24 text-center">
                     <div
                         className={cn(
-                            "flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition-colors duration-300",
+                            "flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold transition-all duration-300",
                             currentStep > index + 1 ? "bg-primary text-primary-foreground" :
-                            currentStep === index + 1 ? "border-2 border-primary text-primary" : "bg-muted text-muted-foreground"
+                            currentStep === index + 1 ? "border-2 border-primary text-primary scale-110" : "bg-muted text-muted-foreground"
                         )}
                     >
                         {currentStep > index + 1 ? <Check className="h-5 w-5" /> : index + 1}
@@ -49,10 +49,15 @@ const Stepper = ({ currentStep, steps }: { currentStep: number, steps: string[] 
                     )}>{step}</p>
                 </div>
                 {index < steps.length - 1 && (
-                    <div className={cn(
-                        "flex-1 h-0.5 mt-4 transition-colors duration-300",
-                        currentStep > index + 1 ? "bg-primary" : "bg-border"
-                    )} />
+                    <div className="relative flex-1 mt-4">
+                        <div className="h-0.5 bg-border" />
+                        <div
+                            className={cn(
+                                "absolute top-0 left-0 h-0.5 bg-primary transition-all duration-500 ease-in-out",
+                                currentStep > index + 1 ? "w-full" : "w-0"
+                            )}
+                        />
+                    </div>
                 )}
             </Fragment>
         ))}
