@@ -19,12 +19,18 @@ type Node = {
   name: string;
   location: string;
   status: 'online' | 'offline' | 'deploying';
+  publicHost: string;
+  publicPort: number;
+  sftpPort: number;
+  useDifferentHost: boolean;
+  privateHost?: string;
+  privatePort?: number;
 };
 
 const initialNodes: Node[] = [
-    { id: 'node-1', name: 'US-East-1', location: 'N. Virginia, USA', status: 'online' },
-    { id: 'node-2', name: 'EU-West-1', location: 'Ireland', status: 'online' },
-    { id: 'node-3', name: 'AP-South-1', location: 'Mumbai, India', status: 'offline' },
+    { id: 'node-1', name: 'US-East-1', location: 'N. Virginia, USA', status: 'online', publicHost: '44.204.87.123', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
+    { id: 'node-2', name: 'EU-West-1', location: 'Ireland', status: 'online', publicHost: '52.17.200.10', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
+    { id: 'node-3', name: 'AP-South-1', location: 'Mumbai, India', status: 'offline', publicHost: '13.233.15.221', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
 ];
 
 
@@ -35,12 +41,53 @@ export default function NodesPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [useDifferentHost, setUseDifferentHost] = useState(false);
 
+  // Edit state
+  const [editingNode, setEditingNode] = useState<Node | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editPublicHost, setEditPublicHost] = useState('');
+  const [editPublicPort, setEditPublicPort] = useState('8080');
+  const [editSftpPort, setEditSftpPort] = useState('5657');
+  const [editUseDifferentHost, setEditUseDifferentHost] = useState(false);
+  const [editPrivateHost, setEditPrivateHost] = useState('');
+  const [editPrivatePort, setEditPrivatePort] = useState('8080');
+
   useEffect(() => {
     setIsMounted(true);
     if (role && role !== 'admin') {
       router.push('/dashboard');
     }
   }, [role, router]);
+
+  useEffect(() => {
+    if (editingNode) {
+        setEditName(editingNode.name);
+        setEditPublicHost(editingNode.publicHost);
+        setEditPublicPort(String(editingNode.publicPort));
+        setEditSftpPort(String(editingNode.sftpPort));
+        setEditUseDifferentHost(editingNode.useDifferentHost);
+        setEditPrivateHost(editingNode.privateHost || '');
+        setEditPrivatePort(String(editingNode.privatePort || '8080'));
+    }
+  }, [editingNode]);
+
+  const handleUpdateNode = () => {
+    if (!editingNode) return;
+    setNodes(nodes.map(n => 
+        n.id === editingNode.id 
+            ? { 
+                ...n, 
+                name: editName,
+                publicHost: editPublicHost,
+                publicPort: parseInt(editPublicPort, 10),
+                sftpPort: parseInt(editSftpPort, 10),
+                useDifferentHost: editUseDifferentHost,
+                privateHost: editUseDifferentHost ? editPrivateHost : undefined,
+                privatePort: editUseDifferentHost ? parseInt(editPrivatePort, 10) : undefined,
+              } 
+            : n
+    ));
+    setEditingNode(null);
+  };
 
   const StatusIndicator = ({ status }: { status: Node['status'] }) => {
     const statusClasses = {
@@ -167,7 +214,7 @@ export default function NodesPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>Edit</DropdownMenuItem>
                         <DropdownMenuItem>Deploy</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
@@ -180,6 +227,70 @@ export default function NodesPage() {
           </Table>
         </CardContent>
       </Card>
+      {/* Edit Node Dialog */}
+      <Dialog open={!!editingNode} onOpenChange={(isOpen) => !isOpen && setEditingNode(null)}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Editar Nodo</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-6 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-node-name">Nombre</Label>
+                <Input id="edit-node-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-public-host">Anfitrión público</Label>
+                <Input id="edit-public-host" value={editPublicHost} onChange={(e) => setEditPublicHost(e.target.value)} />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit-public-port">Puerto público</Label>
+                <Input id="edit-public-port" type="number" value={editPublicPort} onChange={(e) => setEditPublicPort(e.target.value)} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-sftp-port">Puerto SFTP</Label>
+                <Input id="edit-sftp-port" type="number" value={editSftpPort} onChange={(e) => setEditSftpPort(e.target.value)} />
+              </div>
+            </div>
+            <div className="items-top flex space-x-2">
+              <Checkbox 
+                id="edit-use-different-host" 
+                checked={editUseDifferentHost}
+                onCheckedChange={(checked) => setEditUseDifferentHost(Boolean(checked))}
+              />
+              <div className="grid gap-1.5 leading-none">
+                <label
+                  htmlFor="edit-use-different-host"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Usar un host/puerto diferente para la comunicación entre servidores
+                </label>
+                <p className="text-sm text-muted-foreground">
+                  Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                </p>
+              </div>
+            </div>
+            {editUseDifferentHost && (
+              <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+                <div className="space-y-2">
+                  <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
+                  <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="edit-private-port">Puerto Privado</Label>
+                  <Input id="edit-private-port" type="number" value={editPrivatePort} onChange={(e) => setEditPrivatePort(e.target.value)} />
+                </div>
+              </div>
+            )}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingNode(null)}>Cancel</Button>
+            <Button type="submit" onClick={handleUpdateNode}>Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
