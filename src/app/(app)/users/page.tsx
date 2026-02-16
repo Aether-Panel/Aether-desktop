@@ -169,8 +169,8 @@ export default function UsersPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => setEditingUser(user)}>Edit</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setViewingUser(user)}>View Servers</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTimeout(() => setEditingUser(user))}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setTimeout(() => setViewingUser(user))}>View Servers</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
                       </DropdownMenuContent>
@@ -184,7 +184,7 @@ export default function UsersPage() {
       </Card>
       
       {/* Edit User Dialog */}
-      <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
+      <Dialog open={!!editingUser} onOpenChange={(isOpen) => !isOpen && setEditingUser(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit User</DialogTitle>
@@ -222,7 +222,7 @@ export default function UsersPage() {
       </Dialog>
 
       {/* View Servers Dialog */}
-      <Dialog open={!!viewingUser} onOpenChange={(open) => !open && setViewingUser(null)}>
+      <Dialog open={!!viewingUser} onOpenChange={(isOpen) => !isOpen && setViewingUser(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Servers for {viewingUser?.name}</DialogTitle>
