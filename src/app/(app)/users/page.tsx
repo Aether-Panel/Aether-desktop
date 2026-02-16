@@ -24,6 +24,7 @@ export default function UsersPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
 
   // State for the edit form
   const [editName, setEditName] = useState('');
@@ -45,6 +46,12 @@ export default function UsersPage() {
       setEditRole(editingUser.role);
     }
   }, [editingUser]);
+
+  const handleAddUser = () => {
+    // In a real app, you would add logic to create a user.
+    // For now, we just close the dialog.
+    setIsAddUserDialogOpen(false);
+  };
 
   const handleUpdateUser = () => {
     if (!editingUser) return;
@@ -73,7 +80,7 @@ export default function UsersPage() {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader title="User Management" description="Create, view, and manage user accounts and their permissions.">
-        <Dialog>
+        <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2" />
@@ -112,7 +119,8 @@ export default function UsersPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Create User</Button>
+                <Button variant="outline" onClick={() => setIsAddUserDialogOpen(false)}>Cancel</Button>
+                <Button type="submit" onClick={handleAddUser}>Create User</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
