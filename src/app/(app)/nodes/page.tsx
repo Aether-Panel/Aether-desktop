@@ -12,6 +12,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type Node = {
   id: string;
@@ -67,23 +68,48 @@ export default function NodesPage() {
               Add Node
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Add New Node</DialogTitle>
-              <DialogDescription>Provide the details for the new node.</DialogDescription>
+              <DialogTitle>Crear Nodo</DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input id="name" defaultValue="New Node" className="col-span-3" />
+            <div className="grid gap-6 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="node-name">Nombre</Label>
+                  <Input id="node-name" placeholder="Nombre" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="public-host">Anfitrión público</Label>
+                  <Input id="public-host" placeholder="Anfitrión público" />
+                </div>
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="location" className="text-right">Location</Label>
-                <Input id="location" defaultValue="City, Country" className="col-span-3" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="public-port">Puerto público</Label>
+                  <Input id="public-port" type="number" defaultValue="8080" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sftp-port">Puerto SFTP</Label>
+                  <Input id="sftp-port" type="number" defaultValue="5657" />
+                </div>
+              </div>
+              <div className="items-top flex space-x-2">
+                <Checkbox id="use-different-host" />
+                <div className="grid gap-1.5 leading-none">
+                  <label
+                    htmlFor="use-different-host"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Usar un host/puerto diferente para la comunicación entre servidores
+                  </label>
+                  <p className="text-sm text-muted-foreground">
+                    Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                  </p>
+                </div>
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Create Node</Button>
+              <Button type="submit">Crear Nodo</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
