@@ -118,7 +118,7 @@ export default function RolesPage() {
                     Add Role
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>Add New Role</DialogTitle>
                     <DialogDescription>
@@ -154,7 +154,7 @@ export default function RolesPage() {
                         <Label className="text-right pt-2">
                             Permissions
                         </Label>
-                        <div className="col-span-3 space-y-2">
+                        <div className="col-span-3 grid grid-cols-2 gap-x-6 gap-y-2">
                             {allPermissions.map(permission => (
                                 <div key={permission} className="flex items-center space-x-2">
                                     <Checkbox
