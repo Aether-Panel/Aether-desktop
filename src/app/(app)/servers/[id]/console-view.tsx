@@ -4,10 +4,14 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Play, RefreshCw, Send, Skull, Square } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function ConsoleView() {
-  const [logs, setLogs] = useState([
+type LogEntry = {
+  time: string;
+  message: string;
+};
+
+const initialLogMessages = [
     "Starting up server...",
     "Connecting to database on port 5432.",
     "Database connection successful.",
@@ -24,15 +28,30 @@ export default function ConsoleView() {
     "[ERROR] Unhandled exception in worker thread: TypeError: Cannot read properties of undefined (reading 'name')",
     "Restarting worker thread...",
     "Worker thread restarted successfully."
-  ]);
+];
+
+const getCurrentTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+export default function ConsoleView() {
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [command, setCommand] = useState('');
   const [showKill, setShowKill] = useState(false);
 
+  useEffect(() => {
+    setLogs(initialLogMessages.map(message => ({
+        time: getCurrentTime(),
+        message,
+    })));
+  }, []);
+
+  const addLog = (message: string) => {
+      setLogs(prevLogs => [...prevLogs, { time: getCurrentTime(), message }]);
+  };
+
   const handleSendCommand = () => {
     if (command.trim() === '') return;
-    const newLog = `$ ${command}`;
-    const output = `> Executing: ${command}... (not actually executed)`;
-    setLogs(prevLogs => [...prevLogs, newLog, output]);
+    addLog(`$ ${command}`);
+    addLog(`> Executing: ${command}... (not actually executed)`);
     setCommand('');
   };
 
@@ -42,22 +61,22 @@ export default function ConsoleView() {
     }
   };
 
-  const getLogColor = (log: string) => {
-    if (log.startsWith('$')) return 'text-blue-400';
-    if (log.includes('[ERROR]')) return 'text-red-500';
-    if (log.includes('[WARN]')) return 'text-yellow-500';
-    if (log.startsWith('>')) return 'text-gray-400';
+  const getLogColor = (logMessage: string) => {
+    if (logMessage.startsWith('$')) return 'text-blue-400';
+    if (logMessage.includes('[ERROR]')) return 'text-red-500';
+    if (logMessage.includes('[WARN]')) return 'text-yellow-500';
+    if (logMessage.startsWith('>')) return 'text-gray-400';
     return ''; // Inherit from parent
   };
 
   const handleStopClick = () => {
     setShowKill(true);
-    setLogs(prev => [...prev, '> Stop signal sent. If the server does not stop, you can force kill it.']);
+    addLog('> Stop signal sent. If the server does not stop, you can force kill it.');
   };
 
   const handleKillClick = () => {
     setShowKill(false);
-    setLogs(prev => [...prev, '> Kill signal sent. Server is being forcefully terminated.']);
+    addLog('> Kill signal sent. Server is being forcefully terminated.');
   };
 
   return (
@@ -90,8 +109,9 @@ export default function ConsoleView() {
         <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => (
-              <p key={index} className={`whitespace-pre-wrap ${getLogColor(log)}`}>
-                {log}
+              <p key={index} className={`whitespace-pre-wrap ${getLogColor(log.message)}`}>
+                <span className="text-gray-500 mr-4">{log.time}</span>
+                {log.message}
               </p>
             ))}
             <div className="flex items-center">
