@@ -109,7 +109,7 @@ export default function ConsoleView() {
               ) : (
                 <Button size="sm" variant="destructive" onClick={handleKillClick}>
                     <Skull className="mr-2 h-4 w-4" />
-                    Kill
+                    Force Stop
                 </Button>
               )}
           </div>
