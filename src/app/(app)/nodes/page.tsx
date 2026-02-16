@@ -14,31 +14,14 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-
-type Node = {
-  id: string;
-  name: string;
-  location: string;
-  status: 'online' | 'offline' | 'deploying';
-  publicHost: string;
-  publicPort: number;
-  sftpPort: number;
-  useDifferentHost: boolean;
-  privateHost?: string;
-  privatePort?: number;
-};
-
-const initialNodes: Node[] = [
-    { id: 'node-1', name: 'US-East-1', location: 'N. Virginia, USA', status: 'online', publicHost: '44.204.87.123', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
-    { id: 'node-2', name: 'EU-West-1', location: 'Ireland', status: 'online', publicHost: '52.17.200.10', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
-    { id: 'node-3', name: 'AP-South-1', location: 'Mumbai, India', status: 'offline', publicHost: '13.233.15.221', publicPort: 8080, sftpPort: 5657, useDifferentHost: false },
-];
-
+import Link from 'next/link';
+import { nodes as nodesData } from '@/lib/data';
+import type { Node } from '@/lib/data';
 
 export default function NodesPage() {
   const { role } = useAuth();
   const router = useRouter();
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
+  const [nodes, setNodes] = useState<Node[]>(nodesData);
   const [isMounted, setIsMounted] = useState(false);
   const [useDifferentHost, setUseDifferentHost] = useState(false);
   const { toast } = useToast();
@@ -245,7 +228,11 @@ export default function NodesPage() {
             <TableBody>
               {nodes.map((node) => (
                 <TableRow key={node.id}>
-                  <TableCell className="font-medium">{node.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link href={`/nodes/${node.id}`} className="hover:underline">
+                      {node.name}
+                    </Link>
+                  </TableCell>
                   <TableCell>{node.location}</TableCell>
                   <TableCell>
                     <Badge variant={node.status === 'online' ? 'default' : node.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
