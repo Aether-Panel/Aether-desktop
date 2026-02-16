@@ -119,12 +119,15 @@ export default function ConsoleView() {
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => {
                 const colorClass = getLogColor(log.message);
+                const messageColorClass = colorClass === 'text-green-400' ? '' : colorClass;
                 return (
-                    <p key={index} className={`whitespace-pre-wrap ${colorClass}`}>
-                        <span className={`${colorClass ? '' : 'text-gray-500'} mr-4`}>
+                    <p key={index} className="whitespace-pre-wrap">
+                        <span className={`${colorClass || 'text-gray-500'} mr-4`}>
                             [{log.time}]
                         </span>
-                        {log.message}
+                        <span className={messageColorClass}>
+                          {log.message}
+                        </span>
                     </p>
                 )
             })}
