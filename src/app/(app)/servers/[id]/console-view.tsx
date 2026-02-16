@@ -51,7 +51,6 @@ export default function ConsoleView() {
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => (
               <p key={index} className="whitespace-pre-wrap">
-                <span className="text-gray-500 mr-4">{index + 1}</span>
                 <span className={
                     log.startsWith('$') ? 'text-blue-400' :
                     log.includes('[ERROR]') ? 'text-red-500' : 
