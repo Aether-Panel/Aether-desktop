@@ -117,12 +117,17 @@ export default function ConsoleView() {
       <CardContent className="pt-6">
         <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
           <ScrollArea className="h-full w-full">
-            {logs.map((log, index) => (
-              <p key={index} className={`whitespace-pre-wrap ${getLogColor(log.message)}`}>
-                <span className="text-gray-500 mr-4">[{log.time}]</span>
-                {log.message}
-              </p>
-            ))}
+            {logs.map((log, index) => {
+                const colorClass = getLogColor(log.message);
+                return (
+                    <p key={index} className={`whitespace-pre-wrap ${colorClass}`}>
+                        <span className={`${colorClass ? '' : 'text-gray-500'} mr-4`}>
+                            [{log.time}]
+                        </span>
+                        {log.message}
+                    </p>
+                )
+            })}
             <div className="flex items-center">
                 <span className="text-green-400 mr-2">$</span>
                 <div className="w-2 h-4 bg-green-400 animate-pulse"></div>
