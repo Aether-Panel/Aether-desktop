@@ -53,7 +53,7 @@ export default function AdminView() {
                         <AlertDialogTitle>¿Estás absolutamente seguro?</AlertDialogTitle>
                         <AlertDialogDescription>
                             Esta acción no se puede deshacer. Esto eliminará permanentemente el servidor y todos sus datos de la plataforma.
-                        </Description>
+                        </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Cancelar</AlertDialogCancel>
