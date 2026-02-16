@@ -22,6 +22,14 @@ export default function UsersPage() {
   const router = useRouter();
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [isMounted, setIsMounted] = useState(false);
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [viewingUser, setViewingUser] = useState<User | null>(null);
+
+  // State for the edit form
+  const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
+  const [editRole, setEditRole] = useState<User['role']>('user');
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -29,6 +37,30 @@ export default function UsersPage() {
       router.push('/dashboard');
     }
   }, [role, router]);
+
+  useEffect(() => {
+    if (editingUser) {
+      setEditName(editingUser.name);
+      setEditEmail(editingUser.email);
+      setEditRole(editingUser.role);
+    }
+  }, [editingUser]);
+
+  const handleUpdateUser = () => {
+    if (!editingUser) return;
+    setUsers(users.map(u => 
+      u.id === editingUser.id 
+        ? { ...u, name: editName, email: editEmail, role: editRole } 
+        : u
+    ));
+    setEditingUser(null);
+  };
+
+  const getAssignedServers = (user: User | null) => {
+    if (!user) return [];
+    return servers.filter(server => user.assignedServers.includes(server.id));
+  };
+
 
   if (!isMounted || role !== 'admin') {
     return (
@@ -129,8 +161,8 @@ export default function UsersPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>View Servers</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setEditingUser(user)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setViewingUser(user)}>View Servers</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
                       </DropdownMenuContent>
@@ -142,6 +174,68 @@ export default function UsersPage() {
           </Table>
         </CardContent>
       </Card>
+      
+      {/* Edit User Dialog */}
+      <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit User</DialogTitle>
+            <DialogDescription>
+              Update details for {editingUser?.name}.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="edit-name" className="text-right">Name</Label>
+              <Input id="edit-name" value={editName} onChange={(e) => setEditName(e.target.value)} className="col-span-3" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="edit-email" className="text-right">Email</Label>
+              <Input id="edit-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="col-span-3" />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="edit-role" className="text-right">Role</Label>
+              <Select value={editRole} onValueChange={(value: User['role']) => setEditRole(value)}>
+                <SelectTrigger className="col-span-3">
+                  <SelectValue placeholder="Select a role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Administrator</SelectItem>
+                  <SelectItem value="user">User</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
+            <Button type="submit" onClick={handleUpdateUser}>Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Servers Dialog */}
+      <Dialog open={!!viewingUser} onOpenChange={(open) => !open && setViewingUser(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Servers for {viewingUser?.name}</DialogTitle>
+            <DialogDescription>This user has access to the following servers.</DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            {getAssignedServers(viewingUser).length > 0 ? (
+              <ul className="space-y-2">
+                {getAssignedServers(viewingUser).map(server => (
+                  <li key={server.id} className="rounded-md border p-3 text-sm">{server.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center">This user is not assigned to any servers.</p>
+            )}
+          </div>
+          <DialogFooter>
+             <Button variant="outline" onClick={() => setViewingUser(null)}>Close</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
