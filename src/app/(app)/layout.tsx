@@ -22,7 +22,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, LogOut, Server, Settings, Users, Shield } from 'lucide-react';
+import { LayoutDashboard, LogOut, Server, Settings, Users, Shield, ShieldCheck } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/logo';
 import Link from 'next/link';
@@ -35,6 +35,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['admin', 'user'] },
     { href: '/servers', label: 'Servers', icon: Server, roles: ['admin'] },
     { href: '/users', label: 'Users', icon: Users, roles: ['admin'] },
+    { href: '/roles', label: 'Roles', icon: ShieldCheck, roles: ['admin'] },
   ];
 
   return (
