@@ -62,9 +62,16 @@ export default function ConsoleView() {
   };
 
   const getLogColor = (logMessage: string) => {
+    const upperMessage = logMessage.toUpperCase();
+    if (upperMessage.includes('[ERROR]')) return 'text-red-500';
+    if (upperMessage.includes('[WARN]')) return 'text-yellow-400';
+    if (
+      upperMessage.includes('SUCCESSFUL') ||
+      upperMessage.includes(' OK') ||
+      upperMessage.includes('COMPLETED') ||
+      upperMessage.includes('LISTENING')
+    ) return 'text-green-400';
     if (logMessage.startsWith('$')) return 'text-blue-400';
-    if (logMessage.includes('[ERROR]')) return 'text-red-500';
-    if (logMessage.includes('[WARN]')) return 'text-yellow-500';
     if (logMessage.startsWith('>')) return 'text-gray-400';
     return ''; // Inherit from parent
   };
@@ -110,7 +117,7 @@ export default function ConsoleView() {
           <ScrollArea className="h-full w-full">
             {logs.map((log, index) => (
               <p key={index} className={`whitespace-pre-wrap ${getLogColor(log.message)}`}>
-                <span className="text-gray-500 mr-4">{log.time}</span>
+                <span className="text-gray-500 mr-4">[{log.time}]</span>
                 {log.message}
               </p>
             ))}
