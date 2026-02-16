@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Play, RefreshCw, Send, Skull, Square } from 'lucide-react';
+import { Play, RefreshCw, Send, ShieldAlert, Square } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import AISummary from './ai-summary';
 
@@ -108,7 +108,7 @@ export default function ConsoleView() {
                 </Button>
               ) : (
                 <Button size="sm" variant="destructive" onClick={handleKillClick}>
-                    <Skull className="mr-2 h-4 w-4" />
+                    <ShieldAlert className="mr-2 h-4 w-4" />
                     Force Stop
                 </Button>
               )}
