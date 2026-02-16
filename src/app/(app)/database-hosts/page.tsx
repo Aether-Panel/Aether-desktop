@@ -98,11 +98,13 @@ export default function DatabaseHostsPage() {
     );
   };
 
+  const stepTitles = ['Credenciales', 'Instrucciones', 'Configuración'];
+
   const StepperHeader = () => (
     <DialogHeader>
         <DialogTitle>Add New Database Host</DialogTitle>
         <DialogDescription>
-            Step {currentStep} of 2: {currentStep === 1 ? 'Configuración' : 'Credenciales e Instrucciones'}
+            Step {currentStep} of 3: {stepTitles[currentStep-1]}
         </DialogDescription>
     </DialogHeader>
   );
@@ -127,8 +129,83 @@ export default function DatabaseHostsPage() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-3xl">
                 <StepperHeader />
-                <div className="py-4">
+                <div className="py-4 max-h-[60vh] overflow-y-auto pr-4">
                     {currentStep === 1 && (
+                         <div className="space-y-6">
+                            <Alert>
+                                <Info className="h-4 w-4" />
+                                <AlertTitle>Información</AlertTitle>
+                                <AlertDescription>
+                                    Actualmente, solo se admiten bases de datos MySQL/MariaDB para database hosts.
+                                    <br/>
+                                    ¿El panel y la base de datos no están en el mismo servidor? Asegúrate de permitir acceso externo.
+                                </AlertDescription>
+                            </Alert>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="host-user">Username</Label>
+                                <Input
+                                    id="host-user"
+                                    value={newHostUser}
+                                    onChange={(e) => setNewHostUser(e.target.value)}
+                                />
+                                <p className="text-sm text-muted-foreground">El nombre de usuario de una cuenta que tenga permisos suficientes para crear nuevos usuarios y bases de datos en el sistema.</p>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="host-password">Password</Label>
+                                <Input
+                                    id="host-password"
+                                    type="password"
+                                    value={newHostPassword}
+                                    onChange={(e) => setNewHostPassword(e.target.value)}
+                                />
+                                <p className="text-sm text-muted-foreground">La contraseña para el usuario de la base de datos.</p>
+                            </div>
+                        </div>
+                    )}
+                    {currentStep === 2 && (
+                         <div className="space-y-6">
+                             <Card>
+                                <CardHeader>
+                                    <CardTitle>Instrucciones</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div>
+                                        <h4 className="font-semibold">Database User</h4>
+                                        <p className="text-sm text-muted-foreground">Usa <code className="bg-muted px-1 rounded">mysql -u root -p</code> para acceder al CLI de mysql.</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold">Comando para crear el usuario</h4>
+                                        <CopyableCode command={"CREATE USER 'aetheruser'@'127.0.0.1' IDENTIFIED BY 'password';"} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold">Comando para asignar permisos</h4>
+                                        <CopyableCode command={"GRANT ALL PRIVILEGES ON *.* TO 'aetheruser'@'127.0.0.1' WITH GRANT OPTION;"} />
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">Para salir del CLI de mysql ejecuta <code className="bg-muted px-1 rounded">exit</code>.</p>
+                                </CardContent>
+                            </Card>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Acceso Externo</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <p className="text-sm text-muted-foreground">
+                                        Es probable que necesites permitir acceso externo a esta instancia de MySQL. Localiza tu archivo <code className="bg-muted px-1 rounded">my.cnf</code> (puedes usar <code className="bg-muted px-1 rounded">find /etc -iname my.cnf</code>).
+                                    </p>
+                                    <p className="text-sm text-muted-foreground">
+                                        Abre <code className="bg-muted px-1 rounded">my.cnf</code>, agrega el texto de abajo al final del archivo y guárdalo:
+                                    </p>
+                                    <CopyableCode command={"[mysqld]\nbind-address=0.0.0.0"} />
+                                    <p className="text-sm text-muted-foreground">
+                                        Reinicia MySQL/MariaDB para aplicar los cambios. Asegúrate de permitir el puerto de MySQL (por defecto 3306) en tu firewall.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    )}
+                    {currentStep === 3 && (
                         <div className="grid grid-cols-2 gap-6">
                              <div className="space-y-2">
                                 <Label htmlFor="host-name">Nombre del Host</Label>
@@ -190,88 +267,24 @@ export default function DatabaseHostsPage() {
                             </div>
                         </div>
                     )}
-                    {currentStep === 2 && (
-                         <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-4">
-                            <Alert>
-                                <Info className="h-4 w-4" />
-                                <AlertTitle>Información</AlertTitle>
-                                <AlertDescription>
-                                    Actualmente, solo se admiten bases de datos MySQL/MariaDB para database hosts.
-                                </AlertDescription>
-                            </Alert>
-
-                            <div className="space-y-2">
-                                <Label htmlFor="host-user">Username</Label>
-                                <Input
-                                    id="host-user"
-                                    value={newHostUser}
-                                    onChange={(e) => setNewHostUser(e.target.value)}
-                                />
-                                <p className="text-sm text-muted-foreground">El nombre de usuario de una cuenta que tenga permisos suficientes para crear nuevos usuarios y bases de datos en el sistema.</p>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="host-password">Password</Label>
-                                <Input
-                                    id="host-password"
-                                    type="password"
-                                    value={newHostPassword}
-                                    onChange={(e) => setNewHostPassword(e.target.value)}
-                                />
-                                <p className="text-sm text-muted-foreground">La contraseña para el usuario de la base de datos.</p>
-                            </div>
-
-                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Instrucciones</CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div>
-                                        <h4 className="font-semibold">Database User</h4>
-                                        <p className="text-sm text-muted-foreground">Usa <code className="bg-muted px-1 rounded">mysql -u root -p</code> para acceder al CLI de mysql.</p>
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold">Comando para crear el usuario</h4>
-                                        <CopyableCode command={"CREATE USER 'aetheruser'@'127.0.0.1' IDENTIFIED BY 'password';"} />
-                                    </div>
-                                    <div>
-                                        <h4 className="font-semibold">Comando para asignar permisos</h4>
-                                        <CopyableCode command={"GRANT ALL PRIVILEGES ON *.* TO 'aetheruser'@'127.0.0.1' WITH GRANT OPTION;"} />
-                                    </div>
-                                    <p className="text-sm text-muted-foreground">Para salir del CLI de mysql ejecuta <code className="bg-muted px-1 rounded">exit</code>.</p>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Acceso Externo</CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <p className="text-sm text-muted-foreground">
-                                        Es probable que necesites permitir acceso externo a esta instancia de MySQL. Localiza tu archivo <code className="bg-muted px-1 rounded">my.cnf</code> (puedes usar <code className="bg-muted px-1 rounded">find /etc -iname my.cnf</code>).
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        Abre <code className="bg-muted px-1 rounded">my.cnf</code>, agrega el texto de abajo al final del archivo y guárdalo:
-                                    </p>
-                                    <CopyableCode command={"[mysqld]\nbind-address=0.0.0.0"} />
-                                    <p className="text-sm text-muted-foreground">
-                                        Reinicia MySQL/MariaDB para aplicar los cambios. Asegúrate de permitir el puerto de MySQL (por defecto 3306) en tu firewall.
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    )}
                 </div>
                 <DialogFooter>
                     {currentStep === 1 && (
                         <>
                             <Button variant="outline" onClick={() => handleDialogChange(false)}>Cancel</Button>
-                            <Button onClick={() => setCurrentStep(2)} disabled={!newHostName || !newHostHost}>Next</Button>
+                            <Button onClick={() => setCurrentStep(2)} disabled={!newHostUser}>Next</Button>
                         </>
                     )}
                      {currentStep === 2 && (
                         <>
                             <Button variant="outline" onClick={() => setCurrentStep(1)}>Back</Button>
-                            <Button type="submit" onClick={handleAddHost} disabled={!newHostUser}>Create Host</Button>
+                            <Button onClick={() => setCurrentStep(3)}>Next</Button>
+                        </>
+                    )}
+                    {currentStep === 3 && (
+                        <>
+                            <Button variant="outline" onClick={() => setCurrentStep(2)}>Back</Button>
+                            <Button type="submit" onClick={handleAddHost} disabled={!newHostName || !newHostHost}>Create Host</Button>
                         </>
                     )}
                 </DialogFooter>
@@ -309,5 +322,3 @@ export default function DatabaseHostsPage() {
     </div>
   );
 }
-
-    
