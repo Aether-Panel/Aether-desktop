@@ -29,6 +29,7 @@ export default function DatabaseHostsPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [hosts, setHosts] = useState<DatabaseHost[]>(initialHosts);
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
   // New host form state
   const [newHostName, setNewHostName] = useState('');
@@ -57,12 +58,29 @@ export default function DatabaseHostsPage() {
     setHosts(prev => [...prev, newHost]);
     
     // Reset form and close dialog
-    setNewHostName('');
-    setNewHostHost('');
-    setNewHostPort('3306');
-    setNewHostUser('');
-    setIsAddDialogOpen(false);
+    handleDialogChange(false);
   };
+  
+  const handleDialogChange = (open: boolean) => {
+    setIsAddDialogOpen(open);
+    if (!open) {
+      // Reset state when closing
+      setCurrentStep(1);
+      setNewHostName('');
+      setNewHostHost('');
+      setNewHostPort('3306');
+      setNewHostUser('');
+    }
+  }
+
+  const StepperHeader = () => (
+    <DialogHeader>
+        <DialogTitle>Add New Database Host</DialogTitle>
+        <DialogDescription>
+            Step {currentStep} of 2: {currentStep === 1 ? 'Host Details' : 'Connection Credentials'}
+        </DialogDescription>
+    </DialogHeader>
+  );
 
   if (!isMounted || role !== 'admin') {
     return (
@@ -75,7 +93,7 @@ export default function DatabaseHostsPage() {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader title="Database Hosts" description="Manage all database host connections.">
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <Dialog open={isAddDialogOpen} onOpenChange={handleDialogChange}>
             <DialogTrigger asChild>
                 <Button>
                     <PlusCircle className="mr-2" />
@@ -83,77 +101,90 @@ export default function DatabaseHostsPage() {
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                    <DialogTitle>Add New Database Host</DialogTitle>
-                    <DialogDescription>
-                        Configure a new MySQL database host.
-                    </DialogDescription>
-                </DialogHeader>
+                <StepperHeader />
                 <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="host-name" className="text-right">
-                            Name
-                        </Label>
-                        <Input
-                            id="host-name"
-                            value={newHostName}
-                            onChange={(e) => setNewHostName(e.target.value)}
-                            className="col-span-3"
-                            placeholder="e.g., Local DB"
-                        />
-                    </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="host-host" className="text-right">
-                            Host
-                        </Label>
-                        <Input
-                            id="host-host"
-                            value={newHostHost}
-                            onChange={(e) => setNewHostHost(e.target.value)}
-                            className="col-span-3"
-                            placeholder="127.0.0.1"
-                        />
-                    </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="host-port" className="text-right">
-                            Port
-                        </Label>
-                        <Input
-                            id="host-port"
-                            type="number"
-                            value={newHostPort}
-                            onChange={(e) => setNewHostPort(e.target.value)}
-                            className="col-span-3"
-                            placeholder="3306"
-                        />
-                    </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="host-user" className="text-right">
-                            Username
-                        </Label>
-                        <Input
-                            id="host-user"
-                            value={newHostUser}
-                            onChange={(e) => setNewHostUser(e.target.value)}
-                            className="col-span-3"
-                            placeholder="root"
-                        />
-                    </div>
-                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="host-password" className="text-right">
-                            Password
-                        </Label>
-                        <Input
-                            id="host-password"
-                            type="password"
-                            className="col-span-3"
-                            placeholder="Leave blank for none"
-                        />
-                    </div>
+                    {currentStep === 1 && (
+                        <>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="host-name" className="text-right">
+                                    Name
+                                </Label>
+                                <Input
+                                    id="host-name"
+                                    value={newHostName}
+                                    onChange={(e) => setNewHostName(e.target.value)}
+                                    className="col-span-3"
+                                    placeholder="e.g., Local DB"
+                                />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="host-host" className="text-right">
+                                    Host
+                                </Label>
+                                <Input
+                                    id="host-host"
+                                    value={newHostHost}
+                                    onChange={(e) => setNewHostHost(e.target.value)}
+                                    className="col-span-3"
+                                    placeholder="127.0.0.1"
+                                />
+                            </div>
+                        </>
+                    )}
+                    {currentStep === 2 && (
+                         <>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="host-port" className="text-right">
+                                    Port
+                                </Label>
+                                <Input
+                                    id="host-port"
+                                    type="number"
+                                    value={newHostPort}
+                                    onChange={(e) => setNewHostPort(e.target.value)}
+                                    className="col-span-3"
+                                    placeholder="3306"
+                                />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="host-user" className="text-right">
+                                    Username
+                                </Label>
+                                <Input
+                                    id="host-user"
+                                    value={newHostUser}
+                                    onChange={(e) => setNewHostUser(e.target.value)}
+                                    className="col-span-3"
+                                    placeholder="root"
+                                />
+                            </div>
+                            <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="host-password" className="text-right">
+                                    Password
+                                </Label>
+                                <Input
+                                    id="host-password"
+                                    type="password"
+                                    className="col-span-3"
+                                    placeholder="Leave blank for none"
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit" onClick={handleAddHost}>Create Host</Button>
+                    {currentStep === 1 && (
+                        <>
+                            <Button variant="outline" onClick={() => handleDialogChange(false)}>Cancel</Button>
+                            <Button onClick={() => setCurrentStep(2)} disabled={!newHostName || !newHostHost}>Next</Button>
+                        </>
+                    )}
+                     {currentStep === 2 && (
+                        <>
+                            <Button variant="outline" onClick={() => setCurrentStep(1)}>Back</Button>
+                            <Button type="submit" onClick={handleAddHost} disabled={!newHostPort || !newHostUser}>Create Host</Button>
+                        </>
+                    )}
                 </DialogFooter>
             </DialogContent>
         </Dialog>
