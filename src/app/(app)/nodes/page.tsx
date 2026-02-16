@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { PageHeader } from '@/components/page-header';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { Copy, MoreHorizontal, PlusCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useToast } from '@/hooks/use-toast';
 
 type Node = {
   id: string;
@@ -40,6 +41,7 @@ export default function NodesPage() {
   const [nodes, setNodes] = useState<Node[]>(initialNodes);
   const [isMounted, setIsMounted] = useState(false);
   const [useDifferentHost, setUseDifferentHost] = useState(false);
+  const { toast } = useToast();
 
   // Edit state
   const [editingNode, setEditingNode] = useState<Node | null>(null);
@@ -50,6 +52,9 @@ export default function NodesPage() {
   const [editUseDifferentHost, setEditUseDifferentHost] = useState(false);
   const [editPrivateHost, setEditPrivateHost] = useState('');
   const [editPrivatePort, setEditPrivatePort] = useState('8080');
+  
+  // Deploy state
+  const [deployingNode, setDeployingNode] = useState<Node | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -97,6 +102,50 @@ export default function NodesPage() {
     };
     return <div className={`mr-2 h-2.5 w-2.5 rounded-full ${statusClasses[status]}`} />;
   };
+
+  const CopyableCode = ({ command }: { command: string }) => {
+    const handleCopy = () => {
+        navigator.clipboard.writeText(command);
+        toast({ title: 'Copiado al portapapeles' });
+    };
+
+    return (
+        <div className="flex items-center gap-2 rounded-md bg-muted p-2 my-2 font-mono text-sm">
+            <pre className="flex-grow overflow-x-auto"><code>{command}</code></pre>
+            <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={handleCopy}>
+                <Copy className="h-4 w-4" />
+                <span className="sr-only">Copiar</span>
+            </Button>
+        </div>
+    );
+  };
+
+  const deployConfigJson = deployingNode ? JSON.stringify({
+    "logs": "/var/log/AetherPanel",
+    "web": {
+      "host": "0.0.0.0:8080"
+    },
+    "token": {
+      "public": "http://192.168.0.12:8080/auth/publickey"
+    },
+    "panel": {
+      "enable": false
+    },
+    "daemon": {
+      "auth": {
+        "url": "http://192.168.0.12:8080/oauth2/token",
+        "clientId": `.node_${deployingNode.id.split('-')[1]}`,
+        "clientSecret": "7bdb03bbfbd44aeda8e2a4fc52035c38",
+        "publicKey": ""
+      },
+      "data": {
+        "root": "/var/lib/AetherPanel"
+      },
+      "sftp": {
+        "host": `0.0.0.0:${deployingNode.sftpPort}`
+      }
+    }
+  }, null, 2) : '';
 
   if (!isMounted || role !== 'admin') {
     return (
@@ -215,7 +264,7 @@ export default function NodesPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>Edit</DropdownMenuItem>
-                        <DropdownMenuItem>Deploy</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => setDeployingNode(node)}>Deploy</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
                       </DropdownMenuContent>
@@ -288,6 +337,58 @@ export default function NodesPage() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setEditingNode(null)}>Cancel</Button>
             <Button type="submit" onClick={handleUpdateNode}>Save Changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* Deploy Node Dialog */}
+      <Dialog open={!!deployingNode} onOpenChange={(isOpen) => !isOpen && setDeployingNode(null)}>
+        <DialogContent className="sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>Deploy Node: {deployingNode?.name}</DialogTitle>
+            <DialogDescription>
+              Sigue estos pasos para configurar y conectar tu nuevo nodo.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 max-h-[70vh] overflow-y-auto pr-4 space-y-6">
+            {/* Step 1 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">1</div>
+                <div>
+                    <h4 className="font-semibold">Paso 1: Instala AetherPanel en el nuevo servidor.</h4>
+                    <p className="text-sm text-muted-foreground">Consulta la documentación para más detalles.</p>
+                </div>
+            </div>
+            {/* Step 2 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">2</div>
+                <div>
+                    <h4 className="font-semibold">Paso 2: Detén el servicio de AetherPanel.</h4>
+                    <p className="text-sm text-muted-foreground">Si se inició durante la instalación, ejecuta el siguiente comando:</p>
+                    <CopyableCode command="sudo systemctl stop AetherPanel" />
+                </div>
+            </div>
+            {/* Step 3 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">3</div>
+                <div>
+                    <h4 className="font-semibold">Paso 3: Reemplaza el archivo de configuración.</h4>
+                    <p className="text-sm text-muted-foreground">El archivo se encuentra en <code className="bg-muted px-1 rounded-sm">/etc/AetherPanel/config.json</code>. Reemplaza su contenido con lo siguiente:</p>
+                    <CopyableCode command={deployConfigJson} />
+                </div>
+            </div>
+            {/* Step 4 */}
+            <div className="flex gap-4 items-start">
+                <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">4</div>
+                <div>
+                    <h4 className="font-semibold">Paso 4: Habilita y reinicia el servicio.</h4>
+                    <p className="text-sm text-muted-foreground">Ejecuta el siguiente comando para completar la configuración:</p>
+                     <CopyableCode command="sudo systemctl enable --now AetherPanel" />
+                     <p className="mt-4 text-sm font-semibold text-green-500">¡Tu nuevo nodo está configurado y listo para usar!</p>
+                </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeployingNode(null)}>Cerrar</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
