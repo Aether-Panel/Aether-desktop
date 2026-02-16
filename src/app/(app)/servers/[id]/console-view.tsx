@@ -51,29 +51,27 @@ export default function ConsoleView() {
 
   return (
     <Card className="mt-6">
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Live Console</CardTitle>
-      </CardHeader>
-      <div className="border-t border-b px-6 py-4">
         <div className="flex items-center gap-2">
-            <Button variant="outline">
-              <Play className="mr-2 h-4 w-4" />
-              Start
+            <Button size="sm" variant="default">
+                <Play className="mr-2 h-4 w-4" />
+                Iniciar
             </Button>
-            <Button variant="outline">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Restart
+            <Button size="sm" variant="outline">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Reiniciar
             </Button>
-            <Button variant="outline">
-              <Square className="mr-2 h-4 w-4" />
-              Stop
+            <Button size="sm" variant="outline">
+                <Square className="mr-2 h-4 w-4" />
+                Detener
             </Button>
-            <Button variant="destructive">
-              <Skull className="mr-2 h-4 w-4" />
-              Kill
+            <Button size="sm" variant="destructive">
+                <Skull className="mr-2 h-4 w-4" />
+                Kill
             </Button>
         </div>
-      </div>
+      </CardHeader>
       <CardContent className="pt-6">
         <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
           <ScrollArea className="h-full w-full">
@@ -99,7 +97,7 @@ export default function ConsoleView() {
             />
             <Button type="submit" onClick={handleSendCommand}>
               <Send className="mr-2 h-4 w-4" />
-              Send
+              Enviar
             </Button>
         </div>
       </CardContent>
