@@ -38,8 +38,10 @@ export default function ConsoleView() {
   const [showKill, setShowKill] = useState(false);
 
   useEffect(() => {
-    setLogs(initialLogMessages.map(message => ({
-        time: getCurrentTime(),
+    const now = Date.now();
+    // Stagger the initial log times to make them look more realistic
+    setLogs(initialLogMessages.map((message, index) => ({
+        time: new Date(now - (initialLogMessages.length - index) * 1500).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
         message,
     })));
   }, []);
