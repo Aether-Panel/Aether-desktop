@@ -41,7 +41,6 @@ export default function DatabaseHostsPage() {
   const [newHostPort, setNewHostPort] = useState('3306');
   const [newHostUser, setNewHostUser] = useState('root');
   const [newHostPassword, setNewHostPassword] = useState('');
-  const [newHostDisplayHost, setNewHostDisplayHost] = useState('');
   const [newHostMaxDatabases, setNewHostMaxDatabases] = useState('0');
 
   useEffect(() => {
@@ -76,7 +75,6 @@ export default function DatabaseHostsPage() {
       setNewHostPort('3306');
       setNewHostUser('root');
       setNewHostPassword('');
-      setNewHostDisplayHost('');
       setNewHostMaxDatabases('0');
     }
   }
@@ -216,16 +214,6 @@ export default function DatabaseHostsPage() {
                                     placeholder="e.g., Local DB"
                                 />
                                 <p className="text-sm text-muted-foreground">Un nombre único para identificar este host en el panel.</p>
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="host-display-host">Display Host</Label>
-                                <Input
-                                    id="host-display-host"
-                                    value={newHostDisplayHost}
-                                    onChange={(e) => setNewHostDisplayHost(e.target.value)}
-                                    placeholder="db.example.com"
-                                />
-                                <p className="text-sm text-muted-foreground">La dirección IP o nombre de dominio que debe mostrarse al usuario final.</p>
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="host-host">Host de Conexión</Label>
