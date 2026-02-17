@@ -1,7 +1,6 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Bar, BarChart, XAxis, YAxis, LabelList } from 'recharts';
+import { Progress } from '@/components/ui/progress';
 
 type ResourceUsageChartProps = {
   cpuUsage: number;
@@ -9,18 +8,14 @@ type ResourceUsageChartProps = {
   storageUsage: number;
 };
 
-const chartConfig = {
-  cpu: { label: 'CPU', color: 'hsl(var(--chart-1))' },
-  memory: { label: 'Memory', color: 'hsl(var(--chart-2))' },
-  storage: { label: 'Storage', color: 'hsl(var(--chart-3))' },
-};
+const resourceData: {name: string; key: 'cpu' | 'memory' | 'storage'; colorVar: string}[] = [
+  { name: 'CPU', key: 'cpu', colorVar: 'hsl(var(--chart-1))' },
+  { name: 'Memory', key: 'memory', colorVar: 'hsl(var(--chart-2))' },
+  { name: 'Storage', key: 'storage', colorVar: 'hsl(var(--chart-3))' },
+];
 
 export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage }: ResourceUsageChartProps) {
-  const chartData = [
-    { name: 'CPU', usage: cpuUsage, fill: 'var(--color-cpu)' },
-    { name: 'Memory', usage: memoryUsage, fill: 'var(--color-memory)' },
-    { name: 'Storage', usage: storageUsage, fill: 'var(--color-storage)' },
-  ];
+    const usages = { cpu: cpuUsage, memory: memoryUsage, storage: storageUsage };
 
   return (
     <Card>
@@ -28,42 +23,18 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
         <CardTitle>Resource Overview</CardTitle>
         <CardDescription>Current snapshot of resource utilization.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[250px] w-full">
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{ left: 10, right: 40 }}
-          >
-            <XAxis type="number" dataKey="usage" hide domain={[0, 100]} />
-            <YAxis
-              type="category"
-              dataKey="name"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              width={80}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent
-                formatter={(value) => `${value}%`}
-                hideLabel
-              />}
-            />
-            <Bar dataKey="usage" layout="vertical" radius={4} background={{ fill: 'hsl(var(--muted))', radius: 4 }}>
-                <LabelList
-                    dataKey="usage"
-                    position="right"
-                    offset={8}
-                    className="fill-foreground font-medium"
-                    fontSize={12}
-                    formatter={(value: number) => `${value}%`}
-                />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+      <CardContent className="space-y-6 pt-4">
+        {resourceData.map((item) => (
+          <div key={item.name}>
+            <div className="flex justify-between text-sm font-medium mb-2">
+              <span className="text-muted-foreground">{item.name}</span>
+              <span>{usages[item.key]}%</span>
+            </div>
+            <div style={{ '--primary': item.colorVar } as React.CSSProperties}>
+              <Progress value={usages[item.key]} className="h-2" />
+            </div>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );
