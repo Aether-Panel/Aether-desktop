@@ -113,12 +113,12 @@ export default function SettingsPage() {
                             <Label htmlFor="mail-provider">Proveedor de e-mail</Label>
                             <Select>
                                 <SelectTrigger id="mail-provider">
-                                    <SelectValue placeholder="Ninguno" />
+                                    <SelectValue placeholder="Selecciona un proveedor" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="none">Ninguno</SelectItem>
                                     <SelectItem value="smtp">SMTP</SelectItem>
                                     <SelectItem value="mailgun">Mailgun</SelectItem>
+                                    <SelectItem value="mailjet">Mailjet</SelectItem>
                                 </SelectContent>
                             </Select>
                             <p className="text-sm text-muted-foreground">Selecciona el proveedor de correo electrónico que deseas usar para enviar emails desde el panel</p>
