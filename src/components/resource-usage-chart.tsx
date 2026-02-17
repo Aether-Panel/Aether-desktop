@@ -1,7 +1,8 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Bar, BarChart, Cell, LabelList, XAxis, YAxis } from 'recharts';
+import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
+import { PolarAngleAxis, RadialBar, RadialBarChart } from 'recharts';
+import { Cpu, HardDrive, MemoryStick } from 'lucide-react';
 
 type ResourceUsageChartProps = {
   cpuUsage: number;
@@ -10,105 +11,68 @@ type ResourceUsageChartProps = {
 };
 
 const chartConfig = {
-  cpu: { label: 'CPU', color: 'hsl(var(--chart-1))' },
-  memory: { label: 'Memory', color: 'hsl(var(--chart-2))' },
-  storage: { label: 'Storage', color: 'hsl(var(--chart-3))' },
-};
+  cpu: { label: 'CPU', color: 'hsl(var(--chart-1))', icon: Cpu },
+  memory: { label: 'Memory', color: 'hsl(var(--chart-2))', icon: MemoryStick },
+  storage: { label: 'Storage', color: 'hsl(var(--chart-3))', icon: HardDrive },
+} satisfies ChartConfig;
+
+const SingleGauge = ({ name, value }: { name: 'cpu' | 'memory' | 'storage', value: number }) => {
+  const config = chartConfig[name];
+  const Icon = config.icon;
+
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <ChartContainer
+        config={chartConfig}
+        className="relative mx-auto aspect-square h-[150px] w-[150px]"
+      >
+        <RadialBarChart
+          startAngle={180}
+          endAngle={0}
+          innerRadius="80%"
+          outerRadius="100%"
+          barSize={12}
+          data={[{ name, value, fill: `var(--color-${name})` }]}
+        >
+          <PolarAngleAxis
+            type="number"
+            domain={[0, 100]}
+            dataKey="value"
+            tick={false}
+          />
+          <RadialBar
+            dataKey="value"
+            background={{ fill: 'hsl(var(--muted))' }}
+            round
+            cornerRadius={6}
+          />
+        </RadialBarChart>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+            <span className="text-4xl font-bold tracking-tighter text-foreground">
+                {value}
+                <span className="text-lg font-medium text-muted-foreground">%</span>
+            </span>
+        </div>
+      </ChartContainer>
+      <div className="flex items-center gap-2 text-center text-sm font-medium text-muted-foreground">
+        <Icon className="h-4 w-4" />
+        {config.label}
+      </div>
+    </div>
+  )
+}
 
 export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage }: ResourceUsageChartProps) {
-  const chartData = [
-    { name: 'CPU', usage: cpuUsage },
-    { name: 'Memory', usage: memoryUsage },
-    { name: 'Storage', usage: storageUsage },
-  ];
-
   return (
     <Card>
       <CardHeader>
         <CardTitle>Resource Overview</CardTitle>
         <CardDescription>Current snapshot of resource utilization.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="h-[250px] w-full">
-          <BarChart
-            accessibilityLayer
-            data={chartData}
-            layout="vertical"
-            margin={{ left: 10, right: 50 }}
-          >
-            <defs>
-              <linearGradient id="fillCPU" x1="0" y1="0" x2="1" y2="0">
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-cpu)"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="var(--color-cpu)"
-                  stopOpacity={1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMemory" x1="0" y1="0" x2="1" y2="0">
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-memory)"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="var(--color-memory)"
-                  stopOpacity={1}
-                />
-              </linearGradient>
-              <linearGradient id="fillStorage" x1="0" y1="0" x2="1" y2="0">
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-storage)"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="var(--color-storage)"
-                  stopOpacity={1}
-                />
-              </linearGradient>
-            </defs>
-
-            <XAxis type="number" hide domain={[0, 100]} />
-            <YAxis
-              type="category"
-              dataKey="name"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={10}
-              width={70}
-              className="fill-muted-foreground text-sm font-medium"
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  formatter={(value) => `${value}%`}
-                  indicator="dot"
-                />
-              }
-            />
-            <Bar dataKey="usage" layout="vertical" radius={5} barSize={24}>
-              {chartData.map((entry) => (
-                <Cell key={`cell-${entry.name}`} fill={`url(#fill${entry.name})`} />
-              ))}
-              <LabelList
-                dataKey="usage"
-                position="right"
-                offset={8}
-                className="fill-foreground font-semibold"
-                fontSize={14}
-                formatter={(value: number) => `${value}%`}
-              />
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+      <CardContent className="flex justify-around items-center p-6 pt-2">
+        <SingleGauge name="cpu" value={cpuUsage} />
+        <SingleGauge name="memory" value={memoryUsage} />
+        <SingleGauge name="storage" value={storageUsage} />
       </CardContent>
     </Card>
   );
