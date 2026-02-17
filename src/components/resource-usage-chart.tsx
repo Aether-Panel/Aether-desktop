@@ -1,7 +1,7 @@
 'use client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList } from 'recharts';
+import { Bar, BarChart, XAxis, YAxis, LabelList } from 'recharts';
 
 type ResourceUsageChartProps = {
   cpuUsage: number;
@@ -30,9 +30,13 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">
-          <BarChart accessibilityLayer data={chartData} layout="vertical" margin={{ left: 10 }}>
-            <CartesianGrid horizontal={false} />
-            <XAxis type="number" dataKey="usage" hide />
+          <BarChart
+            accessibilityLayer
+            data={chartData}
+            layout="vertical"
+            margin={{ left: 10, right: 40 }}
+          >
+            <XAxis type="number" dataKey="usage" hide domain={[0, 100]} />
             <YAxis
               type="category"
               dataKey="name"
@@ -48,12 +52,12 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
                 hideLabel
               />}
             />
-            <Bar dataKey="usage" layout="vertical" radius={5}>
+            <Bar dataKey="usage" layout="vertical" radius={4} background={{ fill: 'hsl(var(--muted))', radius: 4 }}>
                 <LabelList
                     dataKey="usage"
                     position="right"
                     offset={8}
-                    className="fill-foreground"
+                    className="fill-foreground font-medium"
                     fontSize={12}
                     formatter={(value: number) => `${value}%`}
                 />
