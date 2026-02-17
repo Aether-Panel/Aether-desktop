@@ -20,6 +20,7 @@ export default function SettingsPage() {
     const [companyName, setCompanyName] = useState('Aether Panel');
     const [baseUrl, setBaseUrl] = useState('http://localhost:8080');
     const [allowRegistration, setAllowRegistration] = useState(true);
+    const [mailProvider, setMailProvider] = useState('');
 
     useEffect(() => {
         setIsMounted(true);
@@ -111,7 +112,7 @@ export default function SettingsPage() {
                     <CardContent className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="mail-provider">Proveedor de e-mail</Label>
-                            <Select>
+                            <Select onValueChange={setMailProvider}>
                                 <SelectTrigger id="mail-provider">
                                     <SelectValue placeholder="Selecciona un proveedor" />
                                 </SelectTrigger>
@@ -124,9 +125,66 @@ export default function SettingsPage() {
                             <p className="text-sm text-muted-foreground">Selecciona el proveedor de correo electrónico que deseas usar para enviar emails desde el panel</p>
                         </div>
 
-                        <div className="text-center text-muted-foreground py-6">
-                            <p>Selecciona un proveedor de correo electrónico para ver las opciones de configuración</p>
-                        </div>
+                        {!mailProvider && (
+                            <div className="text-center text-muted-foreground py-6">
+                                <p>Selecciona un proveedor de correo electrónico para ver las opciones de configuración</p>
+                            </div>
+                        )}
+
+                        {mailProvider === 'smtp' && (
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
+                                <div className="space-y-2">
+                                    <Label htmlFor="smtp-from">Dirección del remitente</Label>
+                                    <Input id="smtp-from" placeholder="no-reply@aether.panel" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="smtp-host">Host</Label>
+                                    <Input id="smtp-host" placeholder="smtp.example.com" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="smtp-user">Usuario</Label>
+                                    <Input id="smtp-user" placeholder="Usuario SMTP" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="smtp-pass">Contraseña</Label>
+                                    <Input id="smtp-pass" type="password" placeholder="••••••••" />
+                                </div>
+                            </div>
+                        )}
+
+                        {mailProvider === 'mailgun' && (
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
+                                <div className="space-y-2">
+                                    <Label htmlFor="mailgun-domain">Dominio</Label>
+                                    <Input id="mailgun-domain" placeholder="mg.example.com" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="mailgun-from">Dirección del remitente</Label>
+                                    <Input id="mailgun-from" placeholder="no-reply@aether.panel" />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <Label htmlFor="mailgun-key">Clave API</Label>
+                                    <Input id="mailgun-key" type="password" placeholder="••••••••" />
+                                </div>
+                            </div>
+                        )}
+
+                        {mailProvider === 'mailjet' && (
+                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
+                                 <div className="space-y-2">
+                                    <Label htmlFor="mailjet-domain">Dominio</Label>
+                                    <Input id="mailjet-domain" placeholder="example.com" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="mailjet-from">Dirección del remitente</Label>
+                                    <Input id="mailjet-from" placeholder="no-reply@aether.panel" />
+                                </div>
+                                <div className="space-y-2 md:col-span-2">
+                                    <Label htmlFor="mailjet-key">Clave API</Label>
+                                    <Input id="mailjet-key" type="password" placeholder="••••••••" />
+                                </div>
+                            </div>
+                        )}
                         
                         <Separator />
 
