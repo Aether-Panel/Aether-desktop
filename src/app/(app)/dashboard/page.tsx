@@ -67,48 +67,11 @@ export default function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Servidores</CardTitle>
-            <ServerIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalServers}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalUsers}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Nodos</CardTitle>
-            <Network className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalNodes}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Repositorios</CardTitle>
             <FolderGit className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalRepositories}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Servers</CardTitle>
-            <ServerIcon className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalServers}</div>
-            <p className="text-xs text-muted-foreground">Managed servers</p>
           </CardContent>
         </Card>
         <Card>
@@ -143,13 +106,40 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <ResourceUsageChart 
-          cpuUsage={avgCpuUsage} 
-          memoryUsage={avgMemoryUsage} 
-          storageUsage={avgStorageUsage} 
-        />
-        <NetworkUsageChart serverMetrics={aggregatedMetrics} />
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-6">
+            <ResourceUsageChart 
+              cpuUsage={avgCpuUsage} 
+              memoryUsage={avgMemoryUsage} 
+              storageUsage={avgStorageUsage} 
+            />
+            <NetworkUsageChart serverMetrics={aggregatedMetrics} />
+        </div>
+        <div className="lg:col-span-1 space-y-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Información del sistema</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                        <p className="text-muted-foreground">Versión del panel</p>
+                        <p className="font-medium">AetherPanel</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <p className="text-muted-foreground">Total de servidores</p>
+                        <p className="font-medium">{totalServers}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <p className="text-muted-foreground">Total de usuarios</p>
+                        <p className="font-medium">{totalUsers}</p>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <p className="text-muted-foreground">Total de nodos</p>
+                        <p className="font-medium">{totalNodes}</p>
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
       </div>
     </div>
   );
