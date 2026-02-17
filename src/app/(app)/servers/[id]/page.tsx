@@ -14,6 +14,8 @@ import BackupsView from './backups-view';
 import AdminView from './admin-view';
 import PluginsView from './plugins-view';
 import { ServerAddress } from './server-address';
+import MetricsCharts from './metrics-charts';
+import NetworkUsageChart from './network-usage-chart';
 
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
@@ -121,6 +123,10 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
                 <div className="text-2xl font-bold">{server.storageUsage}%</div>
               </CardContent>
             </Card>
+          </div>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <MetricsCharts serverMetrics={server.metrics} />
+            <NetworkUsageChart serverMetrics={server.metrics} />
           </div>
         </TabsContent>
         <TabsContent value="files">
