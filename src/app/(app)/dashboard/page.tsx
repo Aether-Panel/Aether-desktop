@@ -3,45 +3,137 @@ import { useAuth } from '@/app/providers';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { servers as allServers, users as allUsers, nodes as allNodes } from '@/lib/data';
 import type { Server } from '@/lib/data';
-import { Activity, Cpu, Server as ServerIcon, Users, Network, FolderGit } from 'lucide-react';
+import { Activity, Cpu, FolderGit, Network } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
 import { useMemo } from 'react';
 import ResourceUsageChart from '@/components/resource-usage-chart';
 import NetworkUsageChart from '@/components/network-usage-chart';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const { role, user } = useAuth();
 
-  const userServers = role === 'admin'
-    ? allServers
-    : allUsers.find(u => u.email === user?.email)?.assignedServers.map(id => allServers.find(s => s.id === id)).filter(Boolean) as Server[] || [];
+  // FOR USER ROLE
+  if (role === 'user') {
+    const userServers = user ? allUsers.find(u => u.email === user.email)?.assignedServers.map(id => allServers.find(s => s.id === id)).filter(Boolean) as Server[] || [] : [];
+    
+    const StatusIndicator = ({ status }: { status: Server['status'] }) => {
+        const statusClasses = {
+          online: 'bg-green-500',
+          offline: 'bg-red-500',
+          pending: 'bg-yellow-500 animate-pulse',
+        };
+        return <div className={`mr-2 h-2.5 w-2.5 rounded-full ${statusClasses[status]}`} />;
+    };
 
-  const onlineCount = userServers.filter(s => s.status === 'online').length;
-  const offlineCount = userServers.filter(s => s.status === 'offline').length;
-  const totalServers = userServers.length;
+    return (
+        <div className="flex flex-col gap-8">
+            <PageHeader
+                title={`Welcome, ${user?.name?.split(' ')[0] || 'User'}!`}
+                description="Here's a list of your assigned servers."
+            />
+            <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+              <Card className="border-0">
+                <CardHeader>
+                  <CardTitle>My Servers</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {userServers.length > 0 ? (
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Name</TableHead>
+                                    <TableHead>IP Address</TableHead>
+                                    <TableHead>Status</TableHead>
+                                    <TableHead className="hidden md:table-cell">CPU</TableHead>
+                                    <TableHead className="hidden md:table-cell">Memory</TableHead>
+                                    <TableHead className="hidden lg:table-cell">Storage</TableHead>
+                                    <TableHead className="text-right">Actions</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {userServers.map((server) => (
+                                <TableRow key={server.id}>
+                                    <TableCell className="font-medium">
+                                        <Link href={`/servers/${server.id}`} className="hover:underline">
+                                            {server.name}
+                                        </Link>
+                                    </TableCell>
+                                    <TableCell>{server.ipAddress}</TableCell>
+                                    <TableCell>
+                                        <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                                            <StatusIndicator status={server.status} />
+                                            {server.status}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell className="hidden md:table-cell">
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={server.cpuUsage} className="h-2 w-20" />
+                                            <span>{server.cpuUsage}%</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="hidden md:table-cell">
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={server.memoryUsage} className="h-2 w-20" />
+                                            <span>{server.memoryUsage}%</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="hidden lg:table-cell">
+                                        <div className="flex items-center gap-2">
+                                            <Progress value={server.storageUsage} className="h-2 w-20" />
+                                            <span>{server.storageUsage}%</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <Button asChild variant="ghost" size="sm">
+                                            <Link href={`/servers/${server.id}`}>View</Link>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    ) : (
+                        <p className="text-center text-muted-foreground py-8">You have not been assigned to any servers.</p>
+                    )}
+                </CardContent>
+              </Card>
+            </div>
+        </div>
+    );
+  }
 
+  // FOR ADMIN ROLE
+  const adminServers = allServers;
+  const onlineCount = adminServers.filter(s => s.status === 'online').length;
+  const offlineCount = adminServers.filter(s => s.status === 'offline').length;
+  const totalServers = adminServers.length;
   const totalUsers = allUsers.length;
   const totalNodes = allNodes.length;
   const totalRepositories = 2; // Mock data as requested
 
-  const avgCpuUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.cpuUsage, 0) / totalServers) : 0;
-  const avgMemoryUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.memoryUsage, 0) / totalServers) : 0;
-  const avgStorageUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.storageUsage, 0) / totalServers) : 0;
+  const avgCpuUsage = totalServers > 0 ? Math.round(adminServers.reduce((acc, s) => acc + s.cpuUsage, 0) / totalServers) : 0;
+  const avgMemoryUsage = totalServers > 0 ? Math.round(adminServers.reduce((acc, s) => acc + s.memoryUsage, 0) / totalServers) : 0;
+  const avgStorageUsage = totalServers > 0 ? Math.round(adminServers.reduce((acc, s) => acc + s.storageUsage, 0) / totalServers) : 0;
 
   const aggregatedMetrics = useMemo(() => {
-    if (userServers.length === 0) {
+    if (adminServers.length === 0) {
       const firstServerMetrics = allServers[0]?.metrics || [];
       return firstServerMetrics.map(m => ({ ...m, networkIn: 0, networkOut: 0, cpu: 0, memory: 0 }));
     }
 
-    const firstServerMetrics = userServers[0].metrics;
+    const firstServerMetrics = adminServers[0].metrics;
 
     return firstServerMetrics.map((_, index) => {
       const time = firstServerMetrics[index].time;
       let totalNetworkIn = 0;
       let totalNetworkOut = 0;
 
-      for (const server of userServers) {
+      for (const server of adminServers) {
         if (server.metrics[index]) {
           totalNetworkIn += server.metrics[index].networkIn;
           totalNetworkOut += server.metrics[index].networkOut;
@@ -56,7 +148,7 @@ export default function DashboardPage() {
         memory: 0,
       };
     });
-  }, [userServers]);
+  }, [adminServers]);
 
   return (
     <div className="flex flex-col gap-8">
