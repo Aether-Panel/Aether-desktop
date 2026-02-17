@@ -116,7 +116,8 @@ export default function DashboardPage() {
             <NetworkUsageChart serverMetrics={aggregatedMetrics} />
         </div>
         <div className="lg:col-span-1 space-y-6">
-            <Card>
+          <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/80 via-accent/70 to-secondary/80">
+            <Card className="border-0">
                 <CardHeader>
                     <CardTitle>Información del sistema</CardTitle>
                 </CardHeader>
@@ -139,6 +140,7 @@ export default function DashboardPage() {
                     </div>
                 </CardContent>
             </Card>
+          </div>
         </div>
       </div>
     </div>
