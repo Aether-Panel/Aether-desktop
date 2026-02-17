@@ -318,33 +318,35 @@ export default function DatabaseHostsPage() {
         </Dialog>
       </PageHeader>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Hosts</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Host</TableHead>
-                <TableHead>Port</TableHead>
-                <TableHead>Username</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {hosts.map((host) => (
-                <TableRow key={host.id}>
-                  <TableCell className="font-medium">{host.name}</TableCell>
-                  <TableCell>{host.host}</TableCell>
-                  <TableCell>{host.port}</TableCell>
-                  <TableCell>{host.user}</TableCell>
+      <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>Available Hosts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Host</TableHead>
+                  <TableHead>Port</TableHead>
+                  <TableHead>Username</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {hosts.map((host) => (
+                  <TableRow key={host.id}>
+                    <TableCell className="font-medium">{host.name}</TableCell>
+                    <TableCell>{host.host}</TableCell>
+                    <TableCell>{host.port}</TableCell>
+                    <TableCell>{host.user}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
