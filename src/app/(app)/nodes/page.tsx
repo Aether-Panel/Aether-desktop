@@ -211,58 +211,60 @@ export default function NodesPage() {
         </Dialog>
       </PageHeader>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>All Nodes</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Location</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {nodes.map((node) => (
-                <TableRow key={node.id}>
-                  <TableCell className="font-medium">
-                    <Link href={`/nodes/${node.id}`} className="hover:underline">
-                      {node.name}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{node.location}</TableCell>
-                  <TableCell>
-                    <Badge variant={node.status === 'online' ? 'default' : node.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
-                      <StatusIndicator status={node.status} />
-                      {node.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>Edit</DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => setDeployingNode(node)}>Deploy</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+      <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>All Nodes</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Location</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {nodes.map((node) => (
+                  <TableRow key={node.id}>
+                    <TableCell className="font-medium">
+                      <Link href={`/nodes/${node.id}`} className="hover:underline">
+                        {node.name}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{node.location}</TableCell>
+                    <TableCell>
+                      <Badge variant={node.status === 'online' ? 'default' : node.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                        <StatusIndicator status={node.status} />
+                        {node.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setDeployingNode(node)}>Deploy</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
       {/* Edit Node Dialog */}
       <Dialog open={!!editingNode} onOpenChange={(isOpen) => !isOpen && setEditingNode(null)}>
         <DialogContent className="sm:max-w-2xl">
