@@ -15,8 +15,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const mockUsers = {
-  admin: { name: 'Admin User', email: 'admin@aether.panel', avatar: 'https://picsum.photos/seed/admin-user/40/40' },
-  user: { name: 'Standard User', email: 'user@aether.panel', avatar: 'https://picsum.photos/seed/standard-user/40/40' },
+  admin: { name: 'Admin User', email: 'admin@aether.panel', avatar: 'https://picsum.photos/seed/usr-1/40/40' },
+  user: { name: 'DevOps Engineer', email: 'devops@aether.panel', avatar: 'https://picsum.photos/seed/usr-2/40/40' },
 };
 
 function AuthProvider({ children }: { children: ReactNode }) {
