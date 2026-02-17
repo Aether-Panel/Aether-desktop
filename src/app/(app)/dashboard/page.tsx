@@ -1,9 +1,9 @@
 'use client';
 import { useAuth } from '@/app/providers';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { servers as allServers, users as allUsers } from '@/lib/data';
+import { servers as allServers, users as allUsers, nodes as allNodes } from '@/lib/data';
 import type { Server } from '@/lib/data';
-import { Activity, ArrowUpRight, Cpu, HardDrive, MemoryStick, Server as ServerIcon } from 'lucide-react';
+import { Activity, ArrowUpRight, Cpu, HardDrive, MemoryStick, Server as ServerIcon, Users, Network, FolderGit } from 'lucide-react';
 import Link from 'next/link';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -21,6 +21,10 @@ export default function DashboardPage() {
   const offlineCount = userServers.filter(s => s.status === 'offline').length;
   const totalServers = userServers.length;
 
+  const totalUsers = allUsers.length;
+  const totalNodes = allNodes.length;
+  const totalRepositories = 2; // Mock data as requested
+
   const StatusIndicator = ({ status }: { status: Server['status'] }) => {
     const statusClasses = {
       online: 'bg-green-500',
@@ -37,6 +41,42 @@ export default function DashboardPage() {
         description="Here's a quick overview of your server landscape."
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Servidores</CardTitle>
+            <ServerIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalServers}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Usuarios</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalUsers}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Nodos</CardTitle>
+            <Network className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalNodes}</div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Repositorios</CardTitle>
+            <FolderGit className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{totalRepositories}</div>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Servers</CardTitle>
