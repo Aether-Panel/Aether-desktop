@@ -5,6 +5,9 @@ import { servers as allServers, users as allUsers, nodes as allNodes } from '@/l
 import type { Server } from '@/lib/data';
 import { Activity, Cpu, Server as ServerIcon, Users, Network, FolderGit } from 'lucide-react';
 import { PageHeader } from '@/components/page-header';
+import { useMemo } from 'react';
+import ResourceUsageChart from '@/components/resource-usage-chart';
+import NetworkUsageChart from '@/components/network-usage-chart';
 
 export default function DashboardPage() {
   const { role, user } = useAuth();
@@ -20,6 +23,40 @@ export default function DashboardPage() {
   const totalUsers = allUsers.length;
   const totalNodes = allNodes.length;
   const totalRepositories = 2; // Mock data as requested
+
+  const avgCpuUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.cpuUsage, 0) / totalServers) : 0;
+  const avgMemoryUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.memoryUsage, 0) / totalServers) : 0;
+  const avgStorageUsage = totalServers > 0 ? Math.round(userServers.reduce((acc, s) => acc + s.storageUsage, 0) / totalServers) : 0;
+
+  const aggregatedMetrics = useMemo(() => {
+    if (userServers.length === 0) {
+      const firstServerMetrics = allServers[0]?.metrics || [];
+      return firstServerMetrics.map(m => ({ ...m, networkIn: 0, networkOut: 0, cpu: 0, memory: 0 }));
+    }
+
+    const firstServerMetrics = userServers[0].metrics;
+
+    return firstServerMetrics.map((_, index) => {
+      const time = firstServerMetrics[index].time;
+      let totalNetworkIn = 0;
+      let totalNetworkOut = 0;
+
+      for (const server of userServers) {
+        if (server.metrics[index]) {
+          totalNetworkIn += server.metrics[index].networkIn;
+          totalNetworkOut += server.metrics[index].networkOut;
+        }
+      }
+
+      return {
+        time,
+        networkIn: Math.round(totalNetworkIn),
+        networkOut: Math.round(totalNetworkOut),
+        cpu: 0,
+        memory: 0,
+      };
+    });
+  }, [userServers]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -104,6 +141,15 @@ export default function DashboardPage() {
             <p className="text-xs text-muted-foreground">System uptime percentage</p>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <ResourceUsageChart 
+          cpuUsage={avgCpuUsage} 
+          memoryUsage={avgMemoryUsage} 
+          storageUsage={avgStorageUsage} 
+        />
+        <NetworkUsageChart serverMetrics={aggregatedMetrics} />
       </div>
     </div>
   );
