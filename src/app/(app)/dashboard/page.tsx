@@ -65,58 +65,71 @@ export default function DashboardPage() {
         description="Here's a quick overview of your server landscape."
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Repositorios</CardTitle>
-            <FolderGit className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalRepositories}</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Online</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-500">{onlineCount}</div>
-            <p className="text-xs text-muted-foreground">Servers are operational</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Offline</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-500">{offlineCount}</div>
-            <p className="text-xs text-muted-foreground">Servers need attention</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Overall Health</CardTitle>
-            <Cpu className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalServers > 0 ? `${Math.round((onlineCount / totalServers) * 100)}%` : 'N/A'}</div>
-            <p className="text-xs text-muted-foreground">System uptime percentage</p>
-          </CardContent>
-        </Card>
+        <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+          <Card className="border-0 h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Repositorios</CardTitle>
+              <FolderGit className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalRepositories}</div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+          <Card className="border-0 h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Online</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-500">{onlineCount}</div>
+              <p className="text-xs text-muted-foreground">Servers are operational</p>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+          <Card className="border-0 h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Offline</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-red-500">{offlineCount}</div>
+              <p className="text-xs text-muted-foreground">Servers need attention</p>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+          <Card className="border-0 h-full">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Overall Health</CardTitle>
+              <Cpu className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{totalServers > 0 ? `${Math.round((onlineCount / totalServers) * 100)}%` : 'N/A'}</div>
+              <p className="text-xs text-muted-foreground">System uptime percentage</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
+          <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
             <ResourceUsageChart 
               cpuUsage={avgCpuUsage} 
               memoryUsage={avgMemoryUsage} 
-              storageUsage={avgStorageUsage} 
+              storageUsage={avgStorageUsage}
+              className="border-0"
             />
-            <NetworkUsageChart serverMetrics={aggregatedMetrics} />
+          </div>
+          <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+            <NetworkUsageChart serverMetrics={aggregatedMetrics} className="border-0" />
+          </div>
         </div>
         <div className="lg:col-span-1 space-y-6">
-          <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/60 via-accent/50 to-secondary/60">
+          <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
             <Card className="border-0">
                 <CardHeader>
                     <CardTitle>Información del sistema</CardTitle>

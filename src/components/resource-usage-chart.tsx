@@ -8,6 +8,7 @@ type ResourceUsageChartProps = {
   cpuUsage: number;
   memoryUsage: number;
   storageUsage: number;
+  className?: string;
 };
 
 const chartConfig = {
@@ -62,9 +63,9 @@ const SingleGauge = ({ name, value }: { name: 'cpu' | 'memory' | 'storage', valu
   )
 }
 
-export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage }: ResourceUsageChartProps) {
+export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage, className }: ResourceUsageChartProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>Resource Overview</CardTitle>
         <CardDescription>Current snapshot of resource utilization.</CardDescription>
