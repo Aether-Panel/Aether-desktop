@@ -1,41 +1,57 @@
 'use client';
 
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/app/providers';
 import { Logo } from '@/components/logo';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(1, {
-    message: "Password is required.",
-  }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters." }),
+  email: z.string().email({ message: "Please enter a valid email address." }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters." }),
+  confirmPassword: z.string(),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
 });
 
 
-export default function LoginPage() {
-  const { login, loading } = useAuth();
+export default function RegisterPage() {
+  const [loading, setLoading] = React.useState(false);
+  const router = useRouter();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      username: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    login(values);
+    setLoading(true);
+    console.log("Registration values:", values);
+    setTimeout(() => {
+        toast({
+            title: "Registration Successful",
+            description: "You can now log in with your new account.",
+        });
+        router.push('/login');
+        setLoading(false);
+    }, 1500);
   }
 
   return (
@@ -45,17 +61,30 @@ export default function LoginPage() {
           <div className="h-[40rem] w-[40rem] rounded-full bg-gradient-radial from-primary/10 to-transparent blur-3xl" />
       </div>
       
-      {/* Login Card with Gradient Border */}
+      {/* Register Card with Gradient Border */}
       <div className="relative z-10 w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-primary/50 to-accent/50">
           <Card className="border-0 bg-card/80 backdrop-blur-lg">
               <CardHeader className="items-center text-center space-y-4">
                   <Logo className="mb-2" />
-                  <CardTitle className="text-3xl font-bold">Welcome Back</CardTitle>
-                  <CardDescription>Sign in to your Aether Panel account</CardDescription>
+                  <CardTitle className="text-3xl font-bold">Create an Account</CardTitle>
+                  <CardDescription>Join Aether Panel today</CardDescription>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="username"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Username</FormLabel>
+                          <FormControl>
+                            <Input placeholder="yourusername" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="email"
@@ -63,7 +92,7 @@ export default function LoginPage() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="admin@aether.panel" {...field} />
+                            <Input placeholder="you@example.com" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -82,29 +111,40 @@ export default function LoginPage() {
                         </FormItem>
                       )}
                     />
+                    <FormField
+                      control={form.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Confirm Password</FormLabel>
+                          <FormControl>
+                            <Input type="password" placeholder="••••••••" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <Button
                         size="lg"
                         type="submit"
-                        className="w-full text-base py-6 transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg"
+                        className="w-full text-base py-6 transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg !mt-6"
                         disabled={loading}
                     >
                         {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                        Sign In
+                        Create Account
                     </Button>
                   </form>
                 </Form>
               </CardContent>
               <CardFooter className="flex flex-col gap-4 text-center">
-                <div className="text-xs text-muted-foreground">
-                    <p>Use <span className="font-semibold text-foreground">admin@aether.panel</span> for admin access.</p>
-                    <p>Use <span className="font-semibold text-foreground">devops@aether.panel</span> for user access.</p>
-                    <p>(Any password will work)</p>
-                </div>
-                <p className="text-sm text-muted-foreground pt-4 border-t border-border/50 w-full mt-4">
-                    Don&apos;t have an account?{' '}
-                    <Link href="/register" className="font-semibold text-primary hover:underline">
-                        Sign Up
+                <p className="text-sm text-muted-foreground">
+                    Already have an account?{' '}
+                    <Link href="/login" className="font-semibold text-primary hover:underline">
+                        Sign In
                     </Link>
+                </p>
+                <p className="text-xs text-muted-foreground pt-6">
+                    © {new Date().getFullYear()} Aether Panel. All rights reserved.
                 </p>
               </CardFooter>
           </Card>
