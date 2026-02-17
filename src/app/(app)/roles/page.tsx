@@ -181,39 +181,41 @@ export default function RolesPage() {
         </Dialog>
       </PageHeader>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Available Roles</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Role</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Permissions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {roles.map((role) => (
-                <TableRow key={role.name}>
-                  <TableCell>
-                    <Badge variant={role.name === 'admin' ? 'default' : 'secondary'} className="capitalize">{role.name}</Badge>
-                  </TableCell>
-                  <TableCell>{role.description}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-2">
-                      {role.permissions.map(permission => (
-                        <Badge key={permission} variant="outline">{permission}</Badge>
-                      ))}
-                    </div>
-                  </TableCell>
+      <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>Available Roles</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Role</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Permissions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {roles.map((role) => (
+                  <TableRow key={role.name}>
+                    <TableCell>
+                      <Badge variant={role.name === 'admin' ? 'default' : 'secondary'} className="capitalize">{role.name}</Badge>
+                    </TableCell>
+                    <TableCell>{role.description}</TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-2">
+                        {role.permissions.map(permission => (
+                          <Badge key={permission} variant="outline">{permission}</Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
