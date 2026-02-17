@@ -13,7 +13,7 @@
 
         <!-- Sidebar -->
         <Border Grid.Column="0" 
-                BackgroundColor="#1e293b"
+                BackgroundColor="{StaticResource Secondary}"
                 StrokeThickness="0"
                 Padding="0">
             <Grid RowDefinitions="Auto, *, Auto, Auto">
@@ -93,8 +93,8 @@
                 <!-- Logout -->
                 <Border Grid.Row="3" StrokeThickness="0" BackgroundColor="Transparent" Padding="10,5,10,20">
                      <Grid ColumnDefinitions="30, *" ColumnSpacing="10">
-                        <Label Text="🚪" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" TextColor="#F44336"/>
-                        <Label Grid.Column="1" Text="Cerrar Sesión" VerticalOptions="Center" TextColor="#F44336" IsVisible="{Binding IsSidebarExpanded}"/>
+                        <Label Text="🚪" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" TextColor="{StaticResource Danger}"/>
+                        <Label Grid.Column="1" Text="Cerrar Sesión" VerticalOptions="Center" TextColor="{StaticResource Danger}" IsVisible="{Binding IsSidebarExpanded}"/>
                     </Grid>
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
@@ -134,7 +134,7 @@
         </Grid>
 
         <!-- Logout Modal -->
-        <Grid BackgroundColor="#020617"
+        <Grid BackgroundColor="{StaticResource ModalOverlay}"
               IsVisible="{Binding IsLogoutModalVisible}">
             <VerticalStackLayout HorizontalOptions="Center"
                                  VerticalOptions="Center"

@@ -15,6 +15,10 @@
     <Color x:Key="Error">#EF4444</Color>
     <Color x:Key="Secondary">#1E293B</Color>
     <Color x:Key="Placeholder">#94A3B8</Color>
+    <Color x:Key="Danger">#F44336</Color>
+    <Color x:Key="ModalOverlay">#020617</Color>
+    <Color x:Key="TextPrimary">#E2E8F0</Color>
+    <Color x:Key="TextSecondary">#94A3B8</Color>
     
     <!-- Light Mode Variants -->
     <Color x:Key="LightPrimary">#07A7E3</Color>

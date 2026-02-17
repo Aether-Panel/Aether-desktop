@@ -108,15 +108,9 @@ partial class DashboardViewModel : BindableObject
         };
     }
 
-    private void ShowLogoutModal()
-    {
-        IsLogoutModalVisible = true;
-    }
+    private void ShowLogoutModal() => IsLogoutModalVisible = true;
 
-    private void HideLogoutModal()
-    {
-        IsLogoutModalVisible = false;
-    }
+    private void HideLogoutModal() => IsLogoutModalVisible = false;
 
     private async void OnConfirmLogout()
     {
