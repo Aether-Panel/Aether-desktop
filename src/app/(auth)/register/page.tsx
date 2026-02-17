@@ -61,7 +61,7 @@ export default function RegisterPage() {
       </div>
       
       <div className="w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-accent/50 to-secondary/50">
-          <Card className="border-0 bg-card/80 backdrop-blur-lg">
+          <Card className="border-0 bg-card/80 backdrop-blur-lg animate-in fade-in-0 zoom-in-95 duration-500">
               <CardHeader className="items-center text-center space-y-4">
                   <Logo className="mb-2" />
                   <CardTitle className="text-3xl font-bold">Create an Account</CardTitle>
