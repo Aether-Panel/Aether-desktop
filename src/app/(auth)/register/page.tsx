@@ -57,12 +57,12 @@ export default function RegisterPage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background p-4">
       {/* Background Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <div className="h-[40rem] w-[40rem] rounded-full bg-gradient-radial from-primary/10 to-transparent blur-3xl" />
       </div>
       
       {/* Register Card with Gradient Border */}
-      <div className="relative z-10 w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-primary/50 to-accent/50">
+      <div className="w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-accent/50 to-secondary/50">
           <Card className="border-0 bg-card/80 backdrop-blur-lg">
               <CardHeader className="items-center text-center space-y-4">
                   <Logo className="mb-2" />
@@ -71,7 +71,7 @@ export default function RegisterPage() {
               </CardHeader>
               <CardContent>
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                       control={form.control}
                       name="username"
@@ -127,7 +127,7 @@ export default function RegisterPage() {
                     <Button
                         size="lg"
                         type="submit"
-                        className="w-full text-base py-6 transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg !mt-6"
+                        className="w-full text-base py-6 transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg"
                         disabled={loading}
                     >
                         {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                         Sign In
                     </Link>
                 </p>
-                <p className="text-xs text-muted-foreground pt-6">
+                <p className="text-xs text-muted-foreground pt-6 mt-4 border-t border-border/50 w-full">
                     © {new Date().getFullYear()} Aether Panel. All rights reserved.
                 </p>
               </CardFooter>

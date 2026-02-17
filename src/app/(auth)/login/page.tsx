@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/app/providers';
 import { Logo } from '@/components/logo';
 import { Loader2 } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const formSchema = z.object({
   email: z.string().email({
@@ -41,12 +42,12 @@ export default function LoginPage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background p-4">
       {/* Background Glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <div className="h-[40rem] w-[40rem] rounded-full bg-gradient-radial from-primary/10 to-transparent blur-3xl" />
       </div>
       
       {/* Login Card with Gradient Border */}
-      <div className="relative z-10 w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-primary/50 to-accent/50">
+      <div className="w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-accent/50 to-secondary/50">
           <Card className="border-0 bg-card/80 backdrop-blur-lg">
               <CardHeader className="items-center text-center space-y-4">
                   <Logo className="mb-2" />
@@ -95,16 +96,26 @@ export default function LoginPage() {
                 </Form>
               </CardContent>
               <CardFooter className="flex flex-col gap-4 text-center">
+                 <div className="w-full">
+                    <p className="text-sm text-muted-foreground">
+                        Don&apos;t have an account?{' '}
+                        <Link href="/register" className="font-semibold text-primary hover:underline">
+                            Sign Up
+                        </Link>
+                    </p>
+                </div>
+                <div className="w-full flex items-center gap-4 text-xs text-muted-foreground my-2">
+                    <Separator className="flex-1" />
+                    <span>For Demo</span>
+                    <Separator className="flex-1" />
+                </div>
                 <div className="text-xs text-muted-foreground">
                     <p>Use <span className="font-semibold text-foreground">admin@aether.panel</span> for admin access.</p>
                     <p>Use <span className="font-semibold text-foreground">devops@aether.panel</span> for user access.</p>
                     <p>(Any password will work)</p>
                 </div>
-                <p className="text-sm text-muted-foreground pt-4 border-t border-border/50 w-full mt-4">
-                    Don&apos;t have an account?{' '}
-                    <Link href="/register" className="font-semibold text-primary hover:underline">
-                        Sign Up
-                    </Link>
+                <p className="text-xs text-muted-foreground pt-6 mt-4 border-t border-border/50 w-full">
+                    © {new Date().getFullYear()} Aether Panel. All rights reserved.
                 </p>
               </CardFooter>
           </Card>
