@@ -4,7 +4,6 @@ import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database, Archive, Shield, Puzzle } from 'lucide-react';
-import MetricsCharts from '@/components/metrics-charts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ConsoleView from './console-view';
 import FileManagerView from './file-manager-view';
@@ -15,8 +14,6 @@ import BackupsView from './backups-view';
 import AdminView from './admin-view';
 import PluginsView from './plugins-view';
 import { ServerAddress } from './server-address';
-import ResourceUsageChart from '@/components/resource-usage-chart';
-import NetworkUsageChart from '@/components/network-usage-chart';
 
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
@@ -125,11 +122,6 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
               </CardContent>
             </Card>
           </div>
-          <div className="grid gap-6 md:grid-cols-1 lg:grid-cols-2">
-            <MetricsCharts serverMetrics={server.metrics} />
-            <ResourceUsageChart cpuUsage={server.cpuUsage} memoryUsage={server.memoryUsage} storageUsage={server.storageUsage} />
-          </div>
-          <NetworkUsageChart serverMetrics={server.metrics} />
         </TabsContent>
         <TabsContent value="files">
           <FileManagerView />
