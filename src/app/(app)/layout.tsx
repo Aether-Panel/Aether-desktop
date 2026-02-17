@@ -96,12 +96,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <span>Settings</span>
                 </DropdownMenuItem>
               </Link>
-              {role === 'admin' && (
-                <DropdownMenuItem>
-                  <Shield className="mr-2" />
-                  <span>Admin Panel</span>
-                </DropdownMenuItem>
-              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2" />
