@@ -1,13 +1,19 @@
 'use client';
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
 export type UserRole = 'admin' | 'user';
+
+interface LoginCredentials {
+  email: string;
+  password?: string; // Password is not validated in this mock
+}
 
 interface AuthContextType {
   role: UserRole | null;
   user: { name: string; email: string; avatar: string } | null;
-  login: (role: UserRole) => void;
+  login: (credentials: LoginCredentials) => void;
   logout: () => void;
   loading: boolean;
 }
@@ -24,6 +30,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
 
   useEffect(() => {
     let storedRole: UserRole | null = null;
@@ -40,25 +47,44 @@ function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (!loading) {
-      const isAuthPage = pathname === '/login';
-      if (!role && !isAuthPage) {
-        router.push('/login');
-      }
-      if (role && isAuthPage) {
-        router.push('/dashboard');
-      }
+    if (loading) return;
+    const isAuthPage = pathname === '/login';
+    if (!role && !isAuthPage) {
+      router.push('/login');
+    }
+    if (role && isAuthPage) {
+      router.push('/dashboard');
     }
   }, [role, loading, pathname, router]);
 
-  const login = (newRole: UserRole) => {
-    try {
-      localStorage.setItem('aether_panel_role', newRole);
-      setRole(newRole);
-      router.push('/dashboard');
-    } catch (e) {
-      console.error('localStorage is not available');
+  const login = (credentials: LoginCredentials) => {
+    setLoading(true);
+    let newRole: UserRole | null = null;
+
+    if (credentials.email.toLowerCase() === mockUsers.admin.email) {
+        newRole = 'admin';
+    } else if (credentials.email.toLowerCase() === mockUsers.user.email) {
+        newRole = 'user';
     }
+    
+    setTimeout(() => {
+        if (newRole) {
+            try {
+                localStorage.setItem('aether_panel_role', newRole);
+                setRole(newRole);
+                router.push('/dashboard');
+            } catch (e) {
+                console.error('localStorage is not available');
+            }
+        } else {
+            toast({
+                variant: 'destructive',
+                title: 'Invalid Credentials',
+                description: 'Please check your email and password.',
+            });
+        }
+        setLoading(false);
+    }, 1000);
   };
 
   const logout = () => {
@@ -77,7 +103,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const isAuthPage = pathname === '/login';
 
-  if (loading || (!role && !isAuthPage)) {
+  if ((loading && pathname !== '/login') || (!role && !isAuthPage)) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
