@@ -24,6 +24,8 @@ export default function SettingsPage() {
     const [baseUrl, setBaseUrl] = useState('http://localhost:8080');
     const [allowRegistration, setAllowRegistration] = useState(true);
     const [mailProvider, setMailProvider] = useState('');
+    const [geminiApiKey, setGeminiApiKey] = useState('');
+    const [hideAIAnalysis, setHideAIAnalysis] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -75,6 +77,20 @@ export default function SettingsPage() {
                                 <div className="space-y-2">
                                     <Label htmlFor="company-name">Nombre de la empresa</Label>
                                     <Input id="company-name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="gemini-api-key">Clave API de Gemini</Label>
+                                    <Input id="gemini-api-key" type="password" value={geminiApiKey} onChange={(e) => setGeminiApiKey(e.target.value)} placeholder="Introduce tu clave API de Gemini" />
+                                    <p className="text-sm text-muted-foreground">Introduce tu clave API de Google Gemini para habilitar las funciones de inteligencia artificial.</p>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg border p-4">
+                                    <div>
+                                        <Label htmlFor="hide-ai-analysis" className="font-medium">Ocultar Análisis IA de la Consola</Label>
+                                        <p className="text-sm text-muted-foreground max-w-prose mt-1">
+                                            Si se activa, se ocultará la función de análisis de la consola por IA para todos los servidores.
+                                        </p>
+                                    </div>
+                                    <Switch id="hide-ai-analysis" checked={hideAIAnalysis} onCheckedChange={setHideAIAnalysis} />
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg border p-4">
                                     <div>
