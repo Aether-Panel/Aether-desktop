@@ -6,6 +6,7 @@ import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 type MetricsChartsProps = {
   serverMetrics: Server['metrics'];
+  className?: string;
 };
 
 const chartConfig = {
@@ -13,9 +14,9 @@ const chartConfig = {
   memory: { label: 'Memory', color: 'hsl(var(--chart-2))' },
 };
 
-export default function MetricsCharts({ serverMetrics }: MetricsChartsProps) {
+export default function MetricsCharts({ serverMetrics, className }: MetricsChartsProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>CPU & Memory Usage</CardTitle>
         <CardDescription>Real-time CPU and Memory usage for the last 30 minutes.</CardDescription>

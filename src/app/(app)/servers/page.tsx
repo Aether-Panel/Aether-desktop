@@ -79,79 +79,81 @@ export default function ServersPage() {
         </Dialog>
       </PageHeader>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>All Servers</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>IP Address</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="hidden md:table-cell">CPU</TableHead>
-                <TableHead className="hidden md:table-cell">Memory</TableHead>
-                <TableHead className="hidden lg:table-cell">Storage</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {servers.map((server) => (
-                <TableRow key={server.id}>
-                  <TableCell className="font-medium">
-                    <Link href={`/servers/${server.id}`} className="hover:underline">
-                      {server.name}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{server.ipAddress}</TableCell>
-                  <TableCell>
-                    <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
-                      <StatusIndicator status={server.status} />
-                      {server.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <div className="flex items-center gap-2">
-                      <Progress value={server.cpuUsage} className="h-2 w-20" />
-                      <span>{server.cpuUsage}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <div className="flex items-center gap-2">
-                      <Progress value={server.memoryUsage} className="h-2 w-20" />
-                      <span>{server.memoryUsage}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    <div className="flex items-center gap-2">
-                      <Progress value={server.storageUsage} className="h-2 w-20" />
-                      <span>{server.storageUsage}%</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem onClick={() => router.push(`/servers/${server.id}`)}>View Details</DropdownMenuItem>
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+      <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>All Servers</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>IP Address</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="hidden md:table-cell">CPU</TableHead>
+                  <TableHead className="hidden md:table-cell">Memory</TableHead>
+                  <TableHead className="hidden lg:table-cell">Storage</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {servers.map((server) => (
+                  <TableRow key={server.id}>
+                    <TableCell className="font-medium">
+                      <Link href={`/servers/${server.id}`} className="hover:underline">
+                        {server.name}
+                      </Link>
+                    </TableCell>
+                    <TableCell>{server.ipAddress}</TableCell>
+                    <TableCell>
+                      <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                        <StatusIndicator status={server.status} />
+                        {server.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-2">
+                        <Progress value={server.cpuUsage} className="h-2 w-20" />
+                        <span>{server.cpuUsage}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">
+                      <div className="flex items-center gap-2">
+                        <Progress value={server.memoryUsage} className="h-2 w-20" />
+                        <span>{server.memoryUsage}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <div className="flex items-center gap-2">
+                        <Progress value={server.storageUsage} className="h-2 w-20" />
+                        <span>{server.storageUsage}%</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => router.push(`/servers/${server.id}`)}>View Details</DropdownMenuItem>
+                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

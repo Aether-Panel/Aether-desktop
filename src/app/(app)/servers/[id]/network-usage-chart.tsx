@@ -6,6 +6,7 @@ import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 type NetworkUsageChartProps = {
   serverMetrics: Server['metrics'];
+  className?: string;
 };
 
 const chartConfig = {
@@ -13,9 +14,9 @@ const chartConfig = {
   networkOut: { label: 'Upload', color: 'hsl(var(--chart-5))' },
 };
 
-export default function NetworkUsageChart({ serverMetrics }: NetworkUsageChartProps) {
+export default function NetworkUsageChart({ serverMetrics, className }: NetworkUsageChartProps) {
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader>
         <CardTitle>Network Traffic</CardTitle>
         <CardDescription>Inbound and outbound traffic for the last 30 minutes (KB/s).</CardDescription>
