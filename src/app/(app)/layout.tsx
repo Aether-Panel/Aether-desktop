@@ -90,10 +90,12 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <Settings className="mr-2" />
-                <span>Settings</span>
-              </DropdownMenuItem>
+              <Link href="/profile/settings">
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="mr-2" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </Link>
               {role === 'admin' && (
                 <DropdownMenuItem>
                   <Shield className="mr-2" />
