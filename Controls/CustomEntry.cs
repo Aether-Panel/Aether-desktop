@@ -154,8 +154,7 @@ partial class CustomEntry : Grid
 
     private void Entry_Unfocused(object sender, FocusEventArgs e)
     {
-        if (string.IsNullOrEmpty(_entry.Text))
-            _isFloating = false;
+        if (string.IsNullOrEmpty(_entry.Text)) _isFloating = false;
 
         UpdateFloatingLabelPosition();
         AnimateFloatingLabel(false);
@@ -191,16 +190,21 @@ partial class CustomEntry : Grid
 
     private void AnimateFloatingLabel(bool show)
     {
-        var scale = show ? 0.85 : 1.0;
-        var translationX = show ? -8 : 0;
-        var margin = show ? new Thickness(0, -8, 0, 0) : new Thickness(0, 8, 0, 0);
+        var targetScale = show ? 0.85 : 1.0;
+        var targetTranslationX = show ? -8.0 : 0.0;
+        var targetMarginTop = show ? -8.0 : 8.0;
+
+        var startScale = _floatingLabel.Scale;
+        var startTranslationX = _floatingLabel.TranslationX;
+        var startMarginTop = _floatingLabel.Margin.Top;
 
         _floatingLabel.Animate("FloatingLabelAnimation", v =>
         {
-            _floatingLabel.Scale = scale;
-            _floatingLabel.TranslationX = translationX;
-            _floatingLabel.Margin = margin;
-        }, 16, 200, Easing.SinOut);
+            _floatingLabel.Scale = startScale + (targetScale - startScale) * v;
+            _floatingLabel.TranslationX = startTranslationX + (targetTranslationX - startTranslationX) * v;
+            var marginTop = startMarginTop + (targetMarginTop - startMarginTop) * v;
+            _floatingLabel.Margin = new Thickness(0, marginTop, 0, 0);
+        }, 0, 1, 16, 200, Easing.SinOut);
     }
 
     protected override void OnBindingContextChanged()

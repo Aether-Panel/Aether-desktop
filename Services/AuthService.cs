@@ -7,7 +7,7 @@ public class AuthService
     private static AuthService _instance;
     public static AuthService Instance => _instance ??= new AuthService();
 
-    public bool IsAuthenticated { get; set; }
+    public bool IsAuthenticated { get; private set; }
     public string CurrentUserName { get; private set; }
     public string CurrentUserRole { get; private set; }
 
