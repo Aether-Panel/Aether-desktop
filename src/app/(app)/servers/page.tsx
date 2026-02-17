@@ -14,6 +14,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
+import Link from 'next/link';
 
 export default function ServersPage() {
   const { role } = useAuth();
@@ -86,21 +88,44 @@ export default function ServersPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>IP Address</TableHead>
                 <TableHead>Status</TableHead>
+                <TableHead className="hidden md:table-cell">CPU</TableHead>
+                <TableHead className="hidden md:table-cell">Memory</TableHead>
+                <TableHead className="hidden lg:table-cell">Storage</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {servers.map((server) => (
                 <TableRow key={server.id}>
-                  <TableCell className="font-medium">{server.name}</TableCell>
-                  <TableCell>{server.ipAddress}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link href={`/servers/${server.id}`} className="hover:underline">
+                      {server.name}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                       <StatusIndicator status={server.status} />
                       {server.status}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <div className="flex items-center gap-2">
+                      <Progress value={server.cpuUsage} className="h-2 w-20" />
+                      <span>{server.cpuUsage}%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <div className="flex items-center gap-2">
+                      <Progress value={server.memoryUsage} className="h-2 w-20" />
+                      <span>{server.memoryUsage}%</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    <div className="flex items-center gap-2">
+                      <Progress value={server.storageUsage} className="h-2 w-20" />
+                      <span>{server.storageUsage}%</span>
+                    </div>
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
