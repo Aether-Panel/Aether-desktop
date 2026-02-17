@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using Aether.Helpers;
 
-namespace Aether.Controls
+namespace Aether.Controls;
+
+partial class SecondaryButton : Button
 {
-    internal class SecondaryButton
+    public SecondaryButton()
     {
+        Style = (Style)Application.Current.Resources["LoginSecondaryButtonStyle"];
+        SetDynamicResource(StyleProperty, "LoginSecondaryButtonStyle");
+
+        Clicked += async (s, e) => await this.PressAsync();
     }
 }
