@@ -67,24 +67,26 @@ export default function TemplatesPage() {
       
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {templates.map((template) => (
-          <Card key={template.id} className="flex cursor-pointer flex-col justify-between overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <template.icon className="h-10 w-10 text-muted-foreground" />
-                <Badge variant="outline" className={categoryColors[template.category]}>
-                  {template.category}
-                </Badge>
+          <div key={template.id} className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-primary/10">
+            <Card className="flex h-full cursor-pointer flex-col justify-between overflow-hidden border-0">
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <template.icon className="h-10 w-10 text-muted-foreground" />
+                  <Badge variant="outline" className={categoryColors[template.category]}>
+                    {template.category}
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardTitle className="text-lg">{template.name}</CardTitle>
+              </CardContent>
+              <div className="p-6 pt-2">
+                <Button className="w-full">
+                  Use Template
+                </Button>
               </div>
-            </CardHeader>
-            <CardContent>
-              <CardTitle className="text-lg">{template.name}</CardTitle>
-            </CardContent>
-            <div className="p-6 pt-2">
-              <Button className="w-full">
-                Use Template
-              </Button>
-            </div>
-          </Card>
+            </Card>
+          </div>
         ))}
       </div>
     </div>
