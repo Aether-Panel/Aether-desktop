@@ -88,6 +88,7 @@ export default function DashboardPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
+                <TableHead className="hidden sm:table-cell">IP Address</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="hidden md:table-cell">CPU</TableHead>
                 <TableHead className="hidden md:table-cell">Memory</TableHead>
@@ -103,6 +104,7 @@ export default function DashboardPage() {
                       {server.name}
                     </Link>
                   </TableCell>
+                  <TableCell className="hidden sm:table-cell">{server.ipAddress}</TableCell>
                   <TableCell>
                     <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                       <StatusIndicator status={server.status} />
