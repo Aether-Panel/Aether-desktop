@@ -113,55 +113,57 @@ export default function FileManagerView() {
 
   return (
     <>
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>File Manager</CardTitle>
-          <CardDescription>Browse and manage files on this server. Click on a file name to edit it.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Size</TableHead>
-                <TableHead>Last Modified</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {files.map((file) => (
-                <TableRow key={file.name}>
-                  <TableCell
-                    className={`font-medium flex items-center gap-2 ${file.type === 'file' ? 'cursor-pointer hover:underline' : ''}`}
-                    onClick={() => handleFileClick(file)}
-                  >
-                    {file.type === 'folder' ? <Folder className="text-yellow-500" /> : <FileIcon />}
-                    {file.name}
-                  </TableCell>
-                  <TableCell>{file.size}</TableCell>
-                  <TableCell>{file.modified}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        {file.type === 'file' && <DropdownMenuItem onClick={() => handleFileClick(file)}>Edit</DropdownMenuItem>}
-                        <DropdownMenuItem>Download</DropdownMenuItem>
-                        <DropdownMenuItem>Rename</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+      <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+        <Card className="border-0">
+          <CardHeader>
+            <CardTitle>File Manager</CardTitle>
+            <CardDescription>Browse and manage files on this server. Click on a file name to edit it.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead>Last Modified</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+              </TableHeader>
+              <TableBody>
+                {files.map((file) => (
+                  <TableRow key={file.name}>
+                    <TableCell
+                      className={`font-medium flex items-center gap-2 ${file.type === 'file' ? 'cursor-pointer hover:underline' : ''}`}
+                      onClick={() => handleFileClick(file)}
+                    >
+                      {file.type === 'folder' ? <Folder className="text-yellow-500" /> : <FileIcon />}
+                      {file.name}
+                    </TableCell>
+                    <TableCell>{file.size}</TableCell>
+                    <TableCell>{file.modified}</TableCell>
+                    <TableCell className="text-right">
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-8 w-8 p-0">
+                            <span className="sr-only">Open menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          {file.type === 'file' && <DropdownMenuItem onClick={() => handleFileClick(file)}>Edit</DropdownMenuItem>}
+                          <DropdownMenuItem>Download</DropdownMenuItem>
+                          <DropdownMenuItem>Rename</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
 
       <Dialog open={!!editingFile} onOpenChange={(open) => !open && handleCloseDialog()}>
         <DialogContent className="w-[90vw] max-w-[90vw] h-[90vh] flex flex-col">

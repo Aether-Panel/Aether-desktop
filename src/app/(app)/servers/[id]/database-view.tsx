@@ -16,77 +16,79 @@ const databases = [
 
 export default function DatabaseView() {
   return (
-    <Card className="mt-6">
-      <CardHeader>
-        <div className="flex items-center justify-between">
-            <div>
-                <CardTitle>Bases de Datos</CardTitle>
-                <CardDescription>Gestiona las bases de datos para este servidor.</CardDescription>
-            </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                    <PlusCircle className="mr-2" />
-                    Nueva Base de Datos
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Crear Nueva Base de Datos</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="db-name" className="text-right">
-                      Nombre de la Base de Datos
-                    </Label>
-                    <Input id="db-name" placeholder="Nombre de la Base de Datos" className="col-span-3" />
+    <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+      <Card className="border-0">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+              <div>
+                  <CardTitle>Bases de Datos</CardTitle>
+                  <CardDescription>Gestiona las bases de datos para este servidor.</CardDescription>
+              </div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button>
+                      <PlusCircle className="mr-2" />
+                      Nueva Base de Datos
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Crear Nueva Base de Datos</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="db-name" className="text-right">
+                        Nombre de la Base de Datos
+                      </Label>
+                      <Input id="db-name" placeholder="Nombre de la Base de Datos" className="col-span-3" />
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                      <Label htmlFor="db-host" className="text-right">
+                        Database Host
+                      </Label>
+                      <Select defaultValue="panel">
+                        <SelectTrigger className="col-span-3">
+                          <SelectValue placeholder="Select a host" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="panel">Panel (localhost)</SelectItem>
+                          <SelectItem value="remote">Remote MySQL Server</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="db-host" className="text-right">
-                      Database Host
-                    </Label>
-                    <Select defaultValue="panel">
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Select a host" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="panel">Panel (localhost)</SelectItem>
-                        <SelectItem value="remote">Remote MySQL Server</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Crear Base de Datos</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-        </div>
-      </CardHeader>
-      <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nombre</TableHead>
-                <TableHead>Usuario</TableHead>
-                <TableHead>Conexiones desde</TableHead>
-                <TableHead className="text-right">Tamaño</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {databases.map((db) => (
-                <TableRow key={db.name}>
-                  <TableCell className="font-medium">{db.name}</TableCell>
-                  <TableCell>{db.user}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">% (Cualquier Host)</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">{db.size}</TableCell>
+                  <DialogFooter>
+                    <Button type="submit">Crear Base de Datos</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+          </div>
+        </CardHeader>
+        <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nombre</TableHead>
+                  <TableHead>Usuario</TableHead>
+                  <TableHead>Conexiones desde</TableHead>
+                  <TableHead className="text-right">Tamaño</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-      </CardContent>
-    </Card>
+              </TableHeader>
+              <TableBody>
+                {databases.map((db) => (
+                  <TableRow key={db.name}>
+                    <TableCell className="font-medium">{db.name}</TableCell>
+                    <TableCell>{db.user}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">% (Cualquier Host)</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">{db.size}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

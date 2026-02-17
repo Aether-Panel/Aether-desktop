@@ -36,7 +36,7 @@ export default function AISummary() {
   };
 
   return (
-    <Card>
+    <Card className="border-0">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Lightbulb className="text-primary" />
