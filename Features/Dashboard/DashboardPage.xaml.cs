@@ -10,7 +10,7 @@ public partial class DashboardPage : ContentPage
 
 
 
-    private async void OnMenuClickedAsync(object sender, EventArgs e)
+    private async void OnMenuClicked(object sender, EventArgs e)
     {
         if (sender is not ImageButton button) return;
 

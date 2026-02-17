@@ -1,43 +1,19 @@
+using Aether.Helpers;
+
 namespace Aether.Features.Login;
 
 public partial class LoginPage : ContentPage
 {
+    private readonly LoginViewModel _viewModel;
+
     public LoginPage()
     {
         InitializeComponent();
-        BindingContext = new LoginViewModel();
+        _viewModel = new LoginViewModel();
+        BindingContext = _viewModel;
         SetupAnimations();
-        CustomizeEntryHandlers();
     }
 
-    private static void CustomizeEntryHandlers()
-    {
-        // Remove the native Windows TextBox border so only the XAML Border wrapper is visible
-#if WINDOWS
-        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoBorder", (handler, view) =>
-        {
-            if (handler.PlatformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                textBox.BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-                textBox.Padding = new Microsoft.UI.Xaml.Thickness(0);
-
-                // Remove focus visual border too
-                textBox.Resources["TextControlBorderThemeThicknessFocused"] = new Microsoft.UI.Xaml.Thickness(0);
-                textBox.Resources["TextControlBorderThemeThickness"] = new Microsoft.UI.Xaml.Thickness(0);
-            }
-        });
-        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("TransparentBg", (handler, view) =>
-        {
-            if (handler.PlatformView is Microsoft.UI.Xaml.Controls.TextBox textBox)
-            {
-                textBox.Background = null;
-                textBox.Resources["TextControlBackground"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
-                textBox.Resources["TextControlBackgroundPointerOver"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
-                textBox.Resources["TextControlBackgroundFocused"] = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Transparent);
-            }
-        });
-#endif
-    }
 
     private void SetupAnimations()
     {
@@ -63,7 +39,6 @@ public partial class LoginPage : ContentPage
 
     private async void OnLoginButtonClicked(object sender, EventArgs e)
     {
-        var viewModel = BindingContext as LoginViewModel;
 
         // Hide any previous error/validation messages
         ErrorMessage.IsVisible = false;
@@ -73,13 +48,13 @@ public partial class LoginPage : ContentPage
         // Per-field validation
         bool hasErrors = false;
 
-        if (string.IsNullOrWhiteSpace(viewModel.Username) || (!string.IsNullOrWhiteSpace(viewModel.Username) && !viewModel.Username.Contains("@")))
+        if (string.IsNullOrWhiteSpace(_viewModel.Username) || !_viewModel.Username.Contains('@'))
         {
             EmailValidationLabel.IsVisible = true;
             hasErrors = true;
         }
 
-        if (string.IsNullOrWhiteSpace(viewModel.Password) || viewModel.Password.Length < 8)
+        if (string.IsNullOrWhiteSpace(_viewModel.Password) || _viewModel.Password.Length < 8)
         {
             PasswordValidationLabel.IsVisible = true;
             hasErrors = true;
@@ -88,7 +63,7 @@ public partial class LoginPage : ContentPage
         if (hasErrors)
         {
             // Shake animation for error
-            await ShakeAnimationAsync(LoginButton);
+            await LoginButton.ShakeAsync();
             return;
         }
 
@@ -97,7 +72,7 @@ public partial class LoginPage : ContentPage
 
         // Validate against JSON credentials
         var isValid = await Services.AuthService.Instance.ValidateCredentialsAsync(
-            viewModel.Username, viewModel.Password);
+            _viewModel.Username, _viewModel.Password);
 
         if (isValid)
         {
@@ -110,7 +85,7 @@ public partial class LoginPage : ContentPage
             ErrorMessage.Text = "Usuario o contraseña incorrectos. Intente nuevamente.";
             ErrorMessage.IsVisible = true;
 
-            await ShakeAnimationAsync(PasswordEntry);
+            await PasswordEntry.ShakeAsync();
 
             LoginButton.IsLoading = false;
         }
@@ -130,15 +105,6 @@ public partial class LoginPage : ContentPage
         PasswordEntry.IsPassword = !PasswordEntry.IsPassword;
         var image = (Image)sender;
         image.Opacity = PasswordEntry.IsPassword ? 0.5 : 1.0;
-    }
-
-    private static async Task ShakeAnimationAsync(VisualElement element)
-    {
-        await element.TranslateToAsync(-10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(-10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(0, 0, 50, Easing.SinOut);
     }
 
     // Handle keyboard appearance for better UX

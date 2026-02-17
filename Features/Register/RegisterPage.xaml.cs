@@ -1,3 +1,5 @@
+using Aether.Helpers;
+
 namespace Aether.Features.Register;
 
 public partial class RegisterPage : ContentPage
@@ -40,18 +42,13 @@ public partial class RegisterPage : ContentPage
         RegisterButton.IsLoading = true;
         await _viewModel.RegisterAsync();
         RegisterButton.IsLoading = false;
-        
+
         // Shake if error
-        if (!string.IsNullOrEmpty(_viewModel.ErrorMessage))
-        {
-             await ShakeAnimationAsync(RegisterButton);
-        }
+        if (!string.IsNullOrEmpty(_viewModel.ErrorMessage)) await RegisterButton.ShakeAsync();
+
     }
 
-    private async void OnBackButtonClicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync("//LoginPage");
-    }
+    private async void OnBackButtonClicked(object sender, EventArgs e) => await Shell.Current.GoToAsync("//LoginPage");
 
     private void OnPasswordToggleClicked(object sender, EventArgs e)
     {
@@ -65,14 +62,5 @@ public partial class RegisterPage : ContentPage
         ConfirmPasswordEntry.IsPassword = !ConfirmPasswordEntry.IsPassword;
         var button = (Button)sender;
         button.Text = ConfirmPasswordEntry.IsPassword ? "👁" : "👁‍🗨";
-    }
-
-    private static async Task ShakeAnimationAsync(VisualElement element)
-    {
-        await element.TranslateToAsync(-10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(-10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(10, 0, 50, Easing.SinOut);
-        await element.TranslateToAsync(0, 0, 50, Easing.SinOut);
     }
 }

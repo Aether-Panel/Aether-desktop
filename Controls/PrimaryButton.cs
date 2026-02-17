@@ -1,3 +1,5 @@
+using Aether.Helpers;
+
 namespace Aether.Controls;
 
 partial class PrimaryButton : Button
@@ -18,8 +20,7 @@ partial class PrimaryButton : Button
         Style = (Style)Application.Current.Resources["LoginPrimaryButtonStyle"];
         SetDynamicResource(StyleProperty, "LoginPrimaryButtonStyle");
 
-        // Add animations
-        Clicked += PrimaryButton_ClickedAsync;
+        Clicked += async (s, e) => await this.PressAsync();
     }
 
     private static void OnIsLoadingChanged(BindableObject bindable, object oldValue, object newValue)
@@ -38,18 +39,11 @@ partial class PrimaryButton : Button
         }
         else
         {
-            if (Text == "...") Text = _originalText;
+            if (Text is "...") Text = _originalText;
 
-            IsEnabled = false;
+            IsEnabled = true;
             Opacity = 1.0;
         }
-    }
-
-    private async void PrimaryButton_ClickedAsync(object sender, EventArgs e)
-    {
-        // Add click animation
-        await this.ScaleToAsync(0.95, 100, Easing.SinOut);
-        await this.ScaleToAsync(1.0, 100, Easing.SinIn);
     }
 
     protected override void OnSizeAllocated(double width, double height)
@@ -59,24 +53,5 @@ partial class PrimaryButton : Button
         // Ensure consistent width
         if (width > 0 && WidthRequest == -1) WidthRequest = Math.Min(width, 400);
 
-    }
-}
-
-partial class SecondaryButton : Button
-{
-    public SecondaryButton()
-    {
-        Style = (Style)Application.Current.Resources["LoginSecondaryButtonStyle"];
-        SetDynamicResource(StyleProperty, "LoginSecondaryButtonStyle");
-
-        // Add animations
-        Clicked += SecondaryButton_ClickedAsync;
-    }
-
-    private async void SecondaryButton_ClickedAsync(object sender, EventArgs e)
-    {
-        // Add click animation
-        await this.ScaleToAsync(0.95, 100, Easing.SinOut);
-        await this.ScaleToAsync(1.0, 100, Easing.SinIn);
     }
 }
