@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/app/providers';
 import { Logo } from '@/components/logo';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Mail, Lock } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const formSchema = z.object({
@@ -41,12 +41,10 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-background p-4">
-      {/* Background Glows */}
-      <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="h-[40rem] w-[40rem] rounded-full bg-gradient-radial from-primary/10 to-transparent blur-3xl" />
+      <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+        <div className="absolute left-0 right-0 top-0 h-[30rem] w-full bg-[radial-gradient(circle_500px_at_50%_200px,#2563eb33,transparent)]"></div>
       </div>
       
-      {/* Login Card with Gradient Border */}
       <div className="w-full max-w-md rounded-xl p-[1px] bg-gradient-to-br from-primary/20 via-accent/50 to-secondary/50">
           <Card className="border-0 bg-card/80 backdrop-blur-lg">
               <CardHeader className="items-center text-center space-y-4">
@@ -64,7 +62,10 @@ export default function LoginPage() {
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="admin@aether.panel" {...field} />
+                            <div className="relative">
+                              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                              <Input placeholder="admin@aether.panel" {...field} className="pl-10" />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -77,7 +78,10 @@ export default function LoginPage() {
                         <FormItem>
                           <FormLabel>Password</FormLabel>
                           <FormControl>
-                            <Input type="password" placeholder="••••••••" {...field} />
+                            <div className="relative">
+                              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                              <Input type="password" placeholder="••••••••" {...field} className="pl-10" />
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -115,7 +119,7 @@ export default function LoginPage() {
                     <p>(Any password will work)</p>
                 </div>
                 <p className="text-xs text-muted-foreground pt-6 mt-4 border-t border-border/50 w-full">
-                    © {new Date().getFullYear()} Aether Panel. All rights reserved.
+                    © 2024 Aether Panel. All rights reserved.
                 </p>
               </CardFooter>
           </Card>
