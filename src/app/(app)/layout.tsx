@@ -39,6 +39,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     { href: '/users', label: 'Users', icon: Users, roles: ['admin'] },
     { href: '/roles', label: 'Roles', icon: ShieldCheck, roles: ['admin'] },
     { href: '/database-hosts', label: 'Database Hosts', icon: Database, roles: ['admin'] },
+    { href: '/settings', label: 'Settings', icon: Settings, roles: ['admin'] },
   ];
 
   return (
