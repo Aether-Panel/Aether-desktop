@@ -48,8 +48,7 @@
 		<MauiSplashScreen Include="Resources\Images\aether_icon.png" Color="#020617" BaseSize="128,128" />
 
 		<!-- Images -->
-		<MauiImage Include="Resources\Images\**\*.png;Resources\Images\**\*.jpg;Resources\Images\**\*.jpeg;Resources\Images\**\*.svg"
-		           Exclude="Resources\Images\aether_icon.png" />
+		<MauiImage Include="Resources\Images\**\*.png;Resources\Images\**\*.jpg;Resources\Images\**\*.jpeg;Resources\Images\**\*.svg" Exclude="Resources\Images\aether_icon.png" />
 		<MauiImage Include="Resources\AppIcon\*.svg" />
 		
 		<!-- Custom Fonts -->
@@ -63,5 +62,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
+
+	<ProjectExtensions><VisualStudio><UserProperties resources_4raw_4appsettings_1development_1json__JsonSchema="https://www.schemastore.org/behat.json" /></VisualStudio></ProjectExtensions>
 
 </Project>
