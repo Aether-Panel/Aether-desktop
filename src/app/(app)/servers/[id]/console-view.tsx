@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Play, RefreshCw, Send, ShieldAlert, Square } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Send } from 'lucide-react';
+import { useState } from 'react';
 import AISummary from './ai-summary';
 
 type LogEntry = {
@@ -12,42 +12,8 @@ type LogEntry = {
   message: string;
 };
 
-const initialLogMessages = [
-    "Starting up server...",
-    "Connecting to database on port 5432.",
-    "Database connection successful.",
-    "Listening on port 3000.",
-    "GET /api/health 200 OK",
-    "GET /static/main.css 200 OK",
-    "POST /api/login 200 OK",
-    "User 'admin' logged in from 127.0.0.1",
-    "GET /dashboard 200 OK",
-    "[WARN] High memory usage detected: 85%",
-    "Running scheduled job: clean_temp_files",
-    "Job 'clean_temp_files' completed in 150ms.",
-    "GET /api/users/1 200 OK",
-    "[ERROR] Unhandled exception in worker thread: TypeError: Cannot read properties of undefined (reading 'name')",
-    "Restarting worker thread...",
-    "Worker thread restarted successfully."
-];
-
-export default function ConsoleView() {
-  const [logs, setLogs] = useState<LogEntry[]>([]);
+export default function ConsoleView({ logs, addLog }: { logs: LogEntry[], addLog: (message: string) => void }) {
   const [command, setCommand] = useState('');
-  const [showKill, setShowKill] = useState(false);
-
-  useEffect(() => {
-    const now = Date.now();
-    // Stagger the initial log times to make them look more realistic
-    setLogs(initialLogMessages.map((message, index) => ({
-        time: new Date(now - (initialLogMessages.length - index) * 1500).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        message,
-    })));
-  }, []);
-
-  const addLog = (message: string) => {
-      setLogs(prevLogs => [...prevLogs, { time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }), message }]);
-  };
 
   const handleSendCommand = () => {
     if (command.trim() === '') return;
@@ -77,43 +43,12 @@ export default function ConsoleView() {
     return ''; // Inherit from parent
   };
 
-  const handleStopClick = () => {
-    setShowKill(true);
-    addLog('> Stop signal sent. If the server does not stop, you can force kill it.');
-  };
-
-  const handleKillClick = () => {
-    setShowKill(false);
-    addLog('> Kill signal sent. Server is being forcefully terminated.');
-  };
-
   return (
     <div className="mt-6 space-y-6">
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Live Console</CardTitle>
-            <div className="flex items-center gap-2">
-                <Button size="sm" variant="default">
-                    <Play className="mr-2 h-4 w-4" />
-                    Iniciar
-                </Button>
-                <Button size="sm" variant="outline">
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Reiniciar
-                </Button>
-                {!showKill ? (
-                  <Button size="sm" variant="outline" onClick={handleStopClick}>
-                      <Square className="mr-2 h-4 w-4" />
-                      Detener
-                  </Button>
-                ) : (
-                  <Button size="sm" variant="destructive" onClick={handleKillClick}>
-                      <ShieldAlert className="mr-2 h-4 w-4" />
-                      Force Stop
-                  </Button>
-                )}
-            </div>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">

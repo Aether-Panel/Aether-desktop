@@ -26,9 +26,6 @@ export function ServerAddress({ ip, port }: { ip: string; port: number }) {
           <Copy className="h-3 w-3" />
         </button>
       </div>
-      <p className="hidden text-sm text-muted-foreground md:block">
-        Detailed metrics and status for this server.
-      </p>
     </div>
   );
 }

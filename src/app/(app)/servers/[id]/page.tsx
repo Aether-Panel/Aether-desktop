@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database, Archive, Shield, Puzzle } from 'lucide-react';
+import { Cpu, HardDrive, MemoryStick, Network, Terminal, Folder, Settings as SettingsIcon, Users, Database, Archive, Shield, Puzzle, Play, RefreshCw, Square, ShieldAlert } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ConsoleView from './console-view';
 import FileManagerView from './file-manager-view';
@@ -18,8 +18,9 @@ import PluginsView from './plugins-view';
 import { ServerAddress } from './server-address';
 import MetricsCharts from './metrics-charts';
 import NetworkUsageChart from './network-usage-chart';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
 
 const serverTabs = [
   { value: 'console', label: 'Console', icon: Terminal },
@@ -33,9 +34,60 @@ const serverTabs = [
   { value: 'admin', label: 'Administración', icon: Shield },
 ];
 
+type LogEntry = {
+  time: string;
+  message: string;
+};
+
+const initialLogMessages = [
+    "Starting up server...",
+    "Connecting to database on port 5432.",
+    "Database connection successful.",
+    "Listening on port 3000.",
+    "GET /api/health 200 OK",
+    "GET /static/main.css 200 OK",
+    "POST /api/login 200 OK",
+    "User 'admin' logged in from 127.0.0.1",
+    "GET /dashboard 200 OK",
+    "[WARN] High memory usage detected: 85%",
+    "Running scheduled job: clean_temp_files",
+    "Job 'clean_temp_files' completed in 150ms.",
+    "GET /api/users/1 200 OK",
+    "[ERROR] Unhandled exception in worker thread: TypeError: Cannot read properties of undefined (reading 'name')",
+    "Restarting worker thread...",
+    "Worker thread restarted successfully."
+];
+
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
   const [activeTab, setActiveTab] = useState('console');
+  
+  // State lifted from ConsoleView
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [showKill, setShowKill] = useState(false);
+
+  useEffect(() => {
+    const now = Date.now();
+    // Stagger the initial log times to make them look more realistic
+    setLogs(initialLogMessages.map((message, index) => ({
+        time: new Date(now - (initialLogMessages.length - index) * 1500).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        message,
+    })));
+  }, []);
+
+  const addLog = (message: string) => {
+      setLogs(prevLogs => [...prevLogs, { time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }), message }]);
+  };
+
+  const handleStopClick = () => {
+    setShowKill(true);
+    addLog('> Stop signal sent. If the server does not stop, you can force kill it.');
+  };
+
+  const handleKillClick = () => {
+    setShowKill(false);
+    addLog('> Kill signal sent. Server is being forcefully terminated.');
+  };
 
   if (!server) {
     notFound();
@@ -50,11 +102,41 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
     return <div className={`mr-2 h-3 w-3 rounded-full ${statusClasses[status]}`} />;
   };
 
+  const serverActions = (
+      <div className="flex items-center gap-2">
+          <Button size="sm" variant="default">
+              <Play className="mr-2 h-4 w-4" />
+              Iniciar
+          </Button>
+          <Button size="sm" variant="outline">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Reiniciar
+          </Button>
+          {!showKill ? (
+            <Button size="sm" variant="outline" onClick={handleStopClick}>
+                <Square className="mr-2 h-4 w-4" />
+                Detener
+            </Button>
+          ) : (
+            <Button size="sm" variant="destructive" onClick={handleKillClick}>
+                <ShieldAlert className="mr-2 h-4 w-4" />
+                Force Stop
+            </Button>
+          )}
+      </div>
+  );
+
   return (
     <div className="flex flex-col gap-8">
       <div>
         <PageHeader title={server.name} />
         <ServerAddress ip={server.ipAddress} port={server.port} />
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+            {serverActions}
+            <p className="text-sm text-muted-foreground">
+              Detailed metrics and status for this server.
+            </p>
+        </div>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -90,7 +172,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
         </div>
 
         <TabsContent value="console">
-          <ConsoleView />
+          <ConsoleView logs={logs} addLog={addLog} />
         </TabsContent>
         <TabsContent value="overview" className="mt-6 space-y-8">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
