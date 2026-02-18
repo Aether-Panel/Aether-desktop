@@ -41,44 +41,46 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
       </div>
 
       <Tabs defaultValue="console" className="w-full">
-        <TabsList className="grid w-full grid-cols-9">
-          <TabsTrigger value="console">
-            <Terminal className="mr-2 h-4 w-4" />
-            Console
-          </TabsTrigger>
-          <TabsTrigger value="overview">
-            <Network className="mr-2 h-4 w-4" />
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="files">
-            <Folder className="mr-2 h-4 w-4" />
-            File Manager
-          </TabsTrigger>
-          <TabsTrigger value="settings">
-            <SettingsIcon className="mr-2 h-4 w-4" />
-            Settings
-          </TabsTrigger>
-          <TabsTrigger value="users">
-            <Users className="mr-2 h-4 w-4" />
-            Users
-          </TabsTrigger>
-          <TabsTrigger value="database">
-            <Database className="mr-2 h-4 w-4" />
-            Base de datos
-          </TabsTrigger>
-          <TabsTrigger value="backups">
-            <Archive className="mr-2 h-4 w-4" />
-            Copia de seguridad
-          </TabsTrigger>
-          <TabsTrigger value="plugins">
-            <Puzzle className="mr-2 h-4 w-4" />
-            Plugins
-          </TabsTrigger>
-          <TabsTrigger value="admin">
-            <Shield className="mr-2 h-4 w-4" />
-            Administración
-          </TabsTrigger>
-        </TabsList>
+        <div className="w-full overflow-x-auto md:overflow-visible">
+          <TabsList className="w-max md:grid md:w-full md:grid-cols-9">
+            <TabsTrigger value="console">
+              <Terminal className="mr-2 h-4 w-4" />
+              Console
+            </TabsTrigger>
+            <TabsTrigger value="overview">
+              <Network className="mr-2 h-4 w-4" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="files">
+              <Folder className="mr-2 h-4 w-4" />
+              File Manager
+            </TabsTrigger>
+            <TabsTrigger value="settings">
+              <SettingsIcon className="mr-2 h-4 w-4" />
+              Settings
+            </TabsTrigger>
+            <TabsTrigger value="users">
+              <Users className="mr-2 h-4 w-4" />
+              Users
+            </TabsTrigger>
+            <TabsTrigger value="database">
+              <Database className="mr-2 h-4 w-4" />
+              Base de datos
+            </TabsTrigger>
+            <TabsTrigger value="backups">
+              <Archive className="mr-2 h-4 w-4" />
+              Copia de seguridad
+            </TabsTrigger>
+            <TabsTrigger value="plugins">
+              <Puzzle className="mr-2 h-4 w-4" />
+              Plugins
+            </TabsTrigger>
+            <TabsTrigger value="admin">
+              <Shield className="mr-2 h-4 w-4" />
+              Administración
+            </TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="console">
           <ConsoleView />
         </TabsContent>
