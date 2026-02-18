@@ -130,12 +130,14 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
     <div className="flex flex-col gap-8">
       <div>
         <PageHeader title={server.name} />
-        <ServerAddress ip={server.ipAddress} port={server.port} />
+        <div className="mt-2 flex items-center gap-4">
+          <ServerAddress ip={server.ipAddress} port={server.port} />
+          <p className="text-sm text-muted-foreground">
+            Detailed metrics and status for this server.
+          </p>
+        </div>
         <div className="mt-4 flex flex-wrap items-center gap-4">
             {serverActions}
-            <p className="text-sm text-muted-foreground">
-              Detailed metrics and status for this server.
-            </p>
         </div>
       </div>
 
