@@ -1,3 +1,5 @@
+'use client';
+
 import { servers } from '@/lib/data';
 import { notFound } from 'next/navigation';
 import { PageHeader } from '@/components/page-header';
@@ -16,9 +18,24 @@ import PluginsView from './plugins-view';
 import { ServerAddress } from './server-address';
 import MetricsCharts from './metrics-charts';
 import NetworkUsageChart from './network-usage-chart';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+const serverTabs = [
+  { value: 'console', label: 'Console', icon: Terminal },
+  { value: 'overview', label: 'Overview', icon: Network },
+  { value: 'files', label: 'File Manager', icon: Folder },
+  { value: 'settings', label: 'Settings', icon: SettingsIcon },
+  { value: 'users', label: 'Users', icon: Users },
+  { value: 'database', label: 'Base de datos', icon: Database },
+  { value: 'backups', label: 'Copia de seguridad', icon: Archive },
+  { value: 'plugins', label: 'Plugins', icon: Puzzle },
+  { value: 'admin', label: 'Administración', icon: Shield },
+];
 
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
+  const [activeTab, setActiveTab] = useState('console');
 
   if (!server) {
     notFound();
@@ -40,47 +57,38 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
         <ServerAddress ip={server.ipAddress} port={server.port} />
       </div>
 
-      <Tabs defaultValue="console" className="w-full">
-        <div className="w-full overflow-x-auto md:overflow-visible">
-          <TabsList className="w-max md:grid md:w-full md:grid-cols-9">
-            <TabsTrigger value="console">
-              <Terminal className="mr-2 h-4 w-4" />
-              Console
-            </TabsTrigger>
-            <TabsTrigger value="overview">
-              <Network className="mr-2 h-4 w-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="files">
-              <Folder className="mr-2 h-4 w-4" />
-              File Manager
-            </TabsTrigger>
-            <TabsTrigger value="settings">
-              <SettingsIcon className="mr-2 h-4 w-4" />
-              Settings
-            </TabsTrigger>
-            <TabsTrigger value="users">
-              <Users className="mr-2 h-4 w-4" />
-              Users
-            </TabsTrigger>
-            <TabsTrigger value="database">
-              <Database className="mr-2 h-4 w-4" />
-              Base de datos
-            </TabsTrigger>
-            <TabsTrigger value="backups">
-              <Archive className="mr-2 h-4 w-4" />
-              Copia de seguridad
-            </TabsTrigger>
-            <TabsTrigger value="plugins">
-              <Puzzle className="mr-2 h-4 w-4" />
-              Plugins
-            </TabsTrigger>
-            <TabsTrigger value="admin">
-              <Shield className="mr-2 h-4 w-4" />
-              Administración
-            </TabsTrigger>
-          </TabsList>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <div className="md:hidden mb-4">
+          <Select value={activeTab} onValueChange={setActiveTab}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a page..." />
+            </SelectTrigger>
+            <SelectContent>
+              {serverTabs.map((tab) => (
+                <SelectItem key={tab.value} value={tab.value}>
+                  <div className="flex items-center gap-2">
+                    <tab.icon className="h-4 w-4" />
+                    <span>{tab.label}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+        
+        <div className="hidden md:block">
+          <div className="w-full overflow-x-auto md:overflow-visible">
+            <TabsList className="w-max md:grid md:w-full md:grid-cols-9">
+              {serverTabs.map(tab => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  <tab.icon className="mr-2 h-4 w-4" />
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+        </div>
+
         <TabsContent value="console">
           <ConsoleView />
         </TabsContent>
