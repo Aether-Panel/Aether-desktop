@@ -22,6 +22,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { LayoutDashboard, LogOut, Server, Settings, Users, ShieldCheck, Database, Network, FileText } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/logo';
@@ -70,18 +71,28 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </SidebarContent>
         <SidebarFooter>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-12 w-full justify-start gap-2 px-2">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.avatar} alt={user?.name} />
-                  <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div className="flex flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden">
-                  <span className="truncate font-medium">{user?.name}</span>
-                  <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="h-12 w-full justify-start gap-2 px-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.avatar} alt={user?.name} />
+                      <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden">
+                      <span className="truncate font-medium">{user?.name}</span>
+                      <span className="truncate text-xs text-muted-foreground">{user?.email}</span>
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+              </TooltipTrigger>
+              <TooltipContent side="right" align="center" className="hidden group-data-[state=collapsed]:block">
+                <div className="text-left">
+                  <p className="font-medium">{user?.name}</p>
+                  <p className="text-xs text-muted-foreground">{user?.email}</p>
                 </div>
-              </Button>
-            </DropdownMenuTrigger>
+              </TooltipContent>
+            </Tooltip>
             <DropdownMenuContent className="w-56" side="right" align="end">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
