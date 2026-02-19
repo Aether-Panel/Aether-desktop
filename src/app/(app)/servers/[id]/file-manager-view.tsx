@@ -124,8 +124,8 @@ export default function FileManagerView() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead>Last Modified</TableHead>
+                  <TableHead className="hidden sm:table-cell">Size</TableHead>
+                  <TableHead className="hidden md:table-cell">Last Modified</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -139,8 +139,8 @@ export default function FileManagerView() {
                       {file.type === 'folder' ? <Folder className="text-yellow-500" /> : <FileIcon />}
                       {file.name}
                     </TableCell>
-                    <TableCell>{file.size}</TableCell>
-                    <TableCell>{file.modified}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{file.size}</TableCell>
+                    <TableCell className="hidden md:table-cell">{file.modified}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
