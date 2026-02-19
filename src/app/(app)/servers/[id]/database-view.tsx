@@ -19,7 +19,7 @@ export default function DatabaseView() {
     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
       <Card className="border-0">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                   <CardTitle>Bases de Datos</CardTitle>
                   <CardDescription>Gestiona las bases de datos para este servidor.</CardDescription>
@@ -69,17 +69,20 @@ export default function DatabaseView() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Nombre</TableHead>
-                  <TableHead>Usuario</TableHead>
-                  <TableHead>Conexiones desde</TableHead>
+                  <TableHead className="hidden sm:table-cell">Usuario</TableHead>
+                  <TableHead className="hidden md:table-cell">Conexiones desde</TableHead>
                   <TableHead className="text-right">Tamaño</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {databases.map((db) => (
                   <TableRow key={db.name}>
-                    <TableCell className="font-medium">{db.name}</TableCell>
-                    <TableCell>{db.user}</TableCell>
                     <TableCell>
+                      <p className="font-medium">{db.name}</p>
+                      <p className="text-sm text-muted-foreground sm:hidden">{db.user}</p>
+                    </TableCell>
+                    <TableCell className="hidden sm:table-cell">{db.user}</TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <Badge variant="secondary">% (Cualquier Host)</Badge>
                     </TableCell>
                     <TableCell className="text-right">{db.size}</TableCell>
