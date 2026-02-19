@@ -88,8 +88,7 @@ export default function ServersPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>IP Address</TableHead>
+                  <TableHead>Name / IP</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="hidden md:table-cell">CPU</TableHead>
                   <TableHead className="hidden md:table-cell">Memory</TableHead>
@@ -100,12 +99,12 @@ export default function ServersPage() {
               <TableBody>
                 {servers.map((server) => (
                   <TableRow key={server.id}>
-                    <TableCell className="font-medium">
-                      <Link href={`/servers/${server.id}`} className="hover:underline">
+                    <TableCell>
+                      <Link href={`/servers/${server.id}`} className="font-medium hover:underline">
                         {server.name}
                       </Link>
+                      <div className="text-sm text-muted-foreground font-mono">{server.ipAddress}</div>
                     </TableCell>
-                    <TableCell>{server.ipAddress}</TableCell>
                     <TableCell>
                       <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                         <StatusIndicator status={server.status} />
