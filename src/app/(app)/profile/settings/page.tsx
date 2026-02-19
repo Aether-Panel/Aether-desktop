@@ -9,36 +9,49 @@ import { useAuth } from '@/app/providers';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, User, KeyRound, ShieldCheck, Code } from 'lucide-react';
+import { useState } from 'react';
+
+const profileSettingsTabs = [
+    { value: 'configuracion', label: 'Configuración', icon: Settings },
+    { value: 'detalles', label: 'Detalles', icon: User },
+    { value: 'contrasena', label: 'Contraseña', icon: KeyRound },
+    { value: '2fa', label: '2FA', icon: ShieldCheck },
+    { value: 'oauth', label: 'OAuth', icon: Code },
+];
 
 export default function ProfileSettingsPage() {
   const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('configuracion');
 
   return (
     <div className="flex flex-col gap-8">
       <PageHeader title="Configuración de la cuenta" description="Administra la configuración de tu perfil, seguridad y más." />
 
-      <Tabs defaultValue="configuracion" className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="configuracion">
-                <Settings className="mr-2 h-4 w-4" />
-                Configuración
-            </TabsTrigger>
-            <TabsTrigger value="detalles">
-                <User className="mr-2 h-4 w-4" />
-                Detalles
-            </TabsTrigger>
-            <TabsTrigger value="contrasena">
-                <KeyRound className="mr-2 h-4 w-4" />
-                Contraseña
-            </TabsTrigger>
-            <TabsTrigger value="2fa">
-                <ShieldCheck className="mr-2 h-4 w-4" />
-                2FA
-            </TabsTrigger>
-            <TabsTrigger value="oauth">
-                <Code className="mr-2 h-4 w-4" />
-                OAuth
-            </TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="configuracion" className="w-full">
+        <div className="md:hidden mb-4">
+            <Select value={activeTab} onValueChange={setActiveTab}>
+                <SelectTrigger>
+                    <SelectValue placeholder="Selecciona una sección..." />
+                </SelectTrigger>
+                <SelectContent>
+                    {profileSettingsTabs.map((tab) => (
+                        <SelectItem key={tab.value} value={tab.value}>
+                            <div className="flex items-center gap-2">
+                                <tab.icon className="h-4 w-4" />
+                                <span>{tab.label}</span>
+                            </div>
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+        </div>
+        <TabsList className="hidden md:grid w-full grid-cols-5">
+            {profileSettingsTabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                    <tab.icon className="mr-2 h-4 w-4" />
+                    {tab.label}
+                </TabsTrigger>
+            ))}
         </TabsList>
         <TabsContent value="configuracion">
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">

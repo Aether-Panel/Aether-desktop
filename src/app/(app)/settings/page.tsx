@@ -14,6 +14,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, Bell, Mail } from 'lucide-react';
 
 
+const settingsTabs = [
+    { value: 'general', label: 'General', icon: Settings },
+    { value: 'discord', label: 'Notificaciones Discord', icon: Bell },
+    { value: 'mail', label: 'Correo', icon: Mail },
+];
+
+
 export default function SettingsPage() {
     const { role } = useAuth();
     const router = useRouter();
@@ -26,6 +33,7 @@ export default function SettingsPage() {
     const [mailProvider, setMailProvider] = useState('');
     const [geminiApiKey, setGeminiApiKey] = useState('');
     const [hideAIAnalysis, setHideAIAnalysis] = useState(false);
+    const [activeTab, setActiveTab] = useState('general');
 
     useEffect(() => {
         setIsMounted(true);
@@ -46,20 +54,32 @@ export default function SettingsPage() {
         <div className="flex flex-col gap-8">
             <PageHeader title="Configuración del Panel" description="Administra la configuración global de tu instancia de Aether Panel." />
             
-            <Tabs defaultValue="general" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="general">
-                        <Settings className="mr-2 h-4 w-4" />
-                        General
-                    </TabsTrigger>
-                    <TabsTrigger value="discord">
-                        <Bell className="mr-2 h-4 w-4" />
-                        Notificaciones Discord
-                    </TabsTrigger>
-                    <TabsTrigger value="mail">
-                        <Mail className="mr-2 h-4 w-4" />
-                        Correo
-                    </TabsTrigger>
+            <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="general" className="w-full">
+                <div className="md:hidden mb-4">
+                    <Select value={activeTab} onValueChange={setActiveTab}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Selecciona una sección..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {settingsTabs.map((tab) => (
+                                <SelectItem key={tab.value} value={tab.value}>
+                                    <div className="flex items-center gap-2">
+                                        <tab.icon className="h-4 w-4" />
+                                        <span>{tab.label}</span>
+                                    </div>
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <TabsList className="hidden md:grid w-full grid-cols-3">
+                    {settingsTabs.map((tab) => (
+                        <TabsTrigger key={tab.value} value={tab.value}>
+                            <tab.icon className="mr-2 h-4 w-4" />
+                            {tab.label}
+                        </TabsTrigger>
+                    ))}
                 </TabsList>
                 <TabsContent value="general">
                     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
