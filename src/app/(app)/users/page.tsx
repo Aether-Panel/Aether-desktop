@@ -92,23 +92,23 @@ export default function UsersPage() {
               <DialogTitle>Add New User</DialogTitle>
               <DialogDescription>Fill in the details to create a new user account.</DialogDescription>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input id="name" placeholder="New User" className="col-span-3" />
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" placeholder="New User" />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">Email</Label>
-                <Input id="email" type="email" placeholder="user@example.com" className="col-span-3" />
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="user@example.com" />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="password" className="text-right">Password</Label>
-                <Input id="password" type="password" placeholder="********" className="col-span-3" />
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input id="password" type="password" placeholder="********" />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="role" className="text-right">Role</Label>
+              <div className="space-y-2">
+                <Label htmlFor="role">Role</Label>
                 <Select>
-                  <SelectTrigger className="col-span-3">
+                  <SelectTrigger id="role">
                     <SelectValue placeholder="Select a role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -194,19 +194,19 @@ export default function UsersPage() {
               Update details for {editingUser?.name}.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-name" className="text-right">Name</Label>
-              <Input id="edit-name" value={editName} onChange={(e) => setEditName(e.target.value)} className="col-span-3" />
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit-name">Name</Label>
+              <Input id="edit-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-email" className="text-right">Email</Label>
-              <Input id="edit-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="edit-email">Email</Label>
+              <Input id="edit-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="edit-role" className="text-right">Role</Label>
+            <div className="space-y-2">
+              <Label htmlFor="edit-role">Role</Label>
               <Select value={editRole} onValueChange={(value: User['role']) => setEditRole(value)}>
-                <SelectTrigger className="col-span-3">
+                <SelectTrigger id="edit-role">
                   <SelectValue placeholder="Select a role" />
                 </SelectTrigger>
                 <SelectContent>
