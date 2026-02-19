@@ -153,7 +153,7 @@ export default function NodesPage() {
               <DialogTitle>Crear Nodo</DialogTitle>
             </DialogHeader>
             <div className="grid gap-6 py-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="node-name">Nombre</Label>
                   <Input id="node-name" placeholder="Nombre" />
@@ -163,7 +163,7 @@ export default function NodesPage() {
                   <Input id="public-host" placeholder="Anfitrión público" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="public-port">Puerto público</Label>
                   <Input id="public-port" type="number" defaultValue="8080" />
@@ -192,7 +192,7 @@ export default function NodesPage() {
                 </div>
               </div>
               {useDifferentHost && (
-                <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                   <div className="space-y-2">
                     <Label htmlFor="private-host">Anfitrión Privado</Label>
                     <Input id="private-host" placeholder="Anfitrión Privado" />
@@ -221,7 +221,7 @@ export default function NodesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
-                  <TableHead>Location</TableHead>
+                  <TableHead className="hidden sm:table-cell">Location</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -234,7 +234,7 @@ export default function NodesPage() {
                         {node.name}
                       </Link>
                     </TableCell>
-                    <TableCell>{node.location}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{node.location}</TableCell>
                     <TableCell>
                       <Badge variant={node.status === 'online' ? 'default' : node.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                         <StatusIndicator status={node.status} />
@@ -272,7 +272,7 @@ export default function NodesPage() {
             <DialogTitle>Editar Nodo</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6 py-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-node-name">Nombre</Label>
                 <Input id="edit-node-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
@@ -282,7 +282,7 @@ export default function NodesPage() {
                 <Input id="edit-public-host" value={editPublicHost} onChange={(e) => setEditPublicHost(e.target.value)} />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-public-port">Puerto público</Label>
                 <Input id="edit-public-port" type="number" value={editPublicPort} onChange={(e) => setEditPublicPort(e.target.value)} />
@@ -311,7 +311,7 @@ export default function NodesPage() {
               </div>
             </div>
             {editUseDifferentHost && (
-              <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                 <div className="space-y-2">
                   <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
                   <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />

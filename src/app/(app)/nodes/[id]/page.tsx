@@ -287,7 +287,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
                                   </div>
                               </div>
                               {editUseDifferentHost && (
-                                  <div className="grid grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                                       <div className="space-y-2">
                                       <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
                                       <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />
