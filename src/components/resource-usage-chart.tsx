@@ -70,7 +70,7 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
         <CardTitle>Resource Overview</CardTitle>
         <CardDescription>Current snapshot of resource utilization.</CardDescription>
       </CardHeader>
-      <CardContent className="flex justify-around items-center p-6 pt-2">
+      <CardContent className="flex flex-col gap-8 p-6 pt-2 sm:flex-row sm:justify-around sm:items-center">
         <SingleGauge name="cpu" value={cpuUsage} />
         <SingleGauge name="memory" value={memoryUsage} />
         <SingleGauge name="storage" value={storageUsage} />
