@@ -56,7 +56,7 @@ export default function UsersView({ serverId }: UsersViewProps) {
             <TableHeader>
               <TableRow>
                 <TableHead>User</TableHead>
-                <TableHead>Email</TableHead>
+                <TableHead className="hidden sm:table-cell">Email</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -69,10 +69,13 @@ export default function UsersView({ serverId }: UsersViewProps) {
                         <AvatarImage src={user.avatar} alt={user.name} />
                         <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <p className="font-medium">{user.name}</p>
+                      <div>
+                        <p className="font-medium">{user.name}</p>
+                        <p className="text-sm text-muted-foreground sm:hidden">{user.email}</p>
+                      </div>
                     </div>
                   </TableCell>
-                  <TableCell>{user.email}</TableCell>
+                  <TableCell className="hidden sm:table-cell">{user.email}</TableCell>
                   <TableCell className="text-right">
                     <Button variant="ghost" size="sm" className="text-red-500 hover:bg-red-500/10 hover:text-red-500">
                       Revoke
