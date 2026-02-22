@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Code, Puzzle, Bot, Server as ServerIcon, Database, PlusCircle } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
+import { useTranslations } from '@/contexts/translations-context';
 
 type Template = {
   id: string;
@@ -40,6 +41,7 @@ export default function TemplatesPage() {
   const { role } = useAuth();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
+  const { t } = useTranslations();
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,17 +53,17 @@ export default function TemplatesPage() {
   if (!isMounted || role !== 'admin') {
     return (
       <div className="flex h-full items-center justify-center">
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="Template Management" description="Select a template to create a new server.">
+      <PageHeader title={t('templates.title')} description={t('templates.description')}>
         <Button>
           <PlusCircle className="mr-2" />
-          Create Template
+          {t('templates.create')}
         </Button>
       </PageHeader>
       
@@ -73,7 +75,7 @@ export default function TemplatesPage() {
                 <div className="flex items-start justify-between">
                   <template.icon className="h-10 w-10 text-muted-foreground" />
                   <Badge variant="outline" className={categoryColors[template.category]}>
-                    {template.category}
+                    {t(`templates.categories.${template.category.toLowerCase()}`)}
                   </Badge>
                 </div>
               </CardHeader>
@@ -82,7 +84,7 @@ export default function TemplatesPage() {
               </CardContent>
               <div className="p-6 pt-2">
                 <Button className="w-full">
-                  Use Template
+                  {t('templates.use')}
                 </Button>
               </div>
             </Card>

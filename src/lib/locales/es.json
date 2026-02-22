@@ -613,6 +613,18 @@
       }
     }
   },
+  "templates": {
+    "title": "Gestión de Plantillas",
+    "description": "Selecciona una plantilla para crear un nuevo servidor.",
+    "create": "Crear Plantilla",
+    "use": "Usar Plantilla",
+    "categories": {
+      "web": "Web",
+      "game": "Juego",
+      "bot": "Bot",
+      "other": "Otro"
+    }
+  },
   "common": {
     "copied": "Copiado al portapapeles",
     "copy": "Copiar",

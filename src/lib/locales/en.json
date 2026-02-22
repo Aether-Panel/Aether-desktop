@@ -613,6 +613,18 @@
       }
     }
   },
+  "templates": {
+    "title": "Template Management",
+    "description": "Select a template to create a new server.",
+    "create": "Create Template",
+    "use": "Use Template",
+    "categories": {
+      "web": "Web",
+      "game": "Game",
+      "bot": "Bot",
+      "other": "Other"
+    }
+  },
   "common": {
     "copied": "Copied to clipboard",
     "copy": "Copy",
