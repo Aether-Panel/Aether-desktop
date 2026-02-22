@@ -2,6 +2,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, LabelList } from 'recharts';
+import { useTranslations } from '@/contexts/translations-context';
 
 type ResourceUsageChartProps = {
   cpuUsage: number;
@@ -9,24 +10,26 @@ type ResourceUsageChartProps = {
   storageUsage: number;
 };
 
-const chartConfig = {
-  cpu: { label: 'CPU', color: 'hsl(var(--chart-1))' },
-  memory: { label: 'Memory', color: 'hsl(var(--chart-2))' },
-  storage: { label: 'Storage', color: 'hsl(var(--chart-3))' },
-};
-
 export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage }: ResourceUsageChartProps) {
+  const { t } = useTranslations();
+
+  const chartConfig = {
+    cpu: { label: t('dashboard.table.cpu'), color: 'hsl(var(--chart-1))' },
+    memory: { label: t('dashboard.table.memory'), color: 'hsl(var(--chart-2))' },
+    storage: { label: t('dashboard.table.storage'), color: 'hsl(var(--chart-3))' },
+  };
+
   const chartData = [
-    { name: 'CPU', usage: cpuUsage, fill: 'var(--color-cpu)' },
-    { name: 'Memory', usage: memoryUsage, fill: 'var(--color-memory)' },
-    { name: 'Storage', usage: storageUsage, fill: 'var(--color-storage)' },
+    { name: t('dashboard.table.cpu'), usage: cpuUsage, fill: 'var(--color-cpu)' },
+    { name: t('dashboard.table.memory'), usage: memoryUsage, fill: 'var(--color-memory)' },
+    { name: t('dashboard.table.storage'), usage: storageUsage, fill: 'var(--color-storage)' },
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Resource Overview</CardTitle>
-        <CardDescription>Current snapshot of resource utilization.</CardDescription>
+        <CardTitle>{t('servers.resourceChart.title')}</CardTitle>
+        <CardDescription>{t('servers.resourceChart.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">

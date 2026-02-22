@@ -9,12 +9,14 @@ import { AlertCircle, Lightbulb, ListChecks, Loader2, Sparkles } from 'lucide-re
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function AISummary() {
   const [logsToAnalyze, setLogsToAnalyze] = useState('');
   const [summary, setSummary] = useState('');
   const [tips, setTips] = useState<{ suggestions: string[]; rootCauses: string[] } | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslations();
 
   const handleSummarize = async () => {
     if (!logsToAnalyze) return;
@@ -29,7 +31,7 @@ export default function AISummary() {
       setTips(newTips);
     } catch (error) {
       console.error('AI operation failed:', error);
-      setSummary('Failed to generate summary. Please check the console for details.');
+      setSummary(t('servers.aiSummary.fail'));
     } finally {
       setLoading(false);
     }
@@ -40,18 +42,18 @@ export default function AISummary() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <Lightbulb className="text-primary" />
-          <CardTitle>AI Console Analysis</CardTitle>
+          <CardTitle>{t('servers.aiSummary.title')}</CardTitle>
         </div>
         <CardDescription>
-          Copy and paste specific logs from the console into the text area below to get an AI-powered summary and troubleshooting tips.
+          {t('servers.aiSummary.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="grid w-full gap-2">
-          <Label htmlFor="logs-input">Logs to Analyze</Label>
+          <Label htmlFor="logs-input">{t('servers.aiSummary.logsLabel')}</Label>
           <Textarea
             id="logs-input"
-            placeholder="Paste logs here..."
+            placeholder={t('servers.aiSummary.logsPlaceholder')}
             value={logsToAnalyze}
             onChange={(e) => setLogsToAnalyze(e.target.value)}
             className="min-h-[120px] font-mono text-xs"
@@ -63,25 +65,25 @@ export default function AISummary() {
           ) : (
             <Sparkles className="mr-2 h-4 w-4" />
           )}
-          Analyze Logs
+          {t('servers.aiSummary.analyzeButton')}
         </Button>
 
         {loading && (
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-muted-foreground">The AI is analyzing the logs...</p>
+            <p className="text-muted-foreground">{t('servers.aiSummary.loading')}</p>
           </div>
         )}
         {!loading && !summary && (
            <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
             <Sparkles className="h-8 w-8 text-muted-foreground" />
-            <p className="text-muted-foreground">Ready to provide insights once you paste some logs.</p>
+            <p className="text-muted-foreground">{t('servers.aiSummary.ready')}</p>
           </div>
         )}
         {summary && (
           <div className="flex flex-col gap-6">
             <div>
-              <h3 className="mb-2 font-semibold">Summary</h3>
+              <h3 className="mb-2 font-semibold">{t('servers.aiSummary.summaryTitle')}</h3>
               <p className="text-sm text-foreground/90">{summary}</p>
             </div>
             {tips && (
@@ -90,7 +92,7 @@ export default function AISummary() {
                   <AccordionTrigger>
                     <div className="flex items-center gap-2">
                       <ListChecks />
-                      <span>Troubleshooting Suggestions</span>
+                      <span>{t('servers.aiSummary.suggestions')}</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
@@ -105,7 +107,7 @@ export default function AISummary() {
                   <AccordionTrigger>
                     <div className="flex items-center gap-2">
                       <AlertCircle />
-                      <span>Potential Root Causes</span>
+                      <span>{t('servers.aiSummary.rootCauses')}</span>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>

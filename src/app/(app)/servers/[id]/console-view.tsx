@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 import AISummary from './ai-summary';
+import { useTranslations } from '@/contexts/translations-context';
 
 type LogEntry = {
   time: string;
@@ -14,6 +15,7 @@ type LogEntry = {
 
 export default function ConsoleView({ logs, addLog }: { logs: LogEntry[], addLog: (message: string) => void }) {
   const [command, setCommand] = useState('');
+  const { t } = useTranslations();
 
   const handleSendCommand = () => {
     if (command.trim() === '') return;
@@ -48,7 +50,7 @@ export default function ConsoleView({ logs, addLog }: { logs: LogEntry[], addLog
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Live Console</CardTitle>
+            <CardTitle>{t('servers.console.title')}</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="bg-black text-white font-mono text-sm p-4 rounded-lg h-96">
@@ -78,7 +80,7 @@ export default function ConsoleView({ logs, addLog }: { logs: LogEntry[], addLog
             <div className="mt-4 flex w-full items-center space-x-2">
                 <Input
                   type="text"
-                  placeholder="Enter a command..."
+                  placeholder={t('servers.console.commandPlaceholder')}
                   className="font-mono"
                   value={command}
                   onChange={(e) => setCommand(e.target.value)}
@@ -86,7 +88,7 @@ export default function ConsoleView({ logs, addLog }: { logs: LogEntry[], addLog
                 />
                 <Button type="submit" onClick={handleSendCommand}>
                   <Send className="mr-2 h-4 w-4" />
-                  Enviar
+                  {t('servers.console.sendButton')}
                 </Button>
             </div>
           </CardContent>

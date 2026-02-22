@@ -1,16 +1,18 @@
 'use client';
 import { Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from '@/contexts/translations-context';
 
 export function ServerAddress({ ip, port }: { ip: string; port: number }) {
   const { toast } = useToast();
+  const { t } = useTranslations();
   const address = `${ip}:${port}`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(address);
     toast({
-      title: 'Copied to clipboard',
-      description: `Server address ${address} copied.`,
+      title: t('servers.address.copyToastTitle'),
+      description: t('servers.address.copyToastDescription', { address }),
     });
   };
 
@@ -20,7 +22,7 @@ export function ServerAddress({ ip, port }: { ip: string; port: number }) {
       <button
         onClick={handleCopy}
         className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-background/50 hover:text-foreground"
-        title="Copy address"
+        title={t('servers.address.copyButtonTitle')}
       >
         <Copy className="h-3 w-3" />
       </button>

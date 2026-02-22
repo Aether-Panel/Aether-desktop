@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogT
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslations } from '@/contexts/translations-context';
 
 const databases = [
     { name: 'db_production', user: 'prod_user', connections: 5, size: '1.2 GB' },
@@ -15,50 +16,51 @@ const databases = [
 ];
 
 export default function DatabaseView() {
+  const { t } = useTranslations();
   return (
     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
       <Card className="border-0">
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                  <CardTitle>Bases de Datos</CardTitle>
-                  <CardDescription>Gestiona las bases de datos para este servidor.</CardDescription>
+                  <CardTitle>{t('servers.database.title')}</CardTitle>
+                  <CardDescription>{t('servers.database.description')}</CardDescription>
               </div>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button>
                       <PlusCircle className="mr-2" />
-                      Nueva Base de Datos
+                      {t('servers.database.newDb')}
                   </Button>
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>Crear Nueva Base de Datos</DialogTitle>
+                    <DialogTitle>{t('servers.database.createDialog.title')}</DialogTitle>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="db-name" className="text-right">
-                        Nombre de la Base de Datos
+                        {t('servers.database.createDialog.nameLabel')}
                       </Label>
-                      <Input id="db-name" placeholder="Nombre de la Base de Datos" className="col-span-3" />
+                      <Input id="db-name" placeholder={t('servers.database.createDialog.namePlaceholder')} className="col-span-3" />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
                       <Label htmlFor="db-host" className="text-right">
-                        Database Host
+                        {t('servers.database.createDialog.hostLabel')}
                       </Label>
                       <Select defaultValue="panel">
                         <SelectTrigger className="col-span-3">
-                          <SelectValue placeholder="Select a host" />
+                          <SelectValue placeholder={t('servers.database.createDialog.hostPlaceholder')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="panel">Panel (localhost)</SelectItem>
-                          <SelectItem value="remote">Remote MySQL Server</SelectItem>
+                          <SelectItem value="panel">{t('servers.database.createDialog.hostLocal')}</SelectItem>
+                          <SelectItem value="remote">{t('servers.database.createDialog.hostRemote')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit">Crear Base de Datos</Button>
+                    <Button type="submit">{t('servers.database.createDialog.createButton')}</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -68,10 +70,10 @@ export default function DatabaseView() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead className="hidden sm:table-cell">Usuario</TableHead>
-                  <TableHead className="hidden md:table-cell">Conexiones desde</TableHead>
-                  <TableHead className="text-right">Tamaño</TableHead>
+                  <TableHead>{t('servers.database.table.name')}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t('servers.database.table.user')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('servers.database.table.connections')}</TableHead>
+                  <TableHead className="text-right">{t('servers.database.table.size')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -83,7 +85,7 @@ export default function DatabaseView() {
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">{db.user}</TableCell>
                     <TableCell className="hidden md:table-cell">
-                      <Badge variant="secondary">% (Cualquier Host)</Badge>
+                      <Badge variant="secondary">{t('servers.database.anyHost')}</Badge>
                     </TableCell>
                     <TableCell className="text-right">{db.size}</TableCell>
                   </TableRow>

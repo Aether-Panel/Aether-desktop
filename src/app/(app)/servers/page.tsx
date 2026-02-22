@@ -16,12 +16,14 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import Link from 'next/link';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function ServersPage() {
   const { role } = useAuth();
   const router = useRouter();
   const [servers, setServers] = useState<Server[]>(initialServers);
   const [isMounted, setIsMounted] = useState(false);
+  const { t } = useTranslations();
 
   useEffect(() => {
     setIsMounted(true);
@@ -49,31 +51,31 @@ export default function ServersPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="Server Management" description="Add, edit, and manage all servers in your infrastructure.">
+      <PageHeader title={t('servers.title')} description={t('servers.description')}>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2" />
-              Add Server
+              {t('servers.addServer')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Server</DialogTitle>
-              <DialogDescription>Provide the details for the new server.</DialogDescription>
+              <DialogTitle>{t('servers.addDialog.title')}</DialogTitle>
+              <DialogDescription>{t('servers.addDialog.description')}</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input id="name" defaultValue="New Web Server" className="col-span-3" />
+                <Label htmlFor="name" className="text-right">{t('servers.addDialog.nameLabel')}</Label>
+                <Input id="name" defaultValue={t('servers.addDialog.namePlaceholder')} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="ip" className="text-right">IP Address</Label>
-                <Input id="ip" defaultValue="192.168.1.107" className="col-span-3" />
+                <Label htmlFor="ip" className="text-right">{t('servers.addDialog.ipLabel')}</Label>
+                <Input id="ip" defaultValue={t('servers.addDialog.ipPlaceholder')} className="col-span-3" />
               </div>
             </div>
             <DialogFooter>
-              <Button type="submit">Create Server</Button>
+              <Button type="submit">{t('servers.addDialog.createButton')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -82,39 +84,41 @@ export default function ServersPage() {
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader>
-            <CardTitle>All Servers</CardTitle>
+            <CardTitle>{t('servers.allServers')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Server</TableHead>
-                  <TableHead className="hidden sm:table-cell">Status</TableHead>
-                  <TableHead className="hidden md:table-cell">CPU</TableHead>
-                  <TableHead className="hidden md:table-cell">Memory</TableHead>
-                  <TableHead className="hidden lg:table-cell">Storage</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('servers.table.server')}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t('servers.table.status')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('servers.table.cpu')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('servers.table.memory')}</TableHead>
+                  <TableHead className="hidden lg:table-cell">{t('servers.table.storage')}</TableHead>
+                  <TableHead className="text-right">{t('servers.table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {servers.map((server) => (
                   <TableRow key={server.id}>
                     <TableCell>
-                      <Link href={`/servers/${server.id}`} className="font-medium hover:underline">
-                        {server.name}
-                      </Link>
-                      <div className="text-sm text-muted-foreground font-mono">{server.ipAddress}</div>
-                      <div className="sm:hidden mt-2">
-                        <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
-                          <StatusIndicator status={server.status} />
-                          {server.status}
-                        </Badge>
+                      <div className="flex flex-col gap-0.5">
+                        <Link href={`/servers/${server.id}`} className="font-medium hover:underline">
+                          {server.name}
+                        </Link>
+                        <div className="text-sm text-muted-foreground font-mono">{server.ipAddress}</div>
+                        <div className="sm:hidden mt-2">
+                          <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                            <StatusIndicator status={server.status} />
+                            {t(`dashboard.status.${server.status}`)}
+                          </Badge>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                         <StatusIndicator status={server.status} />
-                        {server.status}
+                        {t(`dashboard.status.${server.status}`)}
                       </Badge>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
@@ -144,11 +148,11 @@ export default function ServersPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => router.push(`/servers/${server.id}`)}>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
+                          <DropdownMenuLabel>{t('servers.actions.menuLabel')}</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => router.push(`/servers/${server.id}`)}>{t('servers.actions.viewDetails')}</DropdownMenuItem>
+                          <DropdownMenuItem>{t('servers.actions.edit')}</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-500">{t('servers.actions.delete')}</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

@@ -3,23 +3,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Server } from '@/lib/data';
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { useTranslations } from '@/contexts/translations-context';
 
 type NetworkUsageChartProps = {
   serverMetrics: Server['metrics'];
   className?: string;
 };
 
-const chartConfig = {
-  networkIn: { label: 'Download', color: 'hsl(var(--chart-4))' },
-  networkOut: { label: 'Upload', color: 'hsl(var(--chart-5))' },
-};
-
 export default function NetworkUsageChart({ serverMetrics, className }: NetworkUsageChartProps) {
+  const { t } = useTranslations();
+  
+  const chartConfig = {
+    networkIn: { label: t('servers.networkChart.download'), color: 'hsl(var(--chart-4))' },
+    networkOut: { label: t('servers.networkChart.upload'), color: 'hsl(var(--chart-5))' },
+  };
+
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>Network Traffic</CardTitle>
-        <CardDescription>Inbound and outbound traffic for the last 30 minutes (KB/s).</CardDescription>
+        <CardTitle>{t('servers.networkChart.title')}</CardTitle>
+        <CardDescription>{t('servers.networkChart.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">

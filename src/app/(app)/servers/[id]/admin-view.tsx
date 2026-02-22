@@ -3,62 +3,64 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Shield } from 'lucide-react';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function AdminView() {
+  const { t } = useTranslations();
   return (
     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
       <Card className="border-0">
         <CardHeader>
           <div className="flex items-center gap-2">
               <Shield className="h-6 w-6" />
-              <CardTitle>Administración</CardTitle>
+              <CardTitle>{t('servers.admin.title')}</CardTitle>
           </div>
           <CardDescription>
-              Realiza acciones administrativas críticas. Estas operaciones pueden afectar la configuración y los datos del servidor.
+              {t('servers.admin.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between rounded-lg border p-4">
               <div>
-                  <h3 className="font-medium">Editar Definición del Servidor</h3>
+                  <h3 className="font-medium">{t('servers.admin.editDefinition.title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                      Modifica los detalles fundamentales del servidor.
+                      {t('servers.admin.editDefinition.description')}
                   </p>
               </div>
-              <Button variant="outline">Editar Definición</Button>
+              <Button variant="outline">{t('servers.admin.editDefinition.button')}</Button>
           </div>
           
           <div className="flex items-center justify-between rounded-lg border p-4">
               <div>
-                  <h3 className="font-medium">Estado de la Instalación</h3>
+                  <h3 className="font-medium">{t('servers.admin.installStatus.title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                      Dispara el proceso de instalación o reinstalación del servidor.
+                      {t('servers.admin.installStatus.description')}
                   </p>
               </div>
-              <Button>Instalar</Button>
+              <Button>{t('servers.admin.installStatus.button')}</Button>
           </div>
 
            <div className="flex items-center justify-between rounded-lg border border-destructive/50 bg-destructive/5 p-4">
               <div>
-                  <h3 className="font-medium text-destructive">Eliminar Servidor</h3>
+                  <h3 className="font-medium text-destructive">{t('servers.admin.delete.title')}</h3>
                   <p className="text-sm text-muted-foreground">
-                      Esta acción es permanente. Se borrarán todos los archivos y datos del servidor.
+                      {t('servers.admin.delete.description')}
                   </p>
               </div>
                <AlertDialog>
                   <AlertDialogTrigger asChild>
-                      <Button variant="destructive">Eliminar</Button>
+                      <Button variant="destructive">{t('servers.admin.delete.button')}</Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                       <AlertDialogHeader>
-                          <AlertDialogTitle>¿Estás absolutamente seguro?</AlertDialogTitle>
+                          <AlertDialogTitle>{t('servers.admin.deleteDialog.title')}</AlertDialogTitle>
                           <AlertDialogDescription>
-                              Esta acción no se puede deshacer. Esto eliminará permanentemente el servidor y todos sus datos de la plataforma.
+                              {t('servers.admin.deleteDialog.description')}
                           </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                          <AlertDialogAction>Sí, eliminar servidor</AlertDialogAction>
+                          <AlertDialogCancel>{t('servers.admin.deleteDialog.cancel')}</AlertDialogCancel>
+                          <AlertDialogAction>{t('servers.admin.deleteDialog.confirm')}</AlertDialogAction>
                       </AlertDialogFooter>
                   </AlertDialogContent>
               </AlertDialog>

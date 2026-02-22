@@ -1,17 +1,17 @@
 {
   "sidebar": {
     "dashboard": "Dashboard",
-    "servers": "Servers",
-    "users": "Users",
+    "servers": "Servidores",
+    "users": "Usuarios",
     "roles": "Roles",
-    "nodes": "Nodes",
-    "databaseHosts": "Database Hosts",
-    "templates": "Templates",
-    "settings": "Settings"
+    "nodes": "Nodos",
+    "databaseHosts": "Hosts de BD",
+    "templates": "Plantillas",
+    "settings": "Configuración"
   },
   "userMenu": {
-    "settings": "Settings",
-    "logout": "Log out"
+    "settings": "Configuración",
+    "logout": "Cerrar Sesión"
   },
   "profileSettings": {
     "title": "Configuración de la cuenta",
@@ -92,6 +92,241 @@
       "online": "en línea",
       "offline": "fuera de línea",
       "pending": "pendiente"
+    }
+  },
+  "servers": {
+    "title": "Administración de Servidores",
+    "description": "Añade, edita y gestiona todos los servidores de tu infraestructura.",
+    "addServer": "Añadir Servidor",
+    "addDialog": {
+      "title": "Añadir Nuevo Servidor",
+      "description": "Proporciona los detalles para el nuevo servidor.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nuevo Servidor Web",
+      "ipLabel": "Dirección IP",
+      "ipPlaceholder": "192.168.1.107",
+      "createButton": "Crear Servidor"
+    },
+    "allServers": "Todos los Servidores",
+    "table": {
+      "server": "Servidor",
+      "status": "Estado",
+      "cpu": "CPU",
+      "memory": "Memoria",
+      "storage": "Almacenamiento",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "menuLabel": "Acciones",
+      "viewDetails": "Ver Detalles",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
+    "detail": {
+      "description": "Métricas detalladas y estado de este servidor.",
+      "start": "Iniciar",
+      "restart": "Reiniciar",
+      "stop": "Detener",
+      "forceStop": "Forzar Detención",
+      "selectPage": "Selecciona una página...",
+      "tabs": {
+        "console": "Consola",
+        "overview": "Resumen",
+        "files": "Archivos",
+        "settings": "Configuración",
+        "users": "Usuarios",
+        "database": "Base de datos",
+        "backups": "Copias de seguridad",
+        "plugins": "Plugins",
+        "admin": "Administración"
+      },
+      "overview": {
+        "status": "Estado",
+        "cpuUsage": "Uso de CPU",
+        "memoryUsage": "Uso de Memoria",
+        "storageUsage": "Uso de Almacenamiento"
+      }
+    },
+    "address": {
+      "copyToastTitle": "Copiado al portapapeles",
+      "copyToastDescription": "Dirección del servidor {{address}} copiada.",
+      "copyButtonTitle": "Copiar dirección"
+    },
+    "console": {
+      "title": "Consola en Vivo",
+      "commandPlaceholder": "Introduce un comando...",
+      "sendButton": "Enviar"
+    },
+    "aiSummary": {
+      "title": "Análisis de Consola por IA",
+      "description": "Copia y pega registros específicos de la consola en el área de texto a continuación para obtener un resumen y consejos de solución de problemas impulsados por IA.",
+      "logsLabel": "Registros para Analizar",
+      "logsPlaceholder": "Pega los registros aquí...",
+      "analyzeButton": "Analizar Registros",
+      "loading": "La IA está analizando los registros...",
+      "ready": "Listo para proporcionar información una vez que pegues algunos registros.",
+      "summaryTitle": "Resumen",
+      "fail": "No se pudo generar el resumen. Por favor, revisa la consola para más detalles.",
+      "suggestions": "Sugerencias de Solución de Problemas",
+      "rootCauses": "Posibles Causas Raíz"
+    },
+    "cpuMemoryChart": {
+      "title": "Uso de CPU y Memoria",
+      "description": "Uso de CPU y Memoria en tiempo real durante los últimos 30 minutos."
+    },
+    "networkChart": {
+      "title": "Tráfico de Red",
+      "description": "Tráfico de entrada y salida durante los últimos 30 minutos (KB/s).",
+      "download": "Descarga",
+      "upload": "Subida"
+    },
+    "fileManager": {
+      "title": "Administrador de Archivos",
+      "description": "Explora y gestiona los archivos en este servidor. Haz clic en el nombre de un archivo para editarlo.",
+      "table": {
+        "name": "Nombre",
+        "size": "Tamaño",
+        "modified": "Última Modificación",
+        "actions": "Acciones"
+      },
+      "actions": {
+        "edit": "Editar",
+        "download": "Descargar",
+        "rename": "Renombrar",
+        "delete": "Eliminar"
+      },
+      "editor": {
+        "title": "Editando: {{filename}}",
+        "description": "Los cambios no se guardan en esta demostración.",
+        "cancel": "Cancelar",
+        "save": "Guardar Cambios"
+      }
+    },
+    "settings": {
+      "title": "Configuración",
+      "description": "Configuración y variables del servidor",
+      "variablesTitle": "Variables",
+      "eulaLabel": "Acuerdo EULA",
+      "eulaDescription": "¿Tú (o el propietario del servidor) aceptas el EULA de Minecraft?",
+      "fileIdLabel": "ID del Archivo",
+      "fileIdDescription": "ID del archivo para el modpack deseado. Se encuentra al final de la URL del archivo específico deseado.",
+      "ipLabel": "IP",
+      "ipDescription": "A qué IP vincular el servidor.",
+      "javaVersionLabel": "Versión de Java",
+      "javaVersionDescription": "Versión de Java a utilizar.",
+      "memoryLabel": "Memoria (MB)",
+      "memoryDescription": "Cuánta memoria en MB asignar al Heap de Java.",
+      "jvmArgsLabel": "Argumentos de JVM",
+      "jvmArgsDescription": "Argumentos extra de JVM para pasar.",
+      "portLabel": "Puerto",
+      "portDescription": "A qué puerto vincular el servidor.",
+      "projectIdLabel": "ID del Proyecto",
+      "projectIdDescription": "ID del proyecto para el modpack deseado. Se encuentra en la página web del modpack, en el lado derecho.",
+      "autoStartTitle": "Condiciones de Inicio Automático",
+      "startOnBootLabel": "Iniciar en el Arranque",
+      "startOnBootDescription": "Iniciar el servidor cuando el nodo arranque.",
+      "restartOnCrashLabel": "Reiniciar en Caso de Fallo",
+      "restartOnCrashDescription": "Reiniciar el servidor cuando falle.",
+      "restartOnStopLabel": "Reiniciar al Detener",
+      "restartOnStopDescription": "Reiniciar el servidor cuando se detiene.",
+      "pluginsTitle": "Configuración de Plugins",
+      "enablePluginsLabel": "Habilitar Pestaña de Plugins",
+      "enablePluginsDescription": "Mostrar u ocultar la pestaña de gestión de plugins para este servidor.",
+      "saveButton": "Guardar Cambios"
+    },
+    "users": {
+      "title": "Acceso de Usuarios",
+      "description": "Usuarios que tienen permiso para gestionar este servidor.",
+      "addUser": "Añadir Usuario",
+      "addDialog": {
+        "title": "Añadir Usuario al Servidor",
+        "description": "Conceder acceso a un usuario a este servidor.",
+        "emailLabel": "Correo Electrónico",
+        "emailPlaceholder": "usuario@ejemplo.com",
+        "addButton": "Añadir Usuario"
+      },
+      "table": {
+        "user": "Usuario",
+        "email": "Correo Electrónico",
+        "actions": "Acciones"
+      },
+      "revoke": "Revocar"
+    },
+    "database": {
+      "title": "Bases de Datos",
+      "description": "Gestiona las bases de datos para este servidor.",
+      "newDb": "Nueva Base de Datos",
+      "createDialog": {
+        "title": "Crear Nueva Base de Datos",
+        "nameLabel": "Nombre de la Base de Datos",
+        "namePlaceholder": "Nombre de la Base de Datos",
+        "hostLabel": "Host de la Base de Datos",
+        "hostPlaceholder": "Selecciona un host",
+        "hostLocal": "Panel (localhost)",
+        "hostRemote": "Servidor MySQL Remoto",
+        "createButton": "Crear Base de Datos"
+      },
+      "table": {
+        "name": "Nombre",
+        "user": "Usuario",
+        "connections": "Conexiones desde",
+        "size": "Tamaño"
+      },
+      "anyHost": "% (Cualquier Host)"
+    },
+    "backups": {
+      "title": "Copia de seguridad",
+      "description": "{{count}} copias de seguridad",
+      "create": "Crear copia de seguridad",
+      "createDialog": {
+        "title": "Crear copia de seguridad",
+        "nameLabel": "Nombre",
+        "namePlaceholder": "Nombre de la copia de seguridad",
+        "createButton": "Crear copia de seguridad"
+      },
+      "empty": {
+        "title": "No hay copias de seguridad",
+        "description": "Crea tu primer backup para comenzar."
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "description": "{{count}} plugins instalados",
+      "searchPlaceholder": "Buscar plugins...",
+      "searchButton": "Buscar",
+      "empty": {
+        "title": "No hay plugins instalados",
+        "description": "Busca e instala plugins desde el buscador."
+      }
+    },
+    "admin": {
+      "title": "Administración",
+      "description": "Realiza acciones administrativas críticas. Estas operaciones pueden afectar la configuración y los datos del servidor.",
+      "editDefinition": {
+        "title": "Editar Definición del Servidor",
+        "description": "Modifica los detalles fundamentales del servidor.",
+        "button": "Editar Definición"
+      },
+      "installStatus": {
+        "title": "Estado de la Instalación",
+        "description": "Dispara el proceso de instalación o reinstalación del servidor.",
+        "button": "Instalar"
+      },
+      "delete": {
+        "title": "Eliminar Servidor",
+        "description": "Esta acción es permanente. Se borrarán todos los archivos y datos del servidor.",
+        "button": "Eliminar"
+      },
+      "deleteDialog": {
+        "title": "¿Estás absolutamente seguro?",
+        "description": "Esta acción no se puede deshacer. Esto eliminará permanentemente el servidor y todos sus datos de la plataforma.",
+        "cancel": "Cancelar",
+        "confirm": "Sí, eliminar servidor"
+      }
+    },
+    "resourceChart": {
+      "title": "Resumen de Recursos",
+      "description": "Instantánea actual de la utilización de recursos."
     }
   }
 }

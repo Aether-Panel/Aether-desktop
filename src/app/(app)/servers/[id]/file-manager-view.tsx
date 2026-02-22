@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useTranslations } from '@/contexts/translations-context';
 
 const CodeEditor = dynamic(() => import('./code-editor'), { ssr: false });
 
@@ -92,6 +93,7 @@ const getLanguageFromFilename = (filename: string) => {
 export default function FileManagerView() {
   const [editingFile, setEditingFile] = useState<FileItem | null>(null);
   const [editedContent, setEditedContent] = useState<string>('');
+  const { t } = useTranslations();
 
   const handleFileClick = (file: FileItem) => {
     if (file.type === 'file' && file.content) {
@@ -116,17 +118,17 @@ export default function FileManagerView() {
       <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader>
-            <CardTitle>File Manager</CardTitle>
-            <CardDescription>Browse and manage files on this server. Click on a file name to edit it.</CardDescription>
+            <CardTitle>{t('servers.fileManager.title')}</CardTitle>
+            <CardDescription>{t('servers.fileManager.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead className="hidden sm:table-cell">Size</TableHead>
-                  <TableHead className="hidden md:table-cell">Last Modified</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('servers.fileManager.table.name')}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t('servers.fileManager.table.size')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('servers.fileManager.table.modified')}</TableHead>
+                  <TableHead className="text-right">{t('servers.fileManager.table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -150,10 +152,10 @@ export default function FileManagerView() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          {file.type === 'file' && <DropdownMenuItem onClick={() => handleFileClick(file)}>Edit</DropdownMenuItem>}
-                          <DropdownMenuItem>Download</DropdownMenuItem>
-                          <DropdownMenuItem>Rename</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                          {file.type === 'file' && <DropdownMenuItem onClick={() => handleFileClick(file)}>{t('servers.fileManager.actions.edit')}</DropdownMenuItem>}
+                          <DropdownMenuItem>{t('servers.fileManager.actions.download')}</DropdownMenuItem>
+                          <DropdownMenuItem>{t('servers.fileManager.actions.rename')}</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-500">{t('servers.fileManager.actions.delete')}</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -168,9 +170,9 @@ export default function FileManagerView() {
       <Dialog open={!!editingFile} onOpenChange={(open) => !open && handleCloseDialog()}>
         <DialogContent className="w-[90vw] max-w-[90vw] h-[90vh] flex flex-col">
           <DialogHeader>
-            <DialogTitle>Editing: {editingFile?.name}</DialogTitle>
+            <DialogTitle>{t('servers.fileManager.editor.title', { filename: editingFile?.name })}</DialogTitle>
             <DialogDescription>
-              Changes are not saved in this demo.
+              {t('servers.fileManager.editor.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="flex-grow min-h-0">
@@ -185,10 +187,10 @@ export default function FileManagerView() {
           </div>
           <DialogFooter className="mt-4">
             <Button variant="outline" onClick={handleCloseDialog}>
-              Cancel
+              {t('servers.fileManager.editor.cancel')}
             </Button>
             <Button onClick={handleSaveChanges}>
-              Save Changes
+              {t('servers.fileManager.editor.save')}
             </Button>
           </DialogFooter>
         </DialogContent>

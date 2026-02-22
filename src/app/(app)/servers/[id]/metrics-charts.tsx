@@ -3,23 +3,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { Server } from '@/lib/data';
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { useTranslations } from '@/contexts/translations-context';
 
 type MetricsChartsProps = {
   serverMetrics: Server['metrics'];
   className?: string;
 };
 
-const chartConfig = {
-  cpu: { label: 'CPU', color: 'hsl(var(--chart-1))' },
-  memory: { label: 'Memory', color: 'hsl(var(--chart-2))' },
-};
-
 export default function MetricsCharts({ serverMetrics, className }: MetricsChartsProps) {
+  const { t } = useTranslations();
+  
+  const chartConfig = {
+    cpu: { label: t('dashboard.table.cpu'), color: 'hsl(var(--chart-1))' },
+    memory: { label: t('dashboard.table.memory'), color: 'hsl(var(--chart-2))' },
+  };
+
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>CPU & Memory Usage</CardTitle>
-        <CardDescription>Real-time CPU and Memory usage for the last 30 minutes.</CardDescription>
+        <CardTitle>{t('servers.cpuMemoryChart.title')}</CardTitle>
+        <CardDescription>{t('servers.cpuMemoryChart.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">

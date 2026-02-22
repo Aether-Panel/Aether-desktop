@@ -93,5 +93,240 @@
       "offline": "offline",
       "pending": "pending"
     }
+  },
+  "servers": {
+    "title": "Server Management",
+    "description": "Add, edit, and manage all servers in your infrastructure.",
+    "addServer": "Add Server",
+    "addDialog": {
+      "title": "Add New Server",
+      "description": "Provide the details for the new server.",
+      "nameLabel": "Name",
+      "namePlaceholder": "New Web Server",
+      "ipLabel": "IP Address",
+      "ipPlaceholder": "192.168.1.107",
+      "createButton": "Create Server"
+    },
+    "allServers": "All Servers",
+    "table": {
+      "server": "Server",
+      "status": "Status",
+      "cpu": "CPU",
+      "memory": "Memory",
+      "storage": "Storage",
+      "actions": "Actions"
+    },
+    "actions": {
+      "menuLabel": "Actions",
+      "viewDetails": "View Details",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "detail": {
+      "description": "Detailed metrics and status for this server.",
+      "start": "Start",
+      "restart": "Restart",
+      "stop": "Stop",
+      "forceStop": "Force Stop",
+      "selectPage": "Select a page...",
+      "tabs": {
+        "console": "Console",
+        "overview": "Overview",
+        "files": "File Manager",
+        "settings": "Settings",
+        "users": "Users",
+        "database": "Database",
+        "backups": "Backups",
+        "plugins": "Plugins",
+        "admin": "Administration"
+      },
+      "overview": {
+        "status": "Status",
+        "cpuUsage": "CPU Usage",
+        "memoryUsage": "Memory Usage",
+        "storageUsage": "Storage Usage"
+      }
+    },
+    "address": {
+      "copyToastTitle": "Copied to clipboard",
+      "copyToastDescription": "Server address {{address}} copied.",
+      "copyButtonTitle": "Copy address"
+    },
+    "console": {
+      "title": "Live Console",
+      "commandPlaceholder": "Enter a command...",
+      "sendButton": "Send"
+    },
+    "aiSummary": {
+      "title": "AI Console Analysis",
+      "description": "Copy and paste specific logs from the console into the text area below to get an AI-powered summary and troubleshooting tips.",
+      "logsLabel": "Logs to Analyze",
+      "logsPlaceholder": "Paste logs here...",
+      "analyzeButton": "Analyze Logs",
+      "loading": "The AI is analyzing the logs...",
+      "ready": "Ready to provide insights once you paste some logs.",
+      "summaryTitle": "Summary",
+      "fail": "Failed to generate summary. Please check the console for details.",
+      "suggestions": "Troubleshooting Suggestions",
+      "rootCauses": "Potential Root Causes"
+    },
+    "cpuMemoryChart": {
+      "title": "CPU & Memory Usage",
+      "description": "Real-time CPU and Memory usage for the last 30 minutes."
+    },
+    "networkChart": {
+      "title": "Network Traffic",
+      "description": "Inbound and outbound traffic for the last 30 minutes (KB/s).",
+      "download": "Download",
+      "upload": "Upload"
+    },
+    "fileManager": {
+      "title": "File Manager",
+      "description": "Browse and manage files on this server. Click on a file name to edit it.",
+      "table": {
+        "name": "Name",
+        "size": "Size",
+        "modified": "Last Modified",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit",
+        "download": "Download",
+        "rename": "Rename",
+        "delete": "Delete"
+      },
+      "editor": {
+        "title": "Editing: {{filename}}",
+        "description": "Changes are not saved in this demo.",
+        "cancel": "Cancel",
+        "save": "Save Changes"
+      }
+    },
+    "settings": {
+      "title": "Configuration",
+      "description": "Configuration and server variables",
+      "variablesTitle": "Variables",
+      "eulaLabel": "EULA Agreement",
+      "eulaDescription": "Do you (or the server owner) agree to the Minecraft EULA?",
+      "fileIdLabel": "File Id",
+      "fileIdDescription": "File Id for the modpack desired. This is found at the end of the URL for the specific file desired.",
+      "ipLabel": "IP",
+      "ipDescription": "What IP to bind the server to.",
+      "javaVersionLabel": "Java Version",
+      "javaVersionDescription": "Version of Java to use.",
+      "memoryLabel": "Memory (MB)",
+      "memoryDescription": "How much memory in MB to allocate to the Java Heap.",
+      "jvmArgsLabel": "JVM Arguments",
+      "jvmArgsDescription": "Extra JVM arguments to pass.",
+      "portLabel": "Port",
+      "portDescription": "What port to bind the server to.",
+      "projectIdLabel": "Project Id",
+      "projectIdDescription": "Project Id for the modpack desired. This is found on the modpack's webpage on the right side.",
+      "autoStartTitle": "Auto Start Conditions",
+      "startOnBootLabel": "Start on Boot",
+      "startOnBootDescription": "Start the server when the node boots.",
+      "restartOnCrashLabel": "Restart on Crash",
+      "restartOnCrashDescription": "Restart the server when it crashes.",
+      "restartOnStopLabel": "Restart on Stop",
+      "restartOnStopDescription": "Restart the server when it is stopped.",
+      "pluginsTitle": "Plugin Settings",
+      "enablePluginsLabel": "Enable Plugins Tab",
+      "enablePluginsDescription": "Show or hide the plugin management tab for this server.",
+      "saveButton": "Save Changes"
+    },
+    "users": {
+      "title": "User Access",
+      "description": "Users who have permission to manage this server.",
+      "addUser": "Add User",
+      "addDialog": {
+        "title": "Add User to Server",
+        "description": "Grant a user access to this server.",
+        "emailLabel": "Email",
+        "emailPlaceholder": "user@example.com",
+        "addButton": "Add User"
+      },
+      "table": {
+        "user": "User",
+        "email": "Email",
+        "actions": "Actions"
+      },
+      "revoke": "Revoke"
+    },
+    "database": {
+      "title": "Databases",
+      "description": "Manage the databases for this server.",
+      "newDb": "New Database",
+      "createDialog": {
+        "title": "Create New Database",
+        "nameLabel": "Database Name",
+        "namePlaceholder": "Database Name",
+        "hostLabel": "Database Host",
+        "hostPlaceholder": "Select a host",
+        "hostLocal": "Panel (localhost)",
+        "hostRemote": "Remote MySQL Server",
+        "createButton": "Create Database"
+      },
+      "table": {
+        "name": "Name",
+        "user": "User",
+        "connections": "Connections from",
+        "size": "Size"
+      },
+      "anyHost": "% (Any Host)"
+    },
+    "backups": {
+      "title": "Backups",
+      "description": "{{count}} backups",
+      "create": "Create Backup",
+      "createDialog": {
+        "title": "Create Backup",
+        "nameLabel": "Name",
+        "namePlaceholder": "Backup Name",
+        "createButton": "Create Backup"
+      },
+      "empty": {
+        "title": "No backups",
+        "description": "Create your first backup to get started."
+      }
+    },
+    "plugins": {
+      "title": "Plugins",
+      "description": "{{count}} plugins installed",
+      "searchPlaceholder": "Search plugins...",
+      "searchButton": "Search",
+      "empty": {
+        "title": "No plugins installed",
+        "description": "Search and install plugins from the search bar."
+      }
+    },
+    "admin": {
+      "title": "Administration",
+      "description": "Perform critical administrative actions. These operations can affect server configuration and data.",
+      "editDefinition": {
+        "title": "Edit Server Definition",
+        "description": "Modify the server's fundamental details.",
+        "button": "Edit Definition"
+      },
+      "installStatus": {
+        "title": "Installation Status",
+        "description": "Trigger the server installation or re-installation process.",
+        "button": "Install"
+      },
+      "delete": {
+        "title": "Delete Server",
+        "description": "This action is permanent. All server files and data will be erased.",
+        "button": "Delete"
+      },
+      "deleteDialog": {
+        "title": "Are you absolutely sure?",
+        "description": "This action cannot be undone. This will permanently delete the server and all its data from the platform.",
+        "cancel": "Cancel",
+        "confirm": "Yes, delete server"
+      }
+    },
+    "resourceChart": {
+      "title": "Resource Overview",
+      "description": "Current snapshot of resource utilization."
+    }
   }
 }

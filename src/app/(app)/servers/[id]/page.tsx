@@ -21,18 +21,7 @@ import NetworkUsageChart from './network-usage-chart';
 import { useState, useEffect } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-
-const serverTabs = [
-  { value: 'console', label: 'Console', icon: Terminal },
-  { value: 'overview', label: 'Overview', icon: Network },
-  { value: 'files', label: 'File Manager', icon: Folder },
-  { value: 'settings', label: 'Settings', icon: SettingsIcon },
-  { value: 'users', label: 'Users', icon: Users },
-  { value: 'database', label: 'Base de datos', icon: Database },
-  { value: 'backups', label: 'Copia de seguridad', icon: Archive },
-  { value: 'plugins', label: 'Plugins', icon: Puzzle },
-  { value: 'admin', label: 'Administración', icon: Shield },
-];
+import { useTranslations } from '@/contexts/translations-context';
 
 type LogEntry = {
   time: string;
@@ -61,6 +50,19 @@ const initialLogMessages = [
 export default function ServerDetailPage({ params }: { params: { id: string } }) {
   const server = servers.find((s) => s.id === params.id);
   const [activeTab, setActiveTab] = useState('console');
+  const { t } = useTranslations();
+  
+  const serverTabs = [
+    { value: 'console', label: t('servers.detail.tabs.console'), icon: Terminal },
+    { value: 'overview', label: t('servers.detail.tabs.overview'), icon: Network },
+    { value: 'files', label: t('servers.detail.tabs.files'), icon: Folder },
+    { value: 'settings', label: t('servers.detail.tabs.settings'), icon: SettingsIcon },
+    { value: 'users', label: t('servers.detail.tabs.users'), icon: Users },
+    { value: 'database', label: t('servers.detail.tabs.database'), icon: Database },
+    { value: 'backups', label: t('servers.detail.tabs.backups'), icon: Archive },
+    { value: 'plugins', label: t('servers.detail.tabs.plugins'), icon: Puzzle },
+    { value: 'admin', label: t('servers.detail.tabs.admin'), icon: Shield },
+  ];
   
   // State lifted from ConsoleView
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -106,44 +108,46 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
       <div className="flex items-center gap-2">
           <Button size="sm" variant="default">
               <Play className="mr-2 h-4 w-4" />
-              Iniciar
+              {t('servers.detail.start')}
           </Button>
           <Button size="sm" variant="outline">
               <RefreshCw className="mr-2 h-4 w-4" />
-              Reiniciar
+              {t('servers.detail.restart')}
           </Button>
           {!showKill ? (
             <Button size="sm" variant="outline" onClick={handleStopClick}>
                 <Square className="mr-2 h-4 w-4" />
-                Detener
+                {t('servers.detail.stop')}
             </Button>
           ) : (
             <Button size="sm" variant="destructive" onClick={handleKillClick}>
                 <ShieldAlert className="mr-2 h-4 w-4" />
-                Force Stop
+                {t('servers.detail.forceStop')}
             </Button>
           )}
       </div>
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <PageHeader title={server.name} />
-      <div className="flex items-center gap-4">
-        <ServerAddress ip={server.ipAddress} port={server.port} />
-        <p className="text-sm text-muted-foreground">
-          Detailed metrics and status for this server.
-        </p>
-      </div>
-      <div className="flex flex-wrap items-center gap-4">
-          {serverActions}
+      <div className="flex flex-col gap-4 -mt-4">
+        <div className="flex items-center gap-4">
+          <ServerAddress ip={server.ipAddress} port={server.port} />
+          <p className="text-sm text-muted-foreground">
+            {t('servers.detail.description')}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+            {serverActions}
+        </div>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <div className="md:hidden mb-4">
           <Select value={activeTab} onValueChange={setActiveTab}>
             <SelectTrigger>
-              <SelectValue placeholder="Select a page..." />
+              <SelectValue placeholder={t('servers.detail.selectPage')} />
             </SelectTrigger>
             <SelectContent>
               {serverTabs.map((tab) => (
@@ -179,13 +183,13 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50 h-full">
               <Card className="border-0 h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Status</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('servers.detail.overview.status')}</CardTitle>
                   <Network className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
                   <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit text-lg">
                     <StatusIndicator status={server.status} />
-                    {server.status}
+                    {t(`dashboard.status.${server.status}`)}
                   </Badge>
                 </CardContent>
               </Card>
@@ -193,7 +197,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50 h-full">
               <Card className="border-0 h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">CPU Usage</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('servers.detail.overview.cpuUsage')}</CardTitle>
                   <Cpu className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
@@ -204,7 +208,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50 h-full">
               <Card className="border-0 h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('servers.detail.overview.memoryUsage')}</CardTitle>
                   <MemoryStick className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
@@ -215,7 +219,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50 h-full">
               <Card className="border-0 h-full">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">Storage Usage</CardTitle>
+                  <CardTitle className="text-sm font-medium">{t('servers.detail.overview.storageUsage')}</CardTitle>
                   <HardDrive className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
