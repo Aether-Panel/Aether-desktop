@@ -12,19 +12,14 @@ import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, Bell, Mail } from 'lucide-react';
-
-
-const settingsTabs = [
-    { value: 'general', label: 'General', icon: Settings },
-    { value: 'discord', label: 'Notificaciones Discord', icon: Bell },
-    { value: 'mail', label: 'Correo', icon: Mail },
-];
+import { useTranslations } from '@/contexts/translations-context';
 
 
 export default function SettingsPage() {
     const { role } = useAuth();
     const router = useRouter();
     const [isMounted, setIsMounted] = useState(false);
+    const { t } = useTranslations();
     
     // State for form fields
     const [companyName, setCompanyName] = useState('Aether Panel');
@@ -34,6 +29,12 @@ export default function SettingsPage() {
     const [geminiApiKey, setGeminiApiKey] = useState('');
     const [hideAIAnalysis, setHideAIAnalysis] = useState(false);
     const [activeTab, setActiveTab] = useState('general');
+
+    const settingsTabs = [
+        { value: 'general', label: t('settings.tabs.general'), icon: Settings },
+        { value: 'discord', label: t('settings.tabs.discord'), icon: Bell },
+        { value: 'mail', label: t('settings.tabs.mail'), icon: Mail },
+    ];
 
     useEffect(() => {
         setIsMounted(true);
@@ -45,20 +46,20 @@ export default function SettingsPage() {
     if (!isMounted || role !== 'admin') {
         return (
             <div className="flex h-full items-center justify-center">
-              <p>Loading...</p>
+              <p>{t('common.loading')}</p>
             </div>
         );
     }
     
     return (
         <div className="flex flex-col gap-8">
-            <PageHeader title="Configuración del Panel" description="Administra la configuración global de tu instancia de Aether Panel." />
+            <PageHeader title={t('settings.title')} description={t('settings.description')} />
             
             <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="general" className="w-full">
                 <div className="md:hidden mb-4">
                     <Select value={activeTab} onValueChange={setActiveTab}>
                         <SelectTrigger>
-                            <SelectValue placeholder="Selecciona una sección..." />
+                            <SelectValue placeholder={t('settings.tabs.general')} />
                         </SelectTrigger>
                         <SelectContent>
                             {settingsTabs.map((tab) => (
@@ -85,44 +86,44 @@ export default function SettingsPage() {
                     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
                         <Card className="border-0">
                             <CardHeader>
-                                <CardTitle>Configuración General</CardTitle>
-                                <CardDescription>Ajusta la configuración principal de la aplicación.</CardDescription>
+                                <CardTitle>{t('settings.general.title')}</CardTitle>
+                                <CardDescription>{t('settings.general.description')}</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="base-url">URL Principal</Label>
+                                    <Label htmlFor="base-url">{t('settings.general.baseUrlLabel')}</Label>
                                     <Input id="base-url" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} />
-                                    <p className="text-sm text-muted-foreground">El enlace desde el cual accederás al panel de control siguiendo el siguiente formato: http://localhost:8080</p>
+                                    <p className="text-sm text-muted-foreground">{t('settings.general.baseUrlDescription')}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="company-name">Nombre de la empresa</Label>
+                                    <Label htmlFor="company-name">{t('settings.general.companyNameLabel')}</Label>
                                     <Input id="company-name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="gemini-api-key">Clave API de Gemini</Label>
-                                    <Input id="gemini-api-key" type="password" value={geminiApiKey} onChange={(e) => setGeminiApiKey(e.target.value)} placeholder="Introduce tu clave API de Gemini" />
-                                    <p className="text-sm text-muted-foreground">Introduce tu clave API de Google Gemini para habilitar las funciones de inteligencia artificial.</p>
+                                    <Label htmlFor="gemini-api-key">{t('settings.general.geminiApiKeyLabel')}</Label>
+                                    <Input id="gemini-api-key" type="password" value={geminiApiKey} onChange={(e) => setGeminiApiKey(e.target.value)} placeholder={t('settings.general.geminiApiKeyPlaceholder')} />
+                                    <p className="text-sm text-muted-foreground">{t('settings.general.geminiApiKeyDescription')}</p>
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg border p-4">
                                     <div>
-                                        <Label htmlFor="hide-ai-analysis" className="font-medium">Ocultar Análisis IA de la Consola</Label>
+                                        <Label htmlFor="hide-ai-analysis" className="font-medium">{t('settings.general.hideAiAnalysisLabel')}</Label>
                                         <p className="text-sm text-muted-foreground max-w-prose mt-1">
-                                            Si se activa, se ocultará la función de análisis de la consola por IA para todos los servidores.
+                                            {t('settings.general.hideAiAnalysisDescription')}
                                         </p>
                                     </div>
                                     <Switch id="hide-ai-analysis" checked={hideAIAnalysis} onCheckedChange={setHideAIAnalysis} />
                                 </div>
                                 <div className="flex items-center justify-between rounded-lg border p-4">
                                     <div>
-                                        <Label htmlFor="allow-registration" className="font-medium">Permitir que los usuarios se puedan registrar</Label>
+                                        <Label htmlFor="allow-registration" className="font-medium">{t('settings.general.allowRegistrationLabel')}</Label>
                                         <p className="text-sm text-muted-foreground max-w-prose mt-1">
-                                            Los usuarios autorregistrados no pueden realizar ninguna acción hasta que se les otorguen permisos. Deshabilitar esto solo impide el registro directo, las invitaciones a un servidor y la página de Usuarios no se ven afectadas.
+                                            {t('settings.general.allowRegistrationDescription')}
                                         </p>
                                     </div>
                                     <Switch id="allow-registration" checked={allowRegistration} onCheckedChange={setAllowRegistration} />
                                 </div>
                                 <div className="flex justify-end pt-4">
-                                    <Button>Guardar configuración</Button>
+                                    <Button>{t('settings.general.saveButton')}</Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -132,28 +133,28 @@ export default function SettingsPage() {
                     <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
                         <Card className="border-0">
                             <CardHeader>
-                                <CardTitle>Notificaciones Discord</CardTitle>
-                                <CardDescription>Conecta webhooks de Discord para recibir alertas y notificaciones del sistema.</CardDescription>
+                                <CardTitle>{t('settings.discord.title')}</CardTitle>
+                                <CardDescription>{t('settings.discord.description')}</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="webhook-alerts">Webhook de Discord - Alertas de Servidores</Label>
-                                    <Input id="webhook-alerts" placeholder="Webhook de Discord - Alertas de Servidores" />
-                                    <p className="text-sm text-muted-foreground">URL del webhook de Discord para recibir alertas de servidores (online/offline, uso de recursos, backups, etc.)</p>
+                                    <Label htmlFor="webhook-alerts">{t('settings.discord.alertsWebhookLabel')}</Label>
+                                    <Input id="webhook-alerts" placeholder={t('settings.discord.alertsWebhookPlaceholder')} />
+                                    <p className="text-sm text-muted-foreground">{t('settings.discord.alertsWebhookDescription')}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="webhook-reports">Webhook de Discord - Informes del Sistema</Label>
-                                    <Input id="webhook-reports" placeholder="Webhook de Discord - Informes del Sistema" />
-                                    <p className="text-sm text-muted-foreground">URL del webhook de Discord para recibir informes periódicos del estado completo del sistema</p>
+                                    <Label htmlFor="webhook-reports">{t('settings.discord.reportsWebhookLabel')}</Label>
+                                    <Input id="webhook-reports" placeholder={t('settings.discord.reportsWebhookPlaceholder')} />
+                                    <p className="text-sm text-muted-foreground">{t('settings.discord.reportsWebhookDescription')}</p>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label htmlFor="webhook-status">Webhook de Discord - Estado del Nodo</Label>
-                                    <Input id="webhook-status" placeholder="Webhook de Discord - Estado del Nodo" />
-                                    <p className="text-sm text-muted-foreground">URL del webhook de Discord para recibir información sobre el estado del nodo/nodos</p>
+                                    <Label htmlFor="webhook-status">{t('settings.discord.statusWebhookLabel')}</Label>
+                                    <Input id="webhook-status" placeholder={t('settings.discord.statusWebhookPlaceholder')} />
+                                    <p className="text-sm text-muted-foreground">{t('settings.discord.statusWebhookDescription')}</p>
                                 </div>
                                 <div className="flex justify-between items-center pt-4">
-                                    <Button variant="secondary">Probar Webhook</Button>
-                                    <Button>Guardar configuración</Button>
+                                    <Button variant="secondary">{t('settings.discord.testButton')}</Button>
+                                    <Button>{t('settings.discord.saveButton')}</Button>
                                 </div>
                             </CardContent>
                         </Card>
@@ -163,15 +164,15 @@ export default function SettingsPage() {
                      <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
                         <Card className="border-0">
                             <CardHeader>
-                                <CardTitle>Configuración del correo</CardTitle>
-                                <CardDescription>Configura un proveedor para enviar correos transaccionales.</CardDescription>
+                                <CardTitle>{t('settings.mail.title')}</CardTitle>
+                                <CardDescription>{t('settings.mail.description')}</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
                                 <div className="space-y-2">
-                                    <Label htmlFor="mail-provider">Proveedor de e-mail</Label>
+                                    <Label htmlFor="mail-provider">{t('settings.mail.providerLabel')}</Label>
                                     <Select onValueChange={setMailProvider}>
                                         <SelectTrigger id="mail-provider">
-                                            <SelectValue placeholder="Selecciona un proveedor" />
+                                            <SelectValue placeholder={t('settings.mail.providerPlaceholder')} />
                                         </SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="smtp">SMTP</SelectItem>
@@ -179,32 +180,32 @@ export default function SettingsPage() {
                                             <SelectItem value="mailjet">Mailjet</SelectItem>
                                         </SelectContent>
                                     </Select>
-                                    <p className="text-sm text-muted-foreground">Selecciona el proveedor de correo electrónico que deseas usar para enviar emails desde el panel</p>
+                                    <p className="text-sm text-muted-foreground">{t('settings.mail.providerDescription')}</p>
                                 </div>
 
                                 {!mailProvider && (
                                     <div className="text-center text-muted-foreground py-6">
-                                        <p>Selecciona un proveedor de correo electrónico para ver las opciones de configuración</p>
+                                        <p>{t('settings.mail.selectProviderPrompt')}</p>
                                     </div>
                                 )}
 
                                 {mailProvider === 'smtp' && (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
                                         <div className="space-y-2">
-                                            <Label htmlFor="smtp-from">Dirección del remitente</Label>
-                                            <Input id="smtp-from" placeholder="no-reply@aether.panel" />
+                                            <Label htmlFor="smtp-from">{t('settings.mail.smtp.fromLabel')}</Label>
+                                            <Input id="smtp-from" placeholder={t('settings.mail.smtp.fromPlaceholder')} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="smtp-host">Host</Label>
-                                            <Input id="smtp-host" placeholder="smtp.example.com" />
+                                            <Label htmlFor="smtp-host">{t('settings.mail.smtp.hostLabel')}</Label>
+                                            <Input id="smtp-host" placeholder={t('settings.mail.smtp.hostPlaceholder')} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="smtp-user">Usuario</Label>
-                                            <Input id="smtp-user" placeholder="Usuario SMTP" />
+                                            <Label htmlFor="smtp-user">{t('settings.mail.smtp.userLabel')}</Label>
+                                            <Input id="smtp-user" placeholder={t('settings.mail.smtp.userPlaceholder')} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="smtp-pass">Contraseña</Label>
-                                            <Input id="smtp-pass" type="password" placeholder="••••••••" />
+                                            <Label htmlFor="smtp-pass">{t('settings.mail.smtp.passLabel')}</Label>
+                                            <Input id="smtp-pass" type="password" placeholder={t('settings.mail.smtp.passPlaceholder')} />
                                         </div>
                                     </div>
                                 )}
@@ -212,16 +213,16 @@ export default function SettingsPage() {
                                 {mailProvider === 'mailgun' && (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
                                         <div className="space-y-2">
-                                            <Label htmlFor="mailgun-domain">Dominio</Label>
-                                            <Input id="mailgun-domain" placeholder="mg.example.com" />
+                                            <Label htmlFor="mailgun-domain">{t('settings.mail.mailgun.domainLabel')}</Label>
+                                            <Input id="mailgun-domain" placeholder={t('settings.mail.mailgun.domainPlaceholder')} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="mailgun-from">Dirección del remitente</Label>
-                                            <Input id="mailgun-from" placeholder="no-reply@aether.panel" />
+                                            <Label htmlFor="mailgun-from">{t('settings.mail.mailgun.fromLabel')}</Label>
+                                            <Input id="mailgun-from" placeholder={t('settings.mail.mailgun.fromPlaceholder')} />
                                         </div>
                                         <div className="space-y-2 md:col-span-2">
-                                            <Label htmlFor="mailgun-key">Clave API</Label>
-                                            <Input id="mailgun-key" type="password" placeholder="••••••••" />
+                                            <Label htmlFor="mailgun-key">{t('settings.mail.mailgun.keyLabel')}</Label>
+                                            <Input id="mailgun-key" type="password" placeholder={t('settings.mail.mailgun.keyPlaceholder')} />
                                         </div>
                                     </div>
                                 )}
@@ -229,16 +230,16 @@ export default function SettingsPage() {
                                 {mailProvider === 'mailjet' && (
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t animate-in fade-in">
                                         <div className="space-y-2">
-                                            <Label htmlFor="mailjet-domain">Dominio</Label>
-                                            <Input id="mailjet-domain" placeholder="example.com" />
+                                            <Label htmlFor="mailjet-domain">{t('settings.mail.mailjet.domainLabel')}</Label>
+                                            <Input id="mailjet-domain" placeholder={t('settings.mail.mailjet.domainPlaceholder')} />
                                         </div>
                                         <div className="space-y-2">
-                                            <Label htmlFor="mailjet-from">Dirección del remitente</Label>
-                                            <Input id="mailjet-from" placeholder="no-reply@aether.panel" />
+                                            <Label htmlFor="mailjet-from">{t('settings.mail.mailjet.fromLabel')}</Label>
+                                            <Input id="mailjet-from" placeholder={t('settings.mail.mailjet.fromPlaceholder')} />
                                         </div>
                                         <div className="space-y-2 md:col-span-2">
-                                            <Label htmlFor="mailjet-key">Clave API</Label>
-                                            <Input id="mailjet-key" type="password" placeholder="••••••••" />
+                                            <Label htmlFor="mailjet-key">{t('settings.mail.mailjet.keyLabel')}</Label>
+                                            <Input id="mailjet-key" type="password" placeholder={t('settings.mail.mailjet.keyPlaceholder')} />
                                         </div>
                                     </div>
                                 )}
@@ -247,8 +248,8 @@ export default function SettingsPage() {
                                   <>
                                     <Separator className="mt-6" />
                                     <div className="flex justify-between items-center pt-4">
-                                        <Button variant="secondary">Email de prueba</Button>
-                                        <Button>Guardar configuración</Button>
+                                        <Button variant="secondary">{t('settings.mail.testButton')}</Button>
+                                        <Button>{t('settings.mail.saveButton')}</Button>
                                     </div>
                                   </>
                                 )}

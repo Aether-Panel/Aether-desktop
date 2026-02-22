@@ -631,5 +631,80 @@
     "loading": "Cargando...",
     "cancel": "Cancelar",
     "close": "Cerrar"
+  },
+  "settings": {
+    "title": "Configuración del Panel",
+    "description": "Administra la configuración global de tu instancia de Aether Panel.",
+    "tabs": {
+      "general": "General",
+      "discord": "Notificaciones Discord",
+      "mail": "Correo"
+    },
+    "general": {
+      "title": "Configuración General",
+      "description": "Ajusta la configuración principal de la aplicación.",
+      "baseUrlLabel": "URL Principal",
+      "baseUrlDescription": "El enlace desde el cual accederás al panel de control siguiendo el siguiente formato: http://localhost:8080",
+      "companyNameLabel": "Nombre de la empresa",
+      "geminiApiKeyLabel": "Clave API de Gemini",
+      "geminiApiKeyPlaceholder": "Introduce tu clave API de Gemini",
+      "geminiApiKeyDescription": "Introduce tu clave API de Google Gemini para habilitar las funciones de inteligencia artificial.",
+      "hideAiAnalysisLabel": "Ocultar Análisis IA de la Consola",
+      "hideAiAnalysisDescription": "Si se activa, se ocultará la función de análisis de la consola por IA para todos los servidores.",
+      "allowRegistrationLabel": "Permitir que los usuarios se puedan registrar",
+      "allowRegistrationDescription": "Los usuarios autorregistrados no pueden realizar ninguna acción hasta que se les otorguen permisos. Deshabilitar esto solo impide el registro directo, las invitaciones a un servidor y la página de Usuarios no se ven afectadas.",
+      "saveButton": "Guardar configuración"
+    },
+    "discord": {
+      "title": "Notificaciones Discord",
+      "description": "Conecta webhooks de Discord para recibir alertas y notificaciones del sistema.",
+      "alertsWebhookLabel": "Webhook de Discord - Alertas de Servidores",
+      "alertsWebhookPlaceholder": "Webhook de Discord - Alertas de Servidores",
+      "alertsWebhookDescription": "URL del webhook de Discord para recibir alertas de servidores (online/offline, uso de recursos, backups, etc.)",
+      "reportsWebhookLabel": "Webhook de Discord - Informes del Sistema",
+      "reportsWebhookPlaceholder": "Webhook de Discord - Informes del Sistema",
+      "reportsWebhookDescription": "URL del webhook de Discord para recibir informes periódicos del estado completo del sistema",
+      "statusWebhookLabel": "Webhook de Discord - Estado del Nodo",
+      "statusWebhookPlaceholder": "Webhook de Discord - Estado del Nodo",
+      "statusWebhookDescription": "URL del webhook de Discord para recibir información sobre el estado del nodo/nodos",
+      "testButton": "Probar Webhook",
+      "saveButton": "Guardar configuración"
+    },
+    "mail": {
+      "title": "Configuración del correo",
+      "description": "Configura un proveedor para enviar correos transaccionales.",
+      "providerLabel": "Proveedor de e-mail",
+      "providerPlaceholder": "Selecciona un proveedor",
+      "providerDescription": "Selecciona el proveedor de correo electrónico que deseas usar para enviar emails desde el panel",
+      "selectProviderPrompt": "Selecciona un proveedor de correo electrónico para ver las opciones de configuración",
+      "smtp": {
+        "fromLabel": "Dirección del remitente",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "hostLabel": "Host",
+        "hostPlaceholder": "smtp.example.com",
+        "userLabel": "Usuario",
+        "userPlaceholder": "Usuario SMTP",
+        "passLabel": "Contraseña",
+        "passPlaceholder": "••••••••"
+      },
+      "mailgun": {
+        "domainLabel": "Dominio",
+        "domainPlaceholder": "mg.example.com",
+        "fromLabel": "Dirección del remitente",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "keyLabel": "Clave API",
+        "keyPlaceholder": "••••••••"
+      },
+      "mailjet": {
+        "domainLabel": "Dominio",
+        "domainPlaceholder": "example.com",
+        "fromLabel": "Dirección del remitente",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "keyLabel": "Clave API",
+        "keyPlaceholder": "••••••••"
+      },
+      "testButton": "Email de prueba",
+      "saveButton": "Guardar configuración"
+    }
   }
 }

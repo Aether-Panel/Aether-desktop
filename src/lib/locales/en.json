@@ -631,5 +631,80 @@
     "loading": "Loading...",
     "cancel": "Cancel",
     "close": "Close"
+  },
+  "settings": {
+    "title": "Panel Settings",
+    "description": "Manage the global settings for your Aether Panel instance.",
+    "tabs": {
+      "general": "General",
+      "discord": "Discord Notifications",
+      "mail": "Mail"
+    },
+    "general": {
+      "title": "General Settings",
+      "description": "Adjust the main application settings.",
+      "baseUrlLabel": "Base URL",
+      "baseUrlDescription": "The link from which you will access the control panel following the format: http://localhost:8080",
+      "companyNameLabel": "Company Name",
+      "geminiApiKeyLabel": "Gemini API Key",
+      "geminiApiKeyPlaceholder": "Enter your Gemini API key",
+      "geminiApiKeyDescription": "Enter your Google Gemini API key to enable artificial intelligence features.",
+      "hideAiAnalysisLabel": "Hide AI Console Analysis",
+      "hideAiAnalysisDescription": "If enabled, the AI console analysis feature will be hidden for all servers.",
+      "allowRegistrationLabel": "Allow users to register",
+      "allowRegistrationDescription": "Self-registered users cannot perform any actions until permissions are granted. Disabling this only prevents direct registration, server invitations and the Users page are not affected.",
+      "saveButton": "Save settings"
+    },
+    "discord": {
+      "title": "Discord Notifications",
+      "description": "Connect Discord webhooks to receive system alerts and notifications.",
+      "alertsWebhookLabel": "Discord Webhook - Server Alerts",
+      "alertsWebhookPlaceholder": "Discord Webhook - Server Alerts",
+      "alertsWebhookDescription": "Discord webhook URL to receive server alerts (online/offline, resource usage, backups, etc.)",
+      "reportsWebhookLabel": "Discord Webhook - System Reports",
+      "reportsWebhookPlaceholder": "Discord Webhook - System Reports",
+      "reportsWebhookDescription": "Discord webhook URL to receive periodic reports on the complete system status.",
+      "statusWebhookLabel": "Discord Webhook - Node Status",
+      "statusWebhookPlaceholder": "Discord Webhook - Node Status",
+      "statusWebhookDescription": "Discord webhook URL to receive information about the status of the node/nodes.",
+      "testButton": "Test Webhook",
+      "saveButton": "Save settings"
+    },
+    "mail": {
+      "title": "Mail Configuration",
+      "description": "Configure a provider to send transactional emails.",
+      "providerLabel": "E-mail Provider",
+      "providerPlaceholder": "Select a provider",
+      "providerDescription": "Select the email provider you want to use to send emails from the panel.",
+      "selectProviderPrompt": "Select an email provider to see the configuration options.",
+      "smtp": {
+        "fromLabel": "Sender Address",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "hostLabel": "Host",
+        "hostPlaceholder": "smtp.example.com",
+        "userLabel": "User",
+        "userPlaceholder": "SMTP User",
+        "passLabel": "Password",
+        "passPlaceholder": "••••••••"
+      },
+      "mailgun": {
+        "domainLabel": "Domain",
+        "domainPlaceholder": "mg.example.com",
+        "fromLabel": "Sender Address",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "keyLabel": "API Key",
+        "keyPlaceholder": "••••••••"
+      },
+      "mailjet": {
+        "domainLabel": "Domain",
+        "domainPlaceholder": "example.com",
+        "fromLabel": "Sender Address",
+        "fromPlaceholder": "no-reply@aether.panel",
+        "keyLabel": "API Key",
+        "keyPlaceholder": "••••••••"
+      },
+      "testButton": "Test Email",
+      "saveButton": "Save settings"
+    }
   }
 }
