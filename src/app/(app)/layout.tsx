@@ -79,7 +79,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       <AvatarImage src={user?.avatar} alt={user?.name} />
                       <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <div className="flex min-w-0 flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden">
+                    <div className="flex flex-1 min-w-0 flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden">
                       <span className="w-full truncate font-medium">{user?.name}</span>
                       <span className="w-full truncate text-xs text-muted-foreground">{user?.email}</span>
                     </div>
