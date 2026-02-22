@@ -395,5 +395,58 @@
       "viewServers": "Ver Servidores",
       "delete": "Eliminar"
     }
+  },
+  "roles": {
+    "title": "Gestión de Roles",
+    "description": "Ver detalles y permisos para cada rol de usuario.",
+    "addRole": "Añadir Rol",
+    "addDialog": {
+      "title": "Añadir Nuevo Rol",
+      "description": "Crear un nuevo rol y asignar permisos.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "p. ej., desarrollador",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "Una breve descripción del rol.",
+      "permissionsLabel": "Permisos",
+      "cancel": "Cancelar",
+      "create": "Crear Rol"
+    },
+    "availableRoles": "Roles Disponibles",
+    "table": {
+      "role": "Rol",
+      "description": "Descripción",
+      "permissions": "Permisos"
+    },
+    "initial": {
+      "admin": {
+        "description": "Acceso total a todas las funciones y configuraciones del panel."
+      },
+      "user": {
+        "description": "Acceso básico para iniciar sesión y gestionar su propia cuenta."
+      }
+    }
+  },
+  "permissions": {
+    "grantAll": "Conceder todos los permisos",
+    "login": "Iniciar sesión",
+    "editOwnAccount": "Editar mi cuenta",
+    "manageOauthClients": "Administrar mis clientes OAuth2",
+    "editPanelSettings": "Editar configuración del panel",
+    "createServer": "Crear nuevos servidores",
+    "viewNodes": "Ver Nodos",
+    "createNodes": "Crear nuevos nodos",
+    "editNodes": "Editar nodos existentes",
+    "deployNodes": "Desplegar nodos",
+    "deleteNodes": "Eliminar nodos",
+    "viewUsers": "Ver lista de todos los usuarios",
+    "viewUserInfo": "Ver información de usuarios",
+    "editUsers": "Editar información de usuarios",
+    "viewUserPermissions": "Ver permisos de usuario",
+    "editUserPermissions": "Editar permisos de usuario",
+    "viewTemplates": "Ver plantillas",
+    "manageLocalTemplates": "Crear/Editar/Eliminar plantillas locales",
+    "viewTemplateRepos": "Ver repositorios de plantillas",
+    "addTemplateRepos": "Añadir repositorios de plantillas",
+    "deleteTemplateRepos": "Eliminar repositorios de plantillas"
   }
 }

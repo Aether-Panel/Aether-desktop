@@ -395,5 +395,58 @@
       "viewServers": "View Servers",
       "delete": "Delete"
     }
+  },
+  "roles": {
+    "title": "Role Management",
+    "description": "View details and permissions for each user role.",
+    "addRole": "Add Role",
+    "addDialog": {
+      "title": "Add New Role",
+      "description": "Create a new role and assign permissions.",
+      "nameLabel": "Name",
+      "namePlaceholder": "e.g., developer",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "A short description of the role.",
+      "permissionsLabel": "Permissions",
+      "cancel": "Cancel",
+      "create": "Create Role"
+    },
+    "availableRoles": "Available Roles",
+    "table": {
+      "role": "Role",
+      "description": "Description",
+      "permissions": "Permissions"
+    },
+    "initial": {
+      "admin": {
+        "description": "Full access to all panel functions and settings."
+      },
+      "user": {
+        "description": "Basic access to log in and manage their own account."
+      }
+    }
+  },
+  "permissions": {
+    "grantAll": "Grant all permissions",
+    "login": "Log in",
+    "editOwnAccount": "Edit my account",
+    "manageOauthClients": "Manage my OAuth2 clients",
+    "editPanelSettings": "Edit panel settings",
+    "createServer": "Create new servers",
+    "viewNodes": "View Nodes",
+    "createNodes": "Create new nodes",
+    "editNodes": "Edit existing nodes",
+    "deployNodes": "Deploy nodes",
+    "deleteNodes": "Delete nodes",
+    "viewUsers": "View list of all users",
+    "viewUserInfo": "View user information",
+    "editUsers": "Edit user information",
+    "viewUserPermissions": "View user permissions",
+    "editUserPermissions": "Edit user permissions",
+    "viewTemplates": "View templates",
+    "manageLocalTemplates": "Create/Edit/Delete local templates",
+    "viewTemplateRepos": "View template repositories",
+    "addTemplateRepos": "Add template repositories",
+    "deleteTemplateRepos": "Delete template repositories"
   }
 }

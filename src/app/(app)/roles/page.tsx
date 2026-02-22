@@ -13,61 +13,43 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { PlusCircle } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
+import { useTranslations } from '@/contexts/translations-context';
 
 type Role = {
   name: string;
   description: string;
-  permissions: string[];
+  permissions: string[]; // These are permission keys
 };
 
-const initialRoles: Role[] = [
+const allPermissionKeys = [
+    "grantAll", "login", "editOwnAccount", "manageOauthClients", "editPanelSettings",
+    "createServer", "viewNodes", "createNodes", "editNodes", "deployNodes",
+    "deleteNodes", "viewUsers", "viewUserInfo", "editUsers", "viewUserPermissions",
+    "editUserPermissions", "viewTemplates", "manageLocalTemplates",
+    "viewTemplateRepos", "addTemplateRepos", "deleteTemplateRepos",
+];
+
+const initialRolesData = [
   {
     name: 'admin',
-    description: 'Acceso total a todas las funciones y configuraciones del panel.',
-    permissions: ['Conceder todos los permisos'],
+    descriptionKey: 'roles.initial.admin.description',
+    permissions: ['grantAll'],
   },
   {
     name: 'user',
-    description: 'Acceso básico para iniciar sesión y gestionar su propia cuenta.',
-    permissions: ['Iniciar sesión', 'Editar mi cuenta'],
+    descriptionKey: 'roles.initial.user.description',
+    permissions: ['login', 'editOwnAccount'],
   },
 ];
 
-const allPermissions = [
-    "Conceder todos los permisos",
-    "Iniciar sesión",
-    "Editar mi cuenta",
-    "Administrar mis clientes OAuth2",
-    "Editar configuración del panel",
-    "Crear nuevos servidores",
-    "Ver Nodos",
-    "Crear nuevos nodos",
-    "Editar nodos existentes",
-    "Desplegar nodos",
-    "Eliminar nodos",
-    "Ver lista de todos los usuarios",
-    "Ver información de usuarios",
-    "Editar información de usuarios",
-    "Ver permisos de usuario",
-    "Editar permisos de usuario",
-    "Ver plantillas",
-    "Crear/Editar/Eliminar plantillas locales",
-    "Ver repositorios de plantillas",
-    "Añadir repositorios de plantillas",
-    "Eliminar repositorios de plantillas",
-];
 
 export default function RolesPage() {
   const { role } = useAuth();
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
-  const [roles, setRoles] = useState<Role[]>(initialRoles);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const { t } = useTranslations();
 
-  // New role form state
-  const [newRoleName, setNewRoleName] = useState('');
-  const [newRoleDescription, setNewRoleDescription] = useState('');
-  const [newRolePermissions, setNewRolePermissions] = useState<string[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -76,9 +58,24 @@ export default function RolesPage() {
     }
   }, [role, router]);
 
-  const handlePermissionChange = (permission: string, checked: boolean) => {
+  useEffect(() => {
+    setRoles(initialRolesData.map(r => ({
+      name: r.name,
+      description: t(r.descriptionKey),
+      permissions: r.permissions
+    })));
+  }, [t]);
+
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+
+  // New role form state
+  const [newRoleName, setNewRoleName] = useState('');
+  const [newRoleDescription, setNewRoleDescription] = useState('');
+  const [newRolePermissions, setNewRolePermissions] = useState<string[]>([]);
+
+  const handlePermissionChange = (permissionKey: string, checked: boolean) => {
     setNewRolePermissions(prev => 
-      checked ? [...prev, permission] : prev.filter(p => p !== permission)
+      checked ? [...prev, permissionKey] : prev.filter(p => p !== permissionKey)
     );
   };
 
@@ -110,63 +107,63 @@ export default function RolesPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="Role Management" description="View details and permissions for each user role.">
+      <PageHeader title={t('roles.title')} description={t('roles.description')}>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
                 <Button>
                     <PlusCircle className="mr-2" />
-                    Add Role
+                    {t('roles.addRole')}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle>Add New Role</DialogTitle>
+                    <DialogTitle>{t('roles.addDialog.title')}</DialogTitle>
                     <DialogDescription>
-                        Create a new role and assign permissions.
+                        {t('roles.addDialog.description')}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="role-name" className="text-right">
-                            Name
+                            {t('roles.addDialog.nameLabel')}
                         </Label>
                         <Input
                             id="role-name"
                             value={newRoleName}
                             onChange={(e) => setNewRoleName(e.target.value)}
                             className="col-span-3"
-                            placeholder="e.g., developer"
+                            placeholder={t('roles.addDialog.namePlaceholder')}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-start gap-4">
                         <Label htmlFor="role-description" className="text-right pt-2">
-                            Description
+                            {t('roles.addDialog.descriptionLabel')}
                         </Label>
                         <Textarea
                             id="role-description"
                             value={newRoleDescription}
                             onChange={(e) => setNewRoleDescription(e.target.value)}
                             className="col-span-3"
-                            placeholder="A short description of the role."
+                            placeholder={t('roles.addDialog.descriptionPlaceholder')}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-start gap-4">
                         <Label className="text-right pt-2">
-                            Permissions
+                            {t('roles.addDialog.permissionsLabel')}
                         </Label>
-                        <div className="col-span-3 grid grid-cols-2 gap-x-6 gap-y-2">
-                            {allPermissions.map(permission => (
-                                <div key={permission} className="flex items-center space-x-2">
+                        <div className="col-span-3 grid grid-cols-2 gap-x-6 gap-y-2 max-h-60 overflow-y-auto pr-2">
+                            {allPermissionKeys.map(permissionKey => (
+                                <div key={permissionKey} className="flex items-center space-x-2">
                                     <Checkbox
-                                        id={`perm-${permission.replace(/\s+/g, '-')}`}
-                                        onCheckedChange={(checked) => handlePermissionChange(permission, !!checked)}
-                                        checked={newRolePermissions.includes(permission)}
+                                        id={`perm-${permissionKey}`}
+                                        onCheckedChange={(checked) => handlePermissionChange(permissionKey, !!checked)}
+                                        checked={newRolePermissions.includes(permissionKey)}
                                     />
                                     <label
-                                        htmlFor={`perm-${permission.replace(/\s+/g, '-')}`}
+                                        htmlFor={`perm-${permissionKey}`}
                                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                     >
-                                        {permission}
+                                        {t(`permissions.${permissionKey}`)}
                                     </label>
                                 </div>
                             ))}
@@ -174,8 +171,8 @@ export default function RolesPage() {
                     </div>
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-                    <Button type="submit" onClick={handleAddRole}>Create Role</Button>
+                    <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>{t('roles.addDialog.cancel')}</Button>
+                    <Button type="submit" onClick={handleAddRole}>{t('roles.addDialog.create')}</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
@@ -184,15 +181,15 @@ export default function RolesPage() {
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader>
-            <CardTitle>Available Roles</CardTitle>
+            <CardTitle>{t('roles.availableRoles')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Role</TableHead>
-                  <TableHead className="hidden md:table-cell">Description</TableHead>
-                  <TableHead className="hidden md:table-cell">Permissions</TableHead>
+                  <TableHead>{t('roles.table.role')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('roles.table.description')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('roles.table.permissions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -202,16 +199,16 @@ export default function RolesPage() {
                       <Badge variant={role.name === 'admin' ? 'default' : 'secondary'} className="capitalize">{role.name}</Badge>
                       <p className="text-sm text-muted-foreground mt-2 md:hidden">{role.description}</p>
                       <div className="flex flex-wrap gap-2 mt-2 md:hidden">
-                        {role.permissions.map(permission => (
-                          <Badge key={permission} variant="outline">{permission}</Badge>
+                        {role.permissions.map(permissionKey => (
+                          <Badge key={permissionKey} variant="outline">{t(`permissions.${permissionKey}`)}</Badge>
                         ))}
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell">{role.description}</TableCell>
                     <TableCell className="hidden md:table-cell">
                       <div className="flex flex-wrap gap-2">
-                        {role.permissions.map(permission => (
-                          <Badge key={permission} variant="outline">{permission}</Badge>
+                        {role.permissions.map(permissionKey => (
+                          <Badge key={permissionKey} variant="outline">{t(`permissions.${permissionKey}`)}</Badge>
                         ))}
                       </div>
                     </TableCell>
