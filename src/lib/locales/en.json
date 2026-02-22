@@ -448,5 +448,113 @@
     "viewTemplateRepos": "View template repositories",
     "addTemplateRepos": "Add template repositories",
     "deleteTemplateRepos": "Delete template repositories"
+  },
+  "nodes": {
+    "title": "Node Management",
+    "description": "Manage all deployment nodes for your servers.",
+    "addNode": "Add Node",
+    "addDialog": {
+      "title": "Create Node",
+      "nameLabel": "Name",
+      "namePlaceholder": "Name",
+      "publicHostLabel": "Public Host",
+      "publicHostPlaceholder": "Public Host",
+      "publicPortLabel": "Public Port",
+      "sftpPortLabel": "SFTP Port",
+      "useDifferentHostLabel": "Use a different host/port for server-to-server communication",
+      "useDifferentHostDescription": "This separate address is used when the main node needs to communicate with the new node. This is useful, for example, when the nodes are on the same network behind NAT.",
+      "privateHostLabel": "Private Host",
+      "privateHostPlaceholder": "Private Host",
+      "privatePortLabel": "Private Port",
+      "createButton": "Create Node"
+    },
+    "allNodes": "All Nodes",
+    "table": {
+      "name": "Name",
+      "location": "Location",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "actions": {
+      "edit": "Edit",
+      "deploy": "Deploy",
+      "delete": "Delete"
+    },
+    "editDialog": {
+      "title": "Edit Node",
+      "cancel": "Cancel",
+      "save": "Save Changes"
+    },
+    "deployDialog": {
+      "title": "Deploy Node: {{name}}",
+      "description": "Follow these steps to set up and connect your new node.",
+      "step1": "Step 1: Install AetherPanel on the new server.",
+      "step1Description": "See the documentation for more details.",
+      "step2": "Step 2: Stop the AetherPanel service.",
+      "step2Description": "If it was started during installation, run the following command:",
+      "step3": "Step 3: Replace the configuration file.",
+      "step3Description": "The file is located at <code>/etc/AetherPanel/config.json</code>. Replace its contents with the following:",
+      "step4": "Step 4: Enable and restart the service.",
+      "step4Description": "Run the following command to complete the setup:",
+      "successMessage": "Your new node is configured and ready to use!",
+      "close": "Close"
+    },
+    "detail": {
+      "totalServers": "Total Servers",
+      "serverStatus": "Server Status",
+      "online": "{{count}} online",
+      "offline": "{{count}} offline",
+      "memoryUsage": "Memory Usage",
+      "of": "of",
+      "cpuUsage": "CPU Usage",
+      "successAlertTitle": "This node is correctly configured and operational",
+      "systemInfo": {
+        "title": "System Information",
+        "os": "Operating System",
+        "arch": "CPU Architecture",
+        "version": "Version",
+        "publicAddress": "Public Address",
+        "environments": "Available Environments",
+        "general": "General",
+        "hostname": "Hostname",
+        "platform": "Platform",
+        "uptime": "Uptime",
+        "cpu": "CPU",
+        "model": "Model",
+        "physicalCores": "Physical Cores",
+        "logicalCores": "Logical Cores",
+        "memory": "Memory",
+        "total": "Total",
+        "used": "Used",
+        "free": "Free"
+      },
+      "disks": {
+        "title": "Disks"
+      },
+      "serversOnNode": {
+        "title": "Servers on this Node",
+        "view": "View",
+        "empty": "There are no servers on this node."
+      },
+      "editNode": {
+        "title": "Edit Node",
+        "localNodeAlertTitle": "Cannot be edited",
+        "localNodeAlertDescription": "The local node does not have any settings that can be edited. To change the displayed host, adjust the panel's master URL in the settings.",
+        "nameLabel": "Name",
+        "publicHostLabel": "Public host",
+        "publicPortLabel": "Public port",
+        "sftpPortLabel": "SFTP port",
+        "updateButton": "Update Node",
+        "deleteButton": "Delete Node",
+        "deployButton": "Deploy Node"
+      }
+    }
+  },
+  "common": {
+    "copied": "Copied to clipboard",
+    "copy": "Copy",
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "close": "Close"
   }
 }

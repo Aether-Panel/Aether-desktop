@@ -16,9 +16,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function NodeDetailPage({ params }: { params: { id: string } }) {
   const node = nodes.find(n => n.id === params.id);
+  const { t } = useTranslations();
 
   if (!node) {
     notFound();
@@ -48,7 +50,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
   const CopyableCode = ({ command }: { command: string }) => {
     const handleCopy = () => {
         navigator.clipboard.writeText(command);
-        toast({ title: 'Copiado al portapapeles' });
+        toast({ title: t('common.copied') });
     };
 
     return (
@@ -56,7 +58,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <pre className="flex-grow overflow-x-auto"><code>{command}</code></pre>
             <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={handleCopy}>
                 <Copy className="h-4 w-4" />
-                <span className="sr-only">Copiar</span>
+                <span className="sr-only">{t('common.copy')}</span>
             </Button>
         </div>
     );
@@ -97,7 +99,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total de Servidores</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('nodes.detail.totalServers')}</CardTitle>
               <ServerIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -108,36 +110,36 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Estado de Servidores</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('nodes.detail.serverStatus')}</CardTitle>
               <ServerIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-               <div className="text-xl font-bold">{onlineServers} en línea</div>
-               <p className="text-xs text-muted-foreground">{offlineServers} fuera de línea</p>
+               <div className="text-xl font-bold">{t('nodes.detail.online', {count: onlineServers})}</div>
+               <p className="text-xs text-muted-foreground">{t('nodes.detail.offline', {count: offlineServers})}</p>
             </CardContent>
           </Card>
         </div>
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Uso de Memoria</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('nodes.detail.memoryUsage')}</CardTitle>
               <MemoryStick className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{node.systemInfo.memory.used} MB</div>
-              <p className="text-xs text-muted-foreground">de {node.isLocal ? `${node.systemInfo.memory.total} GB` : '∞'}</p>
+              <p className="text-xs text-muted-foreground">{t('nodes.detail.of')} {node.isLocal ? `${node.systemInfo.memory.total} GB` : '∞'}</p>
             </CardContent>
           </Card>
         </div>
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Uso de CPU</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('nodes.detail.cpuUsage')}</CardTitle>
               <Cpu className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{node.systemInfo.cpu.usage}%</div>
-              <p className="text-xs text-muted-foreground">de ∞</p>
+              <p className="text-xs text-muted-foreground">{t('nodes.detail.of')} ∞</p>
             </CardContent>
           </Card>
         </div>
@@ -145,7 +147,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
 
       <Alert variant="default" className="border-green-500/50 bg-green-500/10 text-green-200">
         <CheckCircle className="h-4 w-4 !text-green-500" />
-        <AlertTitle className="text-green-400">Este nodo está configurado correctamente y en funcionamiento</AlertTitle>
+        <AlertTitle className="text-green-400">{t('nodes.detail.successAlertTitle')}</AlertTitle>
       </Alert>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -153,37 +155,37 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                   <CardHeader>
-                      <CardTitle>Información del Sistema</CardTitle>
+                      <CardTitle>{t('nodes.detail.systemInfo.title')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <InfoItem label="Sistema Operativo" value={node.systemInfo.os} />
-                          <InfoItem label="Arquitectura de la CPU" value={node.systemInfo.architecture} />
-                          <InfoItem label="Versión" value={node.systemInfo.version} />
-                          <InfoItem label="Dirección Pública" value={`${node.publicHost}:${node.publicPort}`} />
-                          <InfoItem label="Entornos Disponibles">
+                          <InfoItem label={t('nodes.detail.systemInfo.os')} value={node.systemInfo.os} />
+                          <InfoItem label={t('nodes.detail.systemInfo.arch')} value={node.systemInfo.architecture} />
+                          <InfoItem label={t('nodes.detail.systemInfo.version')} value={node.systemInfo.version} />
+                          <InfoItem label={t('nodes.detail.systemInfo.publicAddress')} value={`${node.publicHost}:${node.publicPort}`} />
+                          <InfoItem label={t('nodes.detail.systemInfo.environments')}>
                               <Badge variant="secondary">
                                   <Code className="mr-2 h-3 w-3" /> Docker
                               </Badge>
                           </InfoItem>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 pt-4 border-t">
-                          <h4 className="md:col-span-2 font-semibold text-base mb-2">General</h4>
-                          <InfoItem label="Nombre del Host" value={node.systemInfo.hostname} />
-                          <InfoItem label="Plataforma" value={node.systemInfo.platform} />
-                          <InfoItem label="Tiempo Activo" value={node.systemInfo.uptime} />
+                          <h4 className="md:col-span-2 font-semibold text-base mb-2">{t('nodes.detail.systemInfo.general')}</h4>
+                          <InfoItem label={t('nodes.detail.systemInfo.hostname')} value={node.systemInfo.hostname} />
+                          <InfoItem label={t('nodes.detail.systemInfo.platform')} value={node.systemInfo.platform} />
+                          <InfoItem label={t('nodes.detail.systemInfo.uptime')} value={node.systemInfo.uptime} />
                       </div>
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 pt-4 border-t">
-                          <h4 className="md:col-span-2 font-semibold text-base mb-2">CPU</h4>
-                          <InfoItem label="Modelo" value={node.systemInfo.cpu.model} />
-                          <InfoItem label="Núcleos Físicos" value={node.systemInfo.cpu.physicalCores} />
-                          <InfoItem label="Hilos Lógicos" value={node.systemInfo.cpu.logicalCores} />
+                          <h4 className="md:col-span-2 font-semibold text-base mb-2">{t('nodes.detail.systemInfo.cpu')}</h4>
+                          <InfoItem label={t('nodes.detail.systemInfo.model')} value={node.systemInfo.cpu.model} />
+                          <InfoItem label={t('nodes.detail.systemInfo.physicalCores')} value={node.systemInfo.cpu.physicalCores} />
+                          <InfoItem label={t('nodes.detail.systemInfo.logicalCores')} value={node.systemInfo.cpu.logicalCores} />
                       </div>
                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 pt-4 border-t">
-                          <h4 className="md:col-span-2 font-semibold text-base mb-2">Memoria</h4>
-                          <InfoItem label="Total" value={`${node.systemInfo.memory.total} GB`} />
-                          <InfoItem label="Usado" value={`${node.systemInfo.memory.used} MB`} />
-                          <InfoItem label="Libre" value={`${node.systemInfo.memory.free} GB`} />
+                          <h4 className="md:col-span-2 font-semibold text-base mb-2">{t('nodes.detail.systemInfo.memory')}</h4>
+                          <InfoItem label={t('nodes.detail.systemInfo.total')} value={`${node.systemInfo.memory.total} GB`} />
+                          <InfoItem label={t('nodes.detail.systemInfo.used')} value={`${node.systemInfo.memory.used} MB`} />
+                          <InfoItem label={t('nodes.detail.systemInfo.free')} value={`${node.systemInfo.memory.free} GB`} />
                       </div>
                   </CardContent>
               </Card>
@@ -192,7 +194,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                   <CardHeader>
-                      <CardTitle>Discos</CardTitle>
+                      <CardTitle>{t('nodes.detail.disks.title')}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                       {node.systemInfo.disks.map((disk, index) => (
@@ -213,7 +215,7 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                   <CardHeader>
-                      <CardTitle>Servidores en este Nodo</CardTitle>
+                      <CardTitle>{t('nodes.detail.serversOnNode.title')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                       {node.serversOnNode.length > 0 ? (
@@ -225,13 +227,13 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
                                           <p className="text-xs text-muted-foreground">{server.type}</p>
                                       </div>
                                       <Link href={`/servers/${server.id}`}>
-                                          <Button variant="ghost" size="sm">Ver</Button>
+                                          <Button variant="ghost" size="sm">{t('nodes.detail.serversOnNode.view')}</Button>
                                       </Link>
                                   </li>
                               ))}
                           </ul>
                       ) : (
-                          <p className="text-sm text-muted-foreground text-center py-4">No hay servidores en este nodo.</p>
+                          <p className="text-sm text-muted-foreground text-center py-4">{t('nodes.detail.serversOnNode.empty')}</p>
                       )}
                   </CardContent>
               </Card>
@@ -239,33 +241,33 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                   <CardHeader>
-                      <CardTitle>Editar Nodo</CardTitle>
+                      <CardTitle>{t('nodes.detail.editNode.title')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                       {node.isLocal ? (
                           <Alert variant="default">
                               <Info className="h-4 w-4" />
-                              <AlertTitle>No se puede editar</AlertTitle>
+                              <AlertTitle>{t('nodes.detail.editNode.localNodeAlertTitle')}</AlertTitle>
                               <AlertDescription>
-                                  El nodo local no tiene ninguna configuración que se pueda editar. Para cambiar el host mostrado, ajusta la URL maestra del panel en la configuración.
+                                  {t('nodes.detail.editNode.localNodeAlertDescription')}
                               </AlertDescription>
                           </Alert>
                       ) : (
                           <div className="space-y-6">
                               <div className="space-y-2">
-                                  <Label htmlFor="edit-node-name">Nombre</Label>
+                                  <Label htmlFor="edit-node-name">{t('nodes.detail.editNode.nameLabel')}</Label>
                                   <Input id="edit-node-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
                               </div>
                               <div className="space-y-2">
-                                  <Label htmlFor="edit-public-host">Anfitrión público</Label>
+                                  <Label htmlFor="edit-public-host">{t('nodes.detail.editNode.publicHostLabel')}</Label>
                                   <Input id="edit-public-host" value={editPublicHost} onChange={(e) => setEditPublicHost(e.target.value)} />
                               </div>
                               <div className="space-y-2">
-                                  <Label htmlFor="edit-public-port">Puerto público</Label>
+                                  <Label htmlFor="edit-public-port">{t('nodes.detail.editNode.publicPortLabel')}</Label>
                                   <Input id="edit-public-port" type="number" value={editPublicPort} onChange={(e) => setEditPublicPort(e.target.value)} />
                               </div>
                               <div className="space-y-2">
-                                  <Label htmlFor="edit-sftp-port">Puerto SFTP</Label>
+                                  <Label htmlFor="edit-sftp-port">{t('nodes.detail.editNode.sftpPortLabel')}</Label>
                                   <Input id="edit-sftp-port" type="number" value={editSftpPort} onChange={(e) => setEditSftpPort(e.target.value)} />
                               </div>
                               <div className="items-top flex space-x-2">
@@ -279,35 +281,35 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
                                           htmlFor="edit-use-different-host"
                                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                       >
-                                          Usar un host/puerto diferente para la comunicación entre servidores
+                                          {t('nodes.addDialog.useDifferentHostLabel')}
                                       </label>
                                       <p className="text-sm text-muted-foreground">
-                                          Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                                          {t('nodes.addDialog.useDifferentHostDescription')}
                                       </p>
                                   </div>
                               </div>
                               {editUseDifferentHost && (
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                                       <div className="space-y-2">
-                                      <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
+                                      <Label htmlFor="edit-private-host">{t('nodes.addDialog.privateHostLabel')}</Label>
                                       <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />
                                       </div>
                                       <div className="space-y-2">
-                                      <Label htmlFor="edit-private-port">Puerto Privado</Label>
+                                      <Label htmlFor="edit-private-port">{t('nodes.addDialog.privatePortLabel')}</Label>
                                       <Input id="edit-private-port" type="number" value={editPrivatePort} onChange={(e) => setEditPrivatePort(e.target.value)} />
                                       </div>
                                   </div>
                               )}
-                              <Button className="w-full">Actualizar Nodo</Button>
+                              <Button className="w-full">{t('nodes.detail.editNode.updateButton')}</Button>
                               <Separator />
                               <div className="flex flex-col space-y-2">
                                   <Button variant="destructive" className="w-full">
                                       <Trash2 className="mr-2" />
-                                      Borrar Nodo
+                                      {t('nodes.detail.editNode.deleteButton')}
                                   </Button>
                                   <Button variant="secondary" className="w-full" onClick={() => setIsDeployDialogOpen(true)}>
                                       <Rocket className="mr-2" />
-                                      Desplegar Nodo
+                                      {t('nodes.detail.editNode.deployButton')}
                                   </Button>
                               </div>
                           </div>
@@ -320,9 +322,9 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
       <Dialog open={isDeployDialogOpen} onOpenChange={setIsDeployDialogOpen}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Deploy Node: {node.name}</DialogTitle>
+            <DialogTitle>{t('nodes.deployDialog.title', { name: node.name })}</DialogTitle>
             <DialogDescription>
-              Sigue estos pasos para configurar y conectar tu nuevo nodo.
+              {t('nodes.deployDialog.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 max-h-[70vh] overflow-y-auto pr-4 space-y-6">
@@ -330,16 +332,16 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">1</div>
                 <div>
-                    <h4 className="font-semibold">Paso 1: Instala AetherPanel en el nuevo servidor.</h4>
-                    <p className="text-sm text-muted-foreground">Consulta la documentación para más detalles.</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step1')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step1Description')}</p>
                 </div>
             </div>
             {/* Step 2 */}
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">2</div>
                 <div>
-                    <h4 className="font-semibold">Paso 2: Detén el servicio de AetherPanel.</h4>
-                    <p className="text-sm text-muted-foreground">Si se inició durante la instalación, ejecuta el siguiente comando:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step2')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step2Description')}</p>
                     <CopyableCode command="sudo systemctl stop AetherPanel" />
                 </div>
             </div>
@@ -347,8 +349,8 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">3</div>
                 <div>
-                    <h4 className="font-semibold">Paso 3: Reemplaza el archivo de configuración.</h4>
-                    <p className="text-sm text-muted-foreground">El archivo se encuentra en <code className="bg-muted px-1 rounded-sm">/etc/AetherPanel/config.json</code>. Reemplaza su contenido con lo siguiente:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step3')}</h4>
+                    <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: t('nodes.deployDialog.step3Description') }}></p>
                     <CopyableCode command={deployConfigJson} />
                 </div>
             </div>
@@ -356,15 +358,15 @@ export default function NodeDetailPage({ params }: { params: { id: string } }) {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">4</div>
                 <div>
-                    <h4 className="font-semibold">Paso 4: Habilita y reinicia el servicio.</h4>
-                    <p className="text-sm text-muted-foreground">Ejecuta el siguiente comando para completar la configuración:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step4')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step4Description')}</p>
                      <CopyableCode command="sudo systemctl enable --now AetherPanel" />
-                     <p className="mt-4 text-sm font-semibold text-green-500">¡Tu nuevo nodo está configurado y listo para usar!</p>
+                     <p className="mt-4 text-sm font-semibold text-green-500">{t('nodes.deployDialog.successMessage')}</p>
                 </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeployDialogOpen(false)}>Cerrar</Button>
+            <Button variant="outline" onClick={() => setIsDeployDialogOpen(false)}>{t('nodes.deployDialog.close')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

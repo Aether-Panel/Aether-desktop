@@ -17,10 +17,12 @@ import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { nodes as nodesData } from '@/lib/data';
 import type { Node } from '@/lib/data';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function NodesPage() {
   const { role } = useAuth();
   const router = useRouter();
+  const { t } = useTranslations();
   const [nodes, setNodes] = useState<Node[]>(nodesData);
   const [isMounted, setIsMounted] = useState(false);
   const [useDifferentHost, setUseDifferentHost] = useState(false);
@@ -89,7 +91,7 @@ export default function NodesPage() {
   const CopyableCode = ({ command }: { command: string }) => {
     const handleCopy = () => {
         navigator.clipboard.writeText(command);
-        toast({ title: 'Copiado al portapapeles' });
+        toast({ title: t('common.copied') });
     };
 
     return (
@@ -97,7 +99,7 @@ export default function NodesPage() {
             <pre className="flex-grow overflow-x-auto"><code>{command}</code></pre>
             <Button variant="ghost" size="icon" className="h-8 w-8 flex-shrink-0" onClick={handleCopy}>
                 <Copy className="h-4 w-4" />
-                <span className="sr-only">Copiar</span>
+                <span className="sr-only">{t('common.copy')}</span>
             </Button>
         </div>
     );
@@ -133,43 +135,43 @@ export default function NodesPage() {
   if (!isMounted || role !== 'admin') {
     return (
       <div className="flex h-full items-center justify-center">
-        <p>Loading...</p>
+        <p>{t('common.loading')}</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="Node Management" description="Manage all deployment nodes for your servers.">
+      <PageHeader title={t('nodes.title')} description={t('nodes.description')}>
         <Dialog>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2" />
-              Add Node
+              {t('nodes.addNode')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Crear Nodo</DialogTitle>
+              <DialogTitle>{t('nodes.addDialog.title')}</DialogTitle>
             </DialogHeader>
             <div className="grid gap-6 py-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="node-name">Nombre</Label>
-                  <Input id="node-name" placeholder="Nombre" />
+                  <Label htmlFor="node-name">{t('nodes.addDialog.nameLabel')}</Label>
+                  <Input id="node-name" placeholder={t('nodes.addDialog.namePlaceholder')} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="public-host">Anfitrión público</Label>
-                  <Input id="public-host" placeholder="Anfitrión público" />
+                  <Label htmlFor="public-host">{t('nodes.addDialog.publicHostLabel')}</Label>
+                  <Input id="public-host" placeholder={t('nodes.addDialog.publicHostPlaceholder')} />
                 </div>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="public-port">Puerto público</Label>
+                  <Label htmlFor="public-port">{t('nodes.addDialog.publicPortLabel')}</Label>
                   <Input id="public-port" type="number" defaultValue="8080" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="sftp-port">Puerto SFTP</Label>
+                  <Label htmlFor="sftp-port">{t('nodes.addDialog.sftpPortLabel')}</Label>
                   <Input id="sftp-port" type="number" defaultValue="5657" />
                 </div>
               </div>
@@ -184,28 +186,28 @@ export default function NodesPage() {
                     htmlFor="use-different-host"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    Usar un host/puerto diferente para la comunicación entre servidores
+                    {t('nodes.addDialog.useDifferentHostLabel')}
                   </label>
                   <p className="text-sm text-muted-foreground">
-                    Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                    {t('nodes.addDialog.useDifferentHostDescription')}
                   </p>
                 </div>
               </div>
               {useDifferentHost && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                   <div className="space-y-2">
-                    <Label htmlFor="private-host">Anfitrión Privado</Label>
-                    <Input id="private-host" placeholder="Anfitrión Privado" />
+                    <Label htmlFor="private-host">{t('nodes.addDialog.privateHostLabel')}</Label>
+                    <Input id="private-host" placeholder={t('nodes.addDialog.privateHostPlaceholder')} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="private-port">Puerto Privado</Label>
+                    <Label htmlFor="private-port">{t('nodes.addDialog.privatePortLabel')}</Label>
                     <Input id="private-port" type="number" defaultValue="8080" />
                   </div>
                 </div>
               )}
             </div>
             <DialogFooter>
-              <Button type="submit">Crear Nodo</Button>
+              <Button type="submit">{t('nodes.addDialog.createButton')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -214,16 +216,16 @@ export default function NodesPage() {
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader>
-            <CardTitle>All Nodes</CardTitle>
+            <CardTitle>{t('nodes.allNodes')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead className="hidden sm:table-cell">Location</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('nodes.table.name')}</TableHead>
+                  <TableHead className="hidden sm:table-cell">{t('nodes.table.location')}</TableHead>
+                  <TableHead>{t('dashboard.table.status')}</TableHead>
+                  <TableHead className="text-right">{t('dashboard.table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -238,7 +240,7 @@ export default function NodesPage() {
                     <TableCell>
                       <Badge variant={node.status === 'online' ? 'default' : node.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                         <StatusIndicator status={node.status} />
-                        {node.status}
+                        {t(`dashboard.status.${node.status}`)}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -250,11 +252,11 @@ export default function NodesPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>Edit</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setDeployingNode(node)}>Deploy</DropdownMenuItem>
+                          <DropdownMenuLabel>{t('servers.actions.menuLabel')}</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => setTimeout(() => setEditingNode(node))}>{t('nodes.actions.edit')}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setDeployingNode(node)}>{t('nodes.actions.deploy')}</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-500">{t('nodes.actions.delete')}</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -269,26 +271,26 @@ export default function NodesPage() {
       <Dialog open={!!editingNode} onOpenChange={(isOpen) => !isOpen && setEditingNode(null)}>
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Editar Nodo</DialogTitle>
+            <DialogTitle>{t('nodes.editDialog.title')}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6 py-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-node-name">Nombre</Label>
+                <Label htmlFor="edit-node-name">{t('nodes.addDialog.nameLabel')}</Label>
                 <Input id="edit-node-name" value={editName} onChange={(e) => setEditName(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-public-host">Anfitrión público</Label>
+                <Label htmlFor="edit-public-host">{t('nodes.addDialog.publicHostLabel')}</Label>
                 <Input id="edit-public-host" value={editPublicHost} onChange={(e) => setEditPublicHost(e.target.value)} />
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-public-port">Puerto público</Label>
+                <Label htmlFor="edit-public-port">{t('nodes.addDialog.publicPortLabel')}</Label>
                 <Input id="edit-public-port" type="number" value={editPublicPort} onChange={(e) => setEditPublicPort(e.target.value)} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-sftp-port">Puerto SFTP</Label>
+                <Label htmlFor="edit-sftp-port">{t('nodes.addDialog.sftpPortLabel')}</Label>
                 <Input id="edit-sftp-port" type="number" value={editSftpPort} onChange={(e) => setEditSftpPort(e.target.value)} />
               </div>
             </div>
@@ -303,29 +305,29 @@ export default function NodesPage() {
                   htmlFor="edit-use-different-host"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Usar un host/puerto diferente para la comunicación entre servidores
+                  {t('nodes.addDialog.useDifferentHostLabel')}
                 </label>
                 <p className="text-sm text-muted-foreground">
-                  Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.
+                  {t('nodes.addDialog.useDifferentHostDescription')}
                 </p>
               </div>
             </div>
             {editUseDifferentHost && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-md border bg-muted/50 p-4 animate-in fade-in">
                 <div className="space-y-2">
-                  <Label htmlFor="edit-private-host">Anfitrión Privado</Label>
+                  <Label htmlFor="edit-private-host">{t('nodes.addDialog.privateHostLabel')}</Label>
                   <Input id="edit-private-host" value={editPrivateHost} onChange={(e) => setEditPrivateHost(e.target.value)} />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="edit-private-port">Puerto Privado</Label>
+                  <Label htmlFor="edit-private-port">{t('nodes.addDialog.privatePortLabel')}</Label>
                   <Input id="edit-private-port" type="number" value={editPrivatePort} onChange={(e) => setEditPrivatePort(e.target.value)} />
                 </div>
               </div>
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingNode(null)}>Cancel</Button>
-            <Button type="submit" onClick={handleUpdateNode}>Save Changes</Button>
+            <Button variant="outline" onClick={() => setEditingNode(null)}>{t('nodes.editDialog.cancel')}</Button>
+            <Button type="submit" onClick={handleUpdateNode}>{t('nodes.editDialog.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -333,9 +335,9 @@ export default function NodesPage() {
       <Dialog open={!!deployingNode} onOpenChange={(isOpen) => !isOpen && setDeployingNode(null)}>
         <DialogContent className="sm:max-w-3xl">
           <DialogHeader>
-            <DialogTitle>Deploy Node: {deployingNode?.name}</DialogTitle>
+            <DialogTitle>{t('nodes.deployDialog.title', { name: deployingNode?.name })}</DialogTitle>
             <DialogDescription>
-              Sigue estos pasos para configurar y conectar tu nuevo nodo.
+              {t('nodes.deployDialog.description')}
             </DialogDescription>
           </DialogHeader>
           <div className="py-4 max-h-[70vh] overflow-y-auto pr-4 space-y-6">
@@ -343,16 +345,16 @@ export default function NodesPage() {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">1</div>
                 <div>
-                    <h4 className="font-semibold">Paso 1: Instala AetherPanel en el nuevo servidor.</h4>
-                    <p className="text-sm text-muted-foreground">Consulta la documentación para más detalles.</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step1')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step1Description')}</p>
                 </div>
             </div>
             {/* Step 2 */}
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">2</div>
                 <div>
-                    <h4 className="font-semibold">Paso 2: Detén el servicio de AetherPanel.</h4>
-                    <p className="text-sm text-muted-foreground">Si se inició durante la instalación, ejecuta el siguiente comando:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step2')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step2Description')}</p>
                     <CopyableCode command="sudo systemctl stop AetherPanel" />
                 </div>
             </div>
@@ -360,8 +362,8 @@ export default function NodesPage() {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">3</div>
                 <div>
-                    <h4 className="font-semibold">Paso 3: Reemplaza el archivo de configuración.</h4>
-                    <p className="text-sm text-muted-foreground">El archivo se encuentra en <code className="bg-muted px-1 rounded-sm">/etc/AetherPanel/config.json</code>. Reemplaza su contenido con lo siguiente:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step3')}</h4>
+                    <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: t('nodes.deployDialog.step3Description') }}></p>
                     <CopyableCode command={deployConfigJson} />
                 </div>
             </div>
@@ -369,15 +371,15 @@ export default function NodesPage() {
             <div className="flex gap-4 items-start">
                 <div className="flex-shrink-0 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-bold mt-1">4</div>
                 <div>
-                    <h4 className="font-semibold">Paso 4: Habilita y reinicia el servicio.</h4>
-                    <p className="text-sm text-muted-foreground">Ejecuta el siguiente comando para completar la configuración:</p>
+                    <h4 className="font-semibold">{t('nodes.deployDialog.step4')}</h4>
+                    <p className="text-sm text-muted-foreground">{t('nodes.deployDialog.step4Description')}</p>
                      <CopyableCode command="sudo systemctl enable --now AetherPanel" />
-                     <p className="mt-4 text-sm font-semibold text-green-500">¡Tu nuevo nodo está configurado y listo para usar!</p>
+                     <p className="mt-4 text-sm font-semibold text-green-500">{t('nodes.deployDialog.successMessage')}</p>
                 </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeployingNode(null)}>Cerrar</Button>
+            <Button variant="outline" onClick={() => setDeployingNode(null)}>{t('nodes.deployDialog.close')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

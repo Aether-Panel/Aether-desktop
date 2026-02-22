@@ -448,5 +448,113 @@
     "viewTemplateRepos": "Ver repositorios de plantillas",
     "addTemplateRepos": "Añadir repositorios de plantillas",
     "deleteTemplateRepos": "Eliminar repositorios de plantillas"
+  },
+  "nodes": {
+    "title": "Gestión de Nodos",
+    "description": "Gestiona todos los nodos de despliegue para tus servidores.",
+    "addNode": "Añadir Nodo",
+    "addDialog": {
+      "title": "Crear Nodo",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nombre",
+      "publicHostLabel": "Anfitrión público",
+      "publicHostPlaceholder": "Anfitrión público",
+      "publicPortLabel": "Puerto público",
+      "sftpPortLabel": "Puerto SFTP",
+      "useDifferentHostLabel": "Usar un host/puerto diferente para la comunicación entre servidores",
+      "useDifferentHostDescription": "Esta dirección separada se utiliza cuando el nodo principal necesita comunicarse con el nuevo nodo. Esto es útil por ejemplo cuando los nodos están en la misma red detrás de NAT.",
+      "privateHostLabel": "Anfitrión Privado",
+      "privateHostPlaceholder": "Anfitrión Privado",
+      "privatePortLabel": "Puerto Privado",
+      "createButton": "Crear Nodo"
+    },
+    "allNodes": "Todos los Nodos",
+    "table": {
+      "name": "Nombre",
+      "location": "Ubicación",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "actions": {
+      "edit": "Editar",
+      "deploy": "Desplegar",
+      "delete": "Eliminar"
+    },
+    "editDialog": {
+      "title": "Editar Nodo",
+      "cancel": "Cancelar",
+      "save": "Guardar Cambios"
+    },
+    "deployDialog": {
+      "title": "Desplegar Nodo: {{name}}",
+      "description": "Sigue estos pasos para configurar y conectar tu nuevo nodo.",
+      "step1": "Paso 1: Instala AetherPanel en el nuevo servidor.",
+      "step1Description": "Consulta la documentación para más detalles.",
+      "step2": "Paso 2: Detén el servicio de AetherPanel.",
+      "step2Description": "Si se inició durante la instalación, ejecuta el siguiente comando:",
+      "step3": "Paso 3: Reemplaza el archivo de configuración.",
+      "step3Description": "El archivo se encuentra en <code>/etc/AetherPanel/config.json</code>. Reemplaza su contenido con lo siguiente:",
+      "step4": "Paso 4: Habilita y reinicia el servicio.",
+      "step4Description": "Ejecuta el siguiente comando para completar la configuración:",
+      "successMessage": "¡Tu nuevo nodo está configurado y listo para usar!",
+      "close": "Cerrar"
+    },
+    "detail": {
+      "totalServers": "Total de Servidores",
+      "serverStatus": "Estado de Servidores",
+      "online": "{{count}} en línea",
+      "offline": "{{count}} fuera de línea",
+      "memoryUsage": "Uso de Memoria",
+      "of": "de",
+      "cpuUsage": "Uso de CPU",
+      "successAlertTitle": "Este nodo está configurado correctamente y en funcionamiento",
+      "systemInfo": {
+        "title": "Información del Sistema",
+        "os": "Sistema Operativo",
+        "arch": "Arquitectura de la CPU",
+        "version": "Versión",
+        "publicAddress": "Dirección Pública",
+        "environments": "Entornos Disponibles",
+        "general": "General",
+        "hostname": "Nombre del Host",
+        "platform": "Plataforma",
+        "uptime": "Tiempo Activo",
+        "cpu": "CPU",
+        "model": "Modelo",
+        "physicalCores": "Núcleos Físicos",
+        "logicalCores": "Hilos Lógicos",
+        "memory": "Memoria",
+        "total": "Total",
+        "used": "Usado",
+        "free": "Libre"
+      },
+      "disks": {
+        "title": "Discos"
+      },
+      "serversOnNode": {
+        "title": "Servidores en este Nodo",
+        "view": "Ver",
+        "empty": "No hay servidores en este nodo."
+      },
+      "editNode": {
+        "title": "Editar Nodo",
+        "localNodeAlertTitle": "No se puede editar",
+        "localNodeAlertDescription": "El nodo local no tiene ninguna configuración que se pueda editar. Para cambiar el host mostrado, ajusta la URL maestra del panel en la configuración.",
+        "nameLabel": "Nombre",
+        "publicHostLabel": "Anfitrión público",
+        "publicPortLabel": "Puerto público",
+        "sftpPortLabel": "Puerto SFTP",
+        "updateButton": "Actualizar Nodo",
+        "deleteButton": "Borrar Nodo",
+        "deployButton": "Desplegar Nodo"
+      }
+    }
+  },
+  "common": {
+    "copied": "Copiado al portapapeles",
+    "copy": "Copiar",
+    "loading": "Cargando...",
+    "cancel": "Cancelar",
+    "close": "Cerrar"
   }
 }
