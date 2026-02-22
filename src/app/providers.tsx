@@ -2,6 +2,7 @@
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
+import { TranslationsProvider } from '@/contexts/translations-context';
 
 export type UserRole = 'admin' | 'user';
 
@@ -48,7 +49,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (loading) return;
-    const isAuthPage = pathname === '/login';
+    const isAuthPage = pathname === '/login' || pathname === '/register';
     if (!role && !isAuthPage) {
       router.push('/login');
     }
@@ -101,9 +102,9 @@ function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = { role, user, login, logout, loading };
 
-  const isAuthPage = pathname === '/login';
+  const isAuthPage = pathname === '/login' || pathname === '/register';
 
-  if ((loading && pathname !== '/login') || (!role && !isAuthPage)) {
+  if ((loading && !isAuthPage) || (!role && !isAuthPage)) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
@@ -129,6 +130,10 @@ export function useAuth() {
   return context;
 }
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  return <AuthProvider>{children}</AuthProvider>
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <TranslationsProvider>
+      <AuthProvider>{children}</AuthProvider>
+    </TranslationsProvider>
+  )
 }

@@ -10,22 +10,24 @@ import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, User, KeyRound, ShieldCheck, Code } from 'lucide-react';
 import { useState } from 'react';
-
-const profileSettingsTabs = [
-    { value: 'configuracion', label: 'Configuración', icon: Settings },
-    { value: 'detalles', label: 'Detalles', icon: User },
-    { value: 'contrasena', label: 'Contraseña', icon: KeyRound },
-    { value: '2fa', label: '2FA', icon: ShieldCheck },
-    { value: 'oauth', label: 'OAuth', icon: Code },
-];
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function ProfileSettingsPage() {
   const { user } = useAuth();
+  const { t, language, setLanguage } = useTranslations();
   const [activeTab, setActiveTab] = useState('configuracion');
+
+  const profileSettingsTabs = [
+      { value: 'configuracion', label: t('profileSettings.tabs.settings'), icon: Settings },
+      { value: 'detalles', label: t('profileSettings.tabs.details'), icon: User },
+      { value: 'contrasena', label: t('profileSettings.tabs.password'), icon: KeyRound },
+      { value: '2fa', label: t('profileSettings.tabs.twoFactor'), icon: ShieldCheck },
+      { value: 'oauth', label: t('profileSettings.tabs.oauth'), icon: Code },
+  ];
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="Configuración de la cuenta" description="Administra la configuración de tu perfil, seguridad y más." />
+      <PageHeader title={t('profileSettings.title')} description={t('profileSettings.description')} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="configuracion" className="w-full">
         <div className="md:hidden mb-4">
@@ -57,27 +59,27 @@ export default function ProfileSettingsPage() {
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>Configuración</CardTitle>
+                  <CardTitle>{t('profileSettings.general.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="language">Idioma</Label>
-                    <Select defaultValue="es">
+                    <Label htmlFor="language">{t('profileSettings.general.language')}</Label>
+                    <Select value={language} onValueChange={(value) => setLanguage(value as 'es' | 'en')}>
                       <SelectTrigger id="language">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="es">español (España)</SelectItem>
-                        <SelectItem value="en">English (US)</SelectItem>
+                        <SelectItem value="es">{t('profileSettings.general.language_es')}</SelectItem>
+                        <SelectItem value="en">{t('profileSettings.general.language_en')}</SelectItem>
                       </SelectContent>
                     </Select>
                     <p className="text-sm text-muted-foreground">
-                      Ayúdanos a traducir Aether Panel.
+                      {t('profileSettings.general.language_help')}
                     </p>
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button>Guardar configuración</Button>
+                  <Button>{t('profileSettings.general.save')}</Button>
                 </CardFooter>
               </Card>
             </div>
@@ -86,24 +88,24 @@ export default function ProfileSettingsPage() {
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>Cambiar detalles de la cuenta</CardTitle>
+                  <CardTitle>{t('profileSettings.accountDetails.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="username">Nombre de usuario</Label>
+                    <Label htmlFor="username">{t('profileSettings.accountDetails.username')}</Label>
                     <Input id="username" defaultValue={user?.name.split(' ')[0].toLowerCase() || 'admin'} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Correo electrónico</Label>
+                    <Label htmlFor="email">{t('profileSettings.accountDetails.email')}</Label>
                     <Input id="email" type="email" defaultValue={user?.email} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password-details">Confirme la contraseña</Label>
-                    <Input id="confirm-password-details" type="password" placeholder="Confirme la contraseña" />
+                    <Label htmlFor="confirm-password-details">{t('profileSettings.accountDetails.confirmPassword')}</Label>
+                    <Input id="confirm-password-details" type="password" placeholder={t('profileSettings.accountDetails.confirmPassword')} />
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button>Cambiar detalles de la cuenta</Button>
+                  <Button>{t('profileSettings.accountDetails.save')}</Button>
                 </CardFooter>
               </Card>
             </div>
@@ -112,24 +114,24 @@ export default function ProfileSettingsPage() {
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>Cambiar contraseña</CardTitle>
+                  <CardTitle>{t('profileSettings.changePassword.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="old-password">Contraseña antigua</Label>
-                    <Input id="old-password" type="password" placeholder="Contraseña antigua" />
+                    <Label htmlFor="old-password">{t('profileSettings.changePassword.oldPassword')}</Label>
+                    <Input id="old-password" type="password" placeholder={t('profileSettings.changePassword.oldPassword')} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="new-password">Nueva contraseña</Label>
-                    <Input id="new-password" type="password" placeholder="Nueva contraseña" />
+                    <Label htmlFor="new-password">{t('profileSettings.changePassword.newPassword')}</Label>
+                    <Input id="new-password" type="password" placeholder={t('profileSettings.changePassword.newPassword')} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirm-password-change">Confirme la contraseña</Label>
-                    <Input id="confirm-password-change" type="password" placeholder="Confirme la contraseña" />
+                    <Label htmlFor="confirm-password-change">{t('profileSettings.changePassword.confirmPassword')}</Label>
+                    <Input id="confirm-password-change" type="password" placeholder={t('profileSettings.changePassword.confirmPassword')} />
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button>Cambiar contraseña</Button>
+                  <Button>{t('profileSettings.changePassword.save')}</Button>
                 </CardFooter>
               </Card>
             </div>
@@ -138,13 +140,13 @@ export default function ProfileSettingsPage() {
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>Autenticación de dos pasos</CardTitle>
+                  <CardTitle>{t('profileSettings.twoFactor.title')}</CardTitle>
                   <CardDescription>
-                    La autenticación de dos pasos agrega una capa de seguridad adicional a tu cuenta, requiriendo un código especial además de tu contraseña.
+                    {t('profileSettings.twoFactor.description')}
                   </CardDescription>
                 </CardHeader>
                 <CardFooter>
-                  <Button>Habilitar 2FA</Button>
+                  <Button>{t('profileSettings.twoFactor.enable')}</Button>
                 </CardFooter>
               </Card>
             </div>
@@ -153,19 +155,20 @@ export default function ProfileSettingsPage() {
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>Clientes de OAuth2</CardTitle>
+                  <CardTitle>{t('profileSettings.oauth.title')}</CardTitle>
                   <CardDescription>
-                    Los clientes de OAuth2 listados aquí heredan todos los permisos de sus cuentas.
-                    Encuentra la documentation de la API <Link href="#" className="text-primary hover:underline">aquí</Link>.
+                    {t('profileSettings.oauth.description')}{' '}
+                    {t('profileSettings.oauth.apiDocs')}{' '}
+                    <Link href="#" className="text-primary hover:underline">{t('profileSettings.oauth.here')}</Link>.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-center text-sm text-muted-foreground py-4">
-                    No hay clientes de OAuth2 configurados para esta cuenta.
+                    {t('profileSettings.oauth.noClients')}
                   </p>
                 </CardContent>
                 <CardFooter>
-                  <Button>Crear nuevo cliente OAuth2</Button>
+                  <Button>{t('profileSettings.oauth.create')}</Button>
                 </CardFooter>
               </Card>
             </div>

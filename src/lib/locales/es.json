@@ -1,0 +1,62 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "servers": "Servers",
+    "users": "Users",
+    "roles": "Roles",
+    "nodes": "Nodes",
+    "databaseHosts": "Database Hosts",
+    "templates": "Templates",
+    "settings": "Settings"
+  },
+  "userMenu": {
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "profileSettings": {
+    "title": "Configuración de la cuenta",
+    "description": "Administra la configuración de tu perfil, seguridad y más.",
+    "tabs": {
+      "settings": "Configuración",
+      "details": "Detalles",
+      "password": "Contraseña",
+      "twoFactor": "2FA",
+      "oauth": "OAuth"
+    },
+    "general": {
+      "title": "Configuración",
+      "language": "Idioma",
+      "language_es": "español (España)",
+      "language_en": "English (US)",
+      "language_help": "Ayúdanos a traducir Aether Panel.",
+      "save": "Guardar configuración"
+    },
+    "accountDetails": {
+      "title": "Cambiar detalles de la cuenta",
+      "username": "Nombre de usuario",
+      "email": "Correo electrónico",
+      "confirmPassword": "Confirme la contraseña",
+      "save": "Cambiar detalles de la cuenta"
+    },
+    "changePassword": {
+      "title": "Cambiar contraseña",
+      "oldPassword": "Contraseña antigua",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirme la contraseña",
+      "save": "Cambiar contraseña"
+    },
+    "twoFactor": {
+      "title": "Autenticación de dos pasos",
+      "description": "La autenticación de dos pasos agrega una capa de seguridad adicional a tu cuenta, requiriendo un código especial además de tu contraseña.",
+      "enable": "Habilitar 2FA"
+    },
+    "oauth": {
+      "title": "Clientes de OAuth2",
+      "description": "Los clientes de OAuth2 listados aquí heredan todos los permisos de sus cuentas.",
+      "apiDocs": "Encuentra la documentation de la API",
+      "here": "aquí",
+      "noClients": "No hay clientes de OAuth2 configurados para esta cuenta.",
+      "create": "Crear nuevo cliente OAuth2"
+    }
+  }
+}

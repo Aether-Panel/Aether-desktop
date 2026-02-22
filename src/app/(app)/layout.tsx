@@ -27,20 +27,22 @@ import { LayoutDashboard, LogOut, Server, Settings, Users, ShieldCheck, Database
 import { usePathname } from 'next/navigation';
 import { Logo } from '@/components/logo';
 import Link from 'next/link';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { role, user, logout } = useAuth();
   const pathname = usePathname();
+  const { t } = useTranslations();
 
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, roles: ['admin', 'user'] },
-    { href: '/servers', label: 'Servers', icon: Server, roles: ['admin'] },
-    { href: '/users', label: 'Users', icon: Users, roles: ['admin'] },
-    { href: '/roles', label: 'Roles', icon: ShieldCheck, roles: ['admin'] },
-    { href: '/nodes', label: 'Nodes', icon: Network, roles: ['admin'] },
-    { href: '/database-hosts', label: 'Database Hosts', icon: Database, roles: ['admin'] },
-    { href: '/templates', label: 'Templates', icon: FileText, roles: ['admin'] },
-    { href: '/settings', label: 'Settings', icon: Settings, roles: ['admin'] },
+    { href: '/dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard, roles: ['admin', 'user'] },
+    { href: '/servers', label: t('sidebar.servers'), icon: Server, roles: ['admin'] },
+    { href: '/users', label: t('sidebar.users'), icon: Users, roles: ['admin'] },
+    { href: '/roles', label: t('sidebar.roles'), icon: ShieldCheck, roles: ['admin'] },
+    { href: '/nodes', label: t('sidebar.nodes'), icon: Network, roles: ['admin'] },
+    { href: '/database-hosts', label: t('sidebar.databaseHosts'), icon: Database, roles: ['admin'] },
+    { href: '/templates', label: t('sidebar.templates'), icon: FileText, roles: ['admin'] },
+    { href: '/settings', label: t('sidebar.settings'), icon: Settings, roles: ['admin'] },
   ];
 
   return (
@@ -79,7 +81,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       <AvatarImage src={user?.avatar} alt={user?.name} />
                       <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <div className="flex flex-1 min-w-0 flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden">
+                    <div className="flex-1 min-w-0 flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden flex">
                       <span className="w-full truncate font-medium">{user?.name}</span>
                       <span className="w-full truncate text-xs text-muted-foreground">{user?.email}</span>
                     </div>
@@ -104,13 +106,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               <Link href="/profile/settings">
                 <DropdownMenuItem className="cursor-pointer">
                   <Settings className="mr-2" />
-                  <span>Settings</span>
+                  <span>{t('userMenu.settings')}</span>
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2" />
-                <span>Log out</span>
+                <span>{t('userMenu.logout')}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
