@@ -35,7 +35,7 @@ export default function DashboardPage() {
     return (
         <div className="flex flex-col gap-8">
             <PageHeader
-                title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.user') })}
+                title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.defaultName') })}
                 description={t('dashboard.user.description')}
             />
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
@@ -155,7 +155,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader
-        title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.user') })}
+        title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.defaultName') })}
         description={t('dashboard.admin.description')}
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

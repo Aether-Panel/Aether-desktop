@@ -61,23 +61,37 @@
   },
   "dashboard": {
     "welcome": "¡Bienvenido, {{name}}!",
-    "user": "Usuario",
-    "user.description": "Aquí tienes una lista de los servidores que te han sido asignados.",
-    "user.myServers": "Mis Servidores",
-    "user.noServers": "No se te ha asignado ningún servidor.",
-    "admin.description": "Aquí tienes un resumen rápido del panorama de tus servidores.",
-    "admin.repositories": "Repositorios",
-    "admin.online": "En línea",
-    "admin.serversOperational": "Servidores operativos",
-    "admin.offline": "Fuera de línea",
-    "admin.serversNeedAttention": "Los servidores necesitan atención",
-    "admin.overallHealth": "Salud General",
-    "admin.systemUptime": "Porcentaje de tiempo de actividad del sistema",
-    "admin.systemInfo": "Información del sistema",
-    "admin.panelVersion": "Versión del panel",
-    "admin.totalServers": "Total de servidores",
-    "admin.totalUsers": "Total de usuarios",
-    "admin.totalNodes": "Total de nodos",
+    "defaultName": "Usuario",
+    "user": {
+      "description": "Aquí tienes una lista de los servidores que te han sido asignados.",
+      "myServers": "Mis Servidores",
+      "noServers": "No se te ha asignado ningún servidor."
+    },
+    "admin": {
+      "description": "Aquí tienes un resumen rápido del panorama de tus servidores.",
+      "repositories": "Repositorios",
+      "online": "En línea",
+      "serversOperational": "Servidores operativos",
+      "offline": "Fuera de línea",
+      "serversNeedAttention": "Los servidores necesitan atención",
+      "overallHealth": "Salud General",
+      "systemUptime": "Porcentaje de tiempo de actividad del sistema",
+      "systemInfo": "Información del sistema",
+      "panelVersion": "Versión del panel",
+      "totalServers": "Total de servidores",
+      "totalUsers": "Total de usuarios",
+      "totalNodes": "Total de nodos",
+      "resourceOverview": {
+        "title": "Resumen de Recursos",
+        "description": "Instantánea actual de la utilización de recursos."
+      },
+      "networkTraffic": {
+        "title": "Tráfico de Red",
+        "description": "Tráfico de entrada y salida durante los últimos 30 minutos (KB/s).",
+        "download": "Descarga",
+        "upload": "Subida"
+      }
+    },
     "table": {
       "name": "Nombre",
       "ipAddress": "Dirección IP",

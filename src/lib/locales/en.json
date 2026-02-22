@@ -61,23 +61,37 @@
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
-    "user": "User",
-    "user.description": "Here's a list of your assigned servers.",
-    "user.myServers": "My Servers",
-    "user.noServers": "You have not been assigned to any servers.",
-    "admin.description": "Here's a quick overview of your server landscape.",
-    "admin.repositories": "Repositories",
-    "admin.online": "Online",
-    "admin.serversOperational": "Servers are operational",
-    "admin.offline": "Offline",
-    "admin.serversNeedAttention": "Servers need attention",
-    "admin.overallHealth": "Overall Health",
-    "admin.systemUptime": "System uptime percentage",
-    "admin.systemInfo": "System Information",
-    "admin.panelVersion": "Panel Version",
-    "admin.totalServers": "Total Servers",
-    "admin.totalUsers": "Total Users",
-    "admin.totalNodes": "Total Nodes",
+    "defaultName": "User",
+    "user": {
+      "description": "Here's a list of your assigned servers.",
+      "myServers": "My Servers",
+      "noServers": "You have not been assigned to any servers."
+    },
+    "admin": {
+      "description": "Here's a quick overview of your server landscape.",
+      "repositories": "Repositories",
+      "online": "Online",
+      "serversOperational": "Servers are operational",
+      "offline": "Offline",
+      "serversNeedAttention": "Servers need attention",
+      "overallHealth": "Overall Health",
+      "systemUptime": "System uptime percentage",
+      "systemInfo": "System Information",
+      "panelVersion": "Panel Version",
+      "totalServers": "Total Servers",
+      "totalUsers": "Total Users",
+      "totalNodes": "Total Nodes",
+      "resourceOverview": {
+        "title": "Resource Overview",
+        "description": "Current snapshot of resource utilization."
+      },
+      "networkTraffic": {
+        "title": "Network Traffic",
+        "description": "Inbound and outbound traffic for the last 30 minutes (KB/s).",
+        "download": "Download",
+        "upload": "Upload"
+      }
+    },
     "table": {
       "name": "Name",
       "ipAddress": "IP Address",
