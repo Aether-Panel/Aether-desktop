@@ -58,5 +58,40 @@
       "noClients": "There are no OAuth2 clients configured for this account.",
       "create": "Create new OAuth2 client"
     }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "user": "User",
+    "user.description": "Here's a list of your assigned servers.",
+    "user.myServers": "My Servers",
+    "user.noServers": "You have not been assigned to any servers.",
+    "admin.description": "Here's a quick overview of your server landscape.",
+    "admin.repositories": "Repositories",
+    "admin.online": "Online",
+    "admin.serversOperational": "Servers are operational",
+    "admin.offline": "Offline",
+    "admin.serversNeedAttention": "Servers need attention",
+    "admin.overallHealth": "Overall Health",
+    "admin.systemUptime": "System uptime percentage",
+    "admin.systemInfo": "System Information",
+    "admin.panelVersion": "Panel Version",
+    "admin.totalServers": "Total Servers",
+    "admin.totalUsers": "Total Users",
+    "admin.totalNodes": "Total Nodes",
+    "table": {
+      "name": "Name",
+      "ipAddress": "IP Address",
+      "status": "Status",
+      "cpu": "CPU",
+      "memory": "Memory",
+      "storage": "Storage",
+      "actions": "Actions",
+      "view": "View"
+    },
+    "status": {
+      "online": "online",
+      "offline": "offline",
+      "pending": "pending"
+    }
   }
 }

@@ -13,9 +13,11 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function DashboardPage() {
   const { role, user } = useAuth();
+  const { t } = useTranslations();
 
   // FOR USER ROLE
   if (role === 'user') {
@@ -33,26 +35,26 @@ export default function DashboardPage() {
     return (
         <div className="flex flex-col gap-8">
             <PageHeader
-                title={`Welcome, ${user?.name?.split(' ')[0] || 'User'}!`}
-                description="Here's a list of your assigned servers."
+                title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.user') })}
+                description={t('dashboard.user.description')}
             />
             <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
-                  <CardTitle>My Servers</CardTitle>
+                  <CardTitle>{t('dashboard.user.myServers')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     {userServers.length > 0 ? (
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Name</TableHead>
-                                    <TableHead>IP Address</TableHead>
-                                    <TableHead>Status</TableHead>
-                                    <TableHead className="hidden md:table-cell">CPU</TableHead>
-                                    <TableHead className="hidden md:table-cell">Memory</TableHead>
-                                    <TableHead className="hidden lg:table-cell">Storage</TableHead>
-                                    <TableHead className="text-right">Actions</TableHead>
+                                    <TableHead>{t('dashboard.table.name')}</TableHead>
+                                    <TableHead>{t('dashboard.table.ipAddress')}</TableHead>
+                                    <TableHead>{t('dashboard.table.status')}</TableHead>
+                                    <TableHead className="hidden md:table-cell">{t('dashboard.table.cpu')}</TableHead>
+                                    <TableHead className="hidden md:table-cell">{t('dashboard.table.memory')}</TableHead>
+                                    <TableHead className="hidden lg:table-cell">{t('dashboard.table.storage')}</TableHead>
+                                    <TableHead className="text-right">{t('dashboard.table.actions')}</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -67,7 +69,7 @@ export default function DashboardPage() {
                                     <TableCell>
                                         <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                                             <StatusIndicator status={server.status} />
-                                            {server.status}
+                                            {t(`dashboard.status.${server.status}`)}
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="hidden md:table-cell">
@@ -90,7 +92,7 @@ export default function DashboardPage() {
                                     </TableCell>
                                     <TableCell className="text-right">
                                         <Button asChild variant="ghost" size="sm">
-                                            <Link href={`/servers/${server.id}`}>View</Link>
+                                            <Link href={`/servers/${server.id}`}>{t('dashboard.table.view')}</Link>
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -98,7 +100,7 @@ export default function DashboardPage() {
                             </TableBody>
                         </Table>
                     ) : (
-                        <p className="text-center text-muted-foreground py-8">You have not been assigned to any servers.</p>
+                        <p className="text-center text-muted-foreground py-8">{t('dashboard.user.noServers')}</p>
                     )}
                 </CardContent>
               </Card>
@@ -153,14 +155,14 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader
-        title={`Welcome, ${user?.name?.split(' ')[0] || 'User'}!`}
-        description="Here's a quick overview of your server landscape."
+        title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.user') })}
+        description={t('dashboard.admin.description')}
       />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Repositorios</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.admin.repositories')}</CardTitle>
               <FolderGit className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -171,36 +173,36 @@ export default function DashboardPage() {
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Online</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.admin.online')}</CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-500">{onlineCount}</div>
-              <p className="text-xs text-muted-foreground">Servers are operational</p>
+              <p className="text-xs text-muted-foreground">{t('dashboard.admin.serversOperational')}</p>
             </CardContent>
           </Card>
         </div>
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Offline</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.admin.offline')}</CardTitle>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-red-500">{offlineCount}</div>
-              <p className="text-xs text-muted-foreground">Servers need attention</p>
+              <p className="text-xs text-muted-foreground">{t('dashboard.admin.serversNeedAttention')}</p>
             </CardContent>
           </Card>
         </div>
         <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
           <Card className="border-0 h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Overall Health</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('dashboard.admin.overallHealth')}</CardTitle>
               <Cpu className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{totalServers > 0 ? `${Math.round((onlineCount / totalServers) * 100)}%` : 'N/A'}</div>
-              <p className="text-xs text-muted-foreground">System uptime percentage</p>
+              <p className="text-xs text-muted-foreground">{t('dashboard.admin.systemUptime')}</p>
             </CardContent>
           </Card>
         </div>
@@ -224,23 +226,23 @@ export default function DashboardPage() {
           <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
             <Card className="border-0">
                 <CardHeader>
-                    <CardTitle>Información del sistema</CardTitle>
+                    <CardTitle>{t('dashboard.admin.systemInfo')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">Versión del panel</p>
+                        <p className="text-muted-foreground">{t('dashboard.admin.panelVersion')}</p>
                         <p className="font-medium">AetherPanel</p>
                     </div>
                     <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">Total de servidores</p>
+                        <p className="text-muted-foreground">{t('dashboard.admin.totalServers')}</p>
                         <p className="font-medium">{totalServers}</p>
                     </div>
                     <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">Total de usuarios</p>
+                        <p className="text-muted-foreground">{t('dashboard.admin.totalUsers')}</p>
                         <p className="font-medium">{totalUsers}</p>
                     </div>
                     <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">Total de nodos</p>
+                        <p className="text-muted-foreground">{t('dashboard.admin.totalNodes')}</p>
                         <p className="font-medium">{totalNodes}</p>
                     </div>
                 </CardContent>

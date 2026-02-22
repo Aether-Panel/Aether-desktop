@@ -24,7 +24,7 @@ const getNestedTranslation = (language: Locale, key: string): string | undefined
 interface TranslationsContextType {
   language: Locale;
   setLanguage: (language: Locale) => void;
-  t: (key: string) => string;
+  t: (key: string, options?: { [key: string]: string | number }) => string;
 }
 
 const TranslationsContext = createContext<TranslationsContextType | undefined>(undefined);
@@ -54,16 +54,24 @@ export function TranslationsProvider({ children }: { children: ReactNode }) {
     setLanguageState(lang);
   };
 
-  const t = useCallback((key: string): string => {
+  const t = useCallback((key: string, options?: { [key: string]: string | number }): string => {
     let translation = getNestedTranslation(language, key);
 
     // If translation is not found in the current language, fallback to English.
     if (translation === undefined) {
       translation = getNestedTranslation('en', key);
     }
+    
+    let result = translation ?? key;
+
+    if (options && typeof result === 'string') {
+        Object.keys(options).forEach(k => {
+            result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(options[k]));
+        });
+    }
 
     // If still not found, return the key itself.
-    return translation ?? key;
+    return result;
   }, [language]);
 
 

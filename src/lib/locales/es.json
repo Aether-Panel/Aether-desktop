@@ -58,5 +58,40 @@
       "noClients": "No hay clientes de OAuth2 configurados para esta cuenta.",
       "create": "Crear nuevo cliente OAuth2"
     }
+  },
+  "dashboard": {
+    "welcome": "¡Bienvenido, {{name}}!",
+    "user": "Usuario",
+    "user.description": "Aquí tienes una lista de los servidores que te han sido asignados.",
+    "user.myServers": "Mis Servidores",
+    "user.noServers": "No se te ha asignado ningún servidor.",
+    "admin.description": "Aquí tienes un resumen rápido del panorama de tus servidores.",
+    "admin.repositories": "Repositorios",
+    "admin.online": "En línea",
+    "admin.serversOperational": "Servidores operativos",
+    "admin.offline": "Fuera de línea",
+    "admin.serversNeedAttention": "Los servidores necesitan atención",
+    "admin.overallHealth": "Salud General",
+    "admin.systemUptime": "Porcentaje de tiempo de actividad del sistema",
+    "admin.systemInfo": "Información del sistema",
+    "admin.panelVersion": "Versión del panel",
+    "admin.totalServers": "Total de servidores",
+    "admin.totalUsers": "Total de usuarios",
+    "admin.totalNodes": "Total de nodos",
+    "table": {
+      "name": "Nombre",
+      "ipAddress": "Dirección IP",
+      "status": "Estado",
+      "cpu": "CPU",
+      "memory": "Memoria",
+      "storage": "Almacenamiento",
+      "actions": "Acciones",
+      "view": "Ver"
+    },
+    "status": {
+      "online": "en línea",
+      "offline": "fuera de línea",
+      "pending": "pendiente"
+    }
   }
 }
