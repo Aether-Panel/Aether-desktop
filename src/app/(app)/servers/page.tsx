@@ -88,8 +88,8 @@ export default function ServersPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name / IP</TableHead>
-                  <TableHead>Status</TableHead>
+                  <TableHead>Server</TableHead>
+                  <TableHead className="hidden sm:table-cell">Status</TableHead>
                   <TableHead className="hidden md:table-cell">CPU</TableHead>
                   <TableHead className="hidden md:table-cell">Memory</TableHead>
                   <TableHead className="hidden lg:table-cell">Storage</TableHead>
@@ -104,8 +104,14 @@ export default function ServersPage() {
                         {server.name}
                       </Link>
                       <div className="text-sm text-muted-foreground font-mono">{server.ipAddress}</div>
+                      <div className="sm:hidden mt-2">
+                        <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                          <StatusIndicator status={server.status} />
+                          {server.status}
+                        </Badge>
+                      </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="hidden sm:table-cell">
                       <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
                         <StatusIndicator status={server.status} />
                         {server.status}

@@ -191,8 +191,8 @@ export default function RolesPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Role</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Permissions</TableHead>
+                  <TableHead className="hidden md:table-cell">Description</TableHead>
+                  <TableHead className="hidden md:table-cell">Permissions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -200,9 +200,15 @@ export default function RolesPage() {
                   <TableRow key={role.name}>
                     <TableCell>
                       <Badge variant={role.name === 'admin' ? 'default' : 'secondary'} className="capitalize">{role.name}</Badge>
+                      <p className="text-sm text-muted-foreground mt-2 md:hidden">{role.description}</p>
+                      <div className="flex flex-wrap gap-2 mt-2 md:hidden">
+                        {role.permissions.map(permission => (
+                          <Badge key={permission} variant="outline">{permission}</Badge>
+                        ))}
+                      </div>
                     </TableCell>
-                    <TableCell>{role.description}</TableCell>
-                    <TableCell>
+                    <TableCell className="hidden md:table-cell">{role.description}</TableCell>
+                    <TableCell className="hidden md:table-cell">
                       <div className="flex flex-wrap gap-2">
                         {role.permissions.map(permission => (
                           <Badge key={permission} variant="outline">{permission}</Badge>
