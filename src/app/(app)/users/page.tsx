@@ -16,6 +16,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslations } from '@/contexts/translations-context';
 
 export default function UsersPage() {
   const { role } = useAuth();
@@ -25,6 +26,7 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const { t } = useTranslations();
 
   // State for the edit form
   const [editName, setEditName] = useState('');
@@ -79,48 +81,48 @@ export default function UsersPage() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader title="User Management" description="Create, view, and manage user accounts and their permissions.">
+      <PageHeader title={t('users.title')} description={t('users.description')}>
         <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2" />
-              Add User
+              {t('users.addUser')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Add New User</DialogTitle>
-              <DialogDescription>Fill in the details to create a new user account.</DialogDescription>
+              <DialogTitle>{t('users.addDialog.title')}</DialogTitle>
+              <DialogDescription>{t('users.addDialog.description')}</DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">Name</Label>
-                <Input id="name" placeholder="New User" className="col-span-3" />
+                <Label htmlFor="name" className="text-right">{t('users.addDialog.nameLabel')}</Label>
+                <Input id="name" placeholder={t('users.addDialog.namePlaceholder')} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">Email</Label>
-                <Input id="email" type="email" placeholder="user@example.com" className="col-span-3" />
+                <Label htmlFor="email" className="text-right">{t('users.addDialog.emailLabel')}</Label>
+                <Input id="email" type="email" placeholder={t('users.addDialog.emailPlaceholder')} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="password" className="text-right">Password</Label>
-                <Input id="password" type="password" placeholder="********" className="col-span-3" />
+                <Label htmlFor="password" className="text-right">{t('users.addDialog.passwordLabel')}</Label>
+                <Input id="password" type="password" placeholder={t('users.addDialog.passwordPlaceholder')} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="role" className="text-right">Role</Label>
+                <Label htmlFor="role" className="text-right">{t('users.addDialog.roleLabel')}</Label>
                 <Select>
                   <SelectTrigger id="role" className="col-span-3">
-                    <SelectValue placeholder="Select a role" />
+                    <SelectValue placeholder={t('users.addDialog.rolePlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="admin">Administrator</SelectItem>
-                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="admin">{t('users.addDialog.roleAdmin')}</SelectItem>
+                    <SelectItem value="user">{t('users.addDialog.roleUser')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <DialogFooter>
-                <Button variant="outline" onClick={() => setIsAddUserDialogOpen(false)}>Cancel</Button>
-                <Button type="submit" onClick={handleAddUser}>Create User</Button>
+                <Button variant="outline" onClick={() => setIsAddUserDialogOpen(false)}>{t('users.addDialog.cancel')}</Button>
+                <Button type="submit" onClick={handleAddUser}>{t('users.addDialog.create')}</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -129,16 +131,16 @@ export default function UsersPage() {
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
         <Card className="border-0">
           <CardHeader>
-            <CardTitle>All Users</CardTitle>
+            <CardTitle>{t('users.allUsers')}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead className="hidden md:table-cell">Role</TableHead>
-                  <TableHead className="hidden md:table-cell">Assigned Servers</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t('users.table.user')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('users.table.role')}</TableHead>
+                  <TableHead className="hidden md:table-cell">{t('users.table.assignedServers')}</TableHead>
+                  <TableHead className="text-right">{t('users.table.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -155,7 +157,7 @@ export default function UsersPage() {
                           <p className="text-sm text-muted-foreground">{user.email}</p>
                           <div className="flex items-center gap-2 md:hidden mt-1">
                               <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className="capitalize">{user.role}</Badge>
-                              <span className="text-xs text-muted-foreground">{user.assignedServers.length} servers</span>
+                              <span className="text-xs text-muted-foreground">{t('users.table.serversCount', { count: user.assignedServers.length })}</span>
                           </div>
                         </div>
                       </div>
@@ -163,7 +165,7 @@ export default function UsersPage() {
                     <TableCell className="hidden md:table-cell">
                       <Badge variant={user.role === 'admin' ? 'default' : 'secondary'} className="capitalize">{user.role}</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">{user.assignedServers.length} servers</TableCell>
+                    <TableCell className="hidden md:table-cell">{t('users.table.serversCount', { count: user.assignedServers.length })}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -173,11 +175,11 @@ export default function UsersPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => setTimeout(() => setEditingUser(user))}>Edit</DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => setTimeout(() => setViewingUser(user))}>View Servers</DropdownMenuItem>
+                          <DropdownMenuLabel>{t('users.actions.menuLabel')}</DropdownMenuLabel>
+                          <DropdownMenuItem onClick={() => setTimeout(() => setEditingUser(user))}>{t('users.actions.edit')}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => setTimeout(() => setViewingUser(user))}>{t('users.actions.viewServers')}</DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-500">{t('users.actions.delete')}</DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>
@@ -193,36 +195,36 @@ export default function UsersPage() {
       <Dialog open={!!editingUser} onOpenChange={(isOpen) => !isOpen && setEditingUser(null)}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit User</DialogTitle>
+            <DialogTitle>{t('users.editDialog.title', { name: editingUser?.name })}</DialogTitle>
             <DialogDescription>
-              Update details for {editingUser?.name}.
+              {t('users.editDialog.description', { name: editingUser?.name })}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-name" className="text-right">Name</Label>
+                <Label htmlFor="edit-name" className="text-right">{t('users.editDialog.nameLabel')}</Label>
                 <Input id="edit-name" value={editName} onChange={(e) => setEditName(e.target.value)} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-email" className="text-right">Email</Label>
+                <Label htmlFor="edit-email" className="text-right">{t('users.editDialog.emailLabel')}</Label>
                 <Input id="edit-email" type="email" value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="col-span-3" />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="edit-role" className="text-right">Role</Label>
+                <Label htmlFor="edit-role" className="text-right">{t('users.editDialog.roleLabel')}</Label>
                 <Select value={editRole} onValueChange={(value: User['role']) => setEditRole(value)}>
                   <SelectTrigger id="edit-role" className="col-span-3">
-                    <SelectValue placeholder="Select a role" />
+                    <SelectValue placeholder={t('users.editDialog.rolePlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="admin">Administrator</SelectItem>
-                    <SelectItem value="user">User</SelectItem>
+                    <SelectItem value="admin">{t('users.editDialog.roleAdmin')}</SelectItem>
+                    <SelectItem value="user">{t('users.editDialog.roleUser')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
-            <Button type="submit" onClick={handleUpdateUser}>Save Changes</Button>
+            <Button variant="outline" onClick={() => setEditingUser(null)}>{t('users.editDialog.cancel')}</Button>
+            <Button type="submit" onClick={handleUpdateUser}>{t('users.editDialog.save')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -231,8 +233,8 @@ export default function UsersPage() {
       <Dialog open={!!viewingUser} onOpenChange={(isOpen) => !isOpen && setViewingUser(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Servers for {viewingUser?.name}</DialogTitle>
-            <DialogDescription>This user has access to the following servers.</DialogDescription>
+            <DialogTitle>{t('users.serversDialog.title', { name: viewingUser?.name })}</DialogTitle>
+            <DialogDescription>{t('users.serversDialog.description')}</DialogDescription>
           </DialogHeader>
           <div className="py-4">
             {getAssignedServers(viewingUser).length > 0 ? (
@@ -242,11 +244,11 @@ export default function UsersPage() {
                 ))}
               </ul>
             ) : (
-              <p className="text-sm text-muted-foreground text-center">This user is not assigned to any servers.</p>
+              <p className="text-sm text-muted-foreground text-center">{t('users.serversDialog.noServers')}</p>
             )}
           </div>
           <DialogFooter>
-             <Button variant="outline" onClick={() => setViewingUser(null)}>Close</Button>
+             <Button variant="outline" onClick={() => setViewingUser(null)}>{t('users.serversDialog.close')}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

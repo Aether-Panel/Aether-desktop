@@ -342,5 +342,58 @@
       "title": "Resumen de Recursos",
       "description": "Instantánea actual de la utilización de recursos."
     }
+  },
+  "users": {
+    "title": "Gestión de Usuarios",
+    "description": "Crea, visualiza y gestiona las cuentas de usuario y sus permisos.",
+    "addUser": "Añadir Usuario",
+    "allUsers": "Todos los Usuarios",
+    "addDialog": {
+      "title": "Añadir Nuevo Usuario",
+      "description": "Rellena los detalles para crear una nueva cuenta de usuario.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Nuevo Usuario",
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "usuario@ejemplo.com",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "********",
+      "roleLabel": "Rol",
+      "rolePlaceholder": "Selecciona un rol",
+      "roleAdmin": "Administrador",
+      "roleUser": "Usuario",
+      "cancel": "Cancelar",
+      "create": "Crear Usuario"
+    },
+    "editDialog": {
+      "title": "Editar Usuario",
+      "description": "Actualizar detalles para {{name}}.",
+      "nameLabel": "Nombre",
+      "emailLabel": "Correo electrónico",
+      "roleLabel": "Rol",
+      "rolePlaceholder": "Selecciona un rol",
+      "roleAdmin": "Administrador",
+      "roleUser": "Usuario",
+      "cancel": "Cancelar",
+      "save": "Guardar Cambios"
+    },
+    "serversDialog": {
+      "title": "Servidores de {{name}}",
+      "description": "Este usuario tiene acceso a los siguientes servidores.",
+      "noServers": "Este usuario no está asignado a ningún servidor.",
+      "close": "Cerrar"
+    },
+    "table": {
+      "user": "Usuario",
+      "role": "Rol",
+      "assignedServers": "Servidores Asignados",
+      "actions": "Acciones",
+      "serversCount": "{{count}} servidores"
+    },
+    "actions": {
+      "menuLabel": "Acciones",
+      "edit": "Editar",
+      "viewServers": "Ver Servidores",
+      "delete": "Eliminar"
+    }
   }
 }
