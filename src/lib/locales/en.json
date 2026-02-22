@@ -550,6 +550,69 @@
       }
     }
   },
+  "databaseHosts": {
+    "title": "Database Hosts",
+    "description": "Manage all database host connections.",
+    "addHost": "Add Host",
+    "table": {
+      "name": "Name",
+      "host": "Host",
+      "port": "Port",
+      "username": "Username"
+    },
+    "availableHosts": "Available Hosts",
+    "addDialog": {
+      "title": "Add New Database Host",
+      "description": "Follow the steps to connect a new database host.",
+      "stepper": {
+        "credentials": "Credentials",
+        "instructions": "Instructions",
+        "config": "Configuration"
+      },
+      "step1": {
+        "alertTitle": "Information",
+        "alertDescription1": "Currently, only MySQL/MariaDB databases are supported for database hosts.",
+        "alertDescription2": "Is the panel and database not on the same server? Make sure to allow external access.",
+        "userLabel": "Username",
+        "userDescription": "The username of an account that has sufficient permissions to create new users and databases on the system.",
+        "passwordLabel": "Password",
+        "passwordDescription": "The password for the database user."
+      },
+      "step2": {
+        "instructionsTitle": "Instructions",
+        "userTitle": "Database User",
+        "userDescription": "Use <code>mysql -u root -p</code> to access the mysql CLI.",
+        "createUserCommandTitle": "Command to create user",
+        "grantPermissionsCommandTitle": "Command to assign permissions",
+        "exitMysql": "To exit the mysql CLI run <code>exit</code>.",
+        "externalAccessTitle": "External Access",
+        "externalAccessDescription1": "You will likely need to allow external access to this MySQL instance. Locate your <code>my.cnf</code> file (you can use <code>find /etc -iname my.cnf</code>).",
+        "externalAccessDescription2": "Open <code>my.cnf</code>, add the text below to the end of the file and save it:",
+        "externalAccessDescription3": "Restart MySQL/MariaDB to apply the changes. Make sure to allow the MySQL port (default 3306) in your firewall.",
+        "copyToast": "Command copied to clipboard"
+      },
+      "step3": {
+        "hostNameLabel": "Host Name",
+        "hostNameDescription": "A unique name to identify this host on the panel.",
+        "hostNamePlaceholder": "e.g., Local DB",
+        "connectionHostLabel": "Connection Host",
+        "connectionHostDescription": "The IP address or domain name that should be used when trying to connect to this MySQL host from this Panel.",
+        "portLabel": "Port",
+        "portDescription": "The port that MySQL is running on for this host.",
+        "dbLimitLabel": "Database Limit",
+        "dbLimitDescription": "Maximum number of databases. Leave blank or 0 for unlimited.",
+        "linkedNodesLabel": "Linked Nodes",
+        "linkedNodesPlaceholder": "None",
+        "linkedNodesDescription": "This setting only sets this database host as the default."
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "next": "Next",
+        "back": "Back",
+        "create": "Create Host"
+      }
+    }
+  },
   "common": {
     "copied": "Copied to clipboard",
     "copy": "Copy",

@@ -550,6 +550,69 @@
       }
     }
   },
+  "databaseHosts": {
+    "title": "Hosts de Bases de Datos",
+    "description": "Gestiona todas las conexiones a los hosts de bases de datos.",
+    "addHost": "Añadir Host",
+    "table": {
+      "name": "Nombre",
+      "host": "Host",
+      "port": "Puerto",
+      "username": "Usuario"
+    },
+    "availableHosts": "Hosts Disponibles",
+    "addDialog": {
+      "title": "Añadir Nuevo Host de Base de Datos",
+      "description": "Sigue los pasos para conectar un nuevo host de base de datos.",
+      "stepper": {
+        "credentials": "Credenciales",
+        "instructions": "Instrucciones",
+        "config": "Configuración"
+      },
+      "step1": {
+        "alertTitle": "Información",
+        "alertDescription1": "Actualmente, solo se admiten bases de datos MySQL/MariaDB para hosts de bases de datos.",
+        "alertDescription2": "¿El panel y la base de datos no están en el mismo servidor? Asegúrate de permitir acceso externo.",
+        "userLabel": "Usuario",
+        "userDescription": "El nombre de usuario de una cuenta que tenga permisos suficientes para crear nuevos usuarios y bases de datos en el sistema.",
+        "passwordLabel": "Contraseña",
+        "passwordDescription": "La contraseña para el usuario de la base de datos."
+      },
+      "step2": {
+        "instructionsTitle": "Instrucciones",
+        "userTitle": "Usuario de Base de Datos",
+        "userDescription": "Usa <code>mysql -u root -p</code> para acceder a la CLI de mysql.",
+        "createUserCommandTitle": "Comando para crear el usuario",
+        "grantPermissionsCommandTitle": "Comando para asignar permisos",
+        "exitMysql": "Para salir de la CLI de mysql ejecuta <code>exit</code>.",
+        "externalAccessTitle": "Acceso Externo",
+        "externalAccessDescription1": "Es probable que necesites permitir acceso externo a esta instancia de MySQL. Localiza tu archivo <code>my.cnf</code> (puedes usar <code>find /etc -iname my.cnf</code>).",
+        "externalAccessDescription2": "Abre <code>my.cnf</code>, agrega el texto de abajo al final del archivo y guárdalo:",
+        "externalAccessDescription3": "Reinicia MySQL/MariaDB para aplicar los cambios. Asegúrate de permitir el puerto de MySQL (por defecto 3306) en tu firewall.",
+        "copyToast": "Comando copiado al portapapeles"
+      },
+      "step3": {
+        "hostNameLabel": "Nombre del Host",
+        "hostNameDescription": "Un nombre único para identificar este host en el panel.",
+        "hostNamePlaceholder": "p.ej., BD Local",
+        "connectionHostLabel": "Host de Conexión",
+        "connectionHostDescription": "La dirección IP o nombre de dominio que debe usarse al intentar conectarse a este host MySQL desde este Panel.",
+        "portLabel": "Puerto",
+        "portDescription": "El puerto en el que se está ejecutando MySQL para este host.",
+        "dbLimitLabel": "Límite de Bases de Datos",
+        "dbLimitDescription": "Número máximo de bases de datos. Dejar en blanco o 0 para ilimitado.",
+        "linkedNodesLabel": "Nodos Vinculados",
+        "linkedNodesPlaceholder": "Ninguno",
+        "linkedNodesDescription": "Esta configuración solo establece este host de base de datos como predeterminado."
+      },
+      "buttons": {
+        "cancel": "Cancelar",
+        "next": "Siguiente",
+        "back": "Atrás",
+        "create": "Crear Host"
+      }
+    }
+  },
   "common": {
     "copied": "Copiado al portapapeles",
     "copy": "Copiar",
