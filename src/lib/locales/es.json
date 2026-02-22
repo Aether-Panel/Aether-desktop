@@ -16,6 +16,7 @@
   "profileSettings": {
     "title": "Configuración de la cuenta",
     "description": "Administra la configuración de tu perfil, seguridad y más.",
+    "selectTabPlaceholder": "Selecciona una sección...",
     "tabs": {
       "settings": "Configuración",
       "details": "Detalles",

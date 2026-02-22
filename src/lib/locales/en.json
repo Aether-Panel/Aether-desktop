@@ -16,6 +16,7 @@
   "profileSettings": {
     "title": "Account Settings",
     "description": "Manage your profile settings, security, and more.",
+    "selectTabPlaceholder": "Select a section...",
     "tabs": {
       "settings": "Settings",
       "details": "Details",

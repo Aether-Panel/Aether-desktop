@@ -15,12 +15,12 @@ import { useTranslations } from '@/contexts/translations-context';
 export default function ProfileSettingsPage() {
   const { user } = useAuth();
   const { t, language, setLanguage } = useTranslations();
-  const [activeTab, setActiveTab] = useState('configuracion');
+  const [activeTab, setActiveTab] = useState('settings');
 
   const profileSettingsTabs = [
-      { value: 'configuracion', label: t('profileSettings.tabs.settings'), icon: Settings },
-      { value: 'detalles', label: t('profileSettings.tabs.details'), icon: User },
-      { value: 'contrasena', label: t('profileSettings.tabs.password'), icon: KeyRound },
+      { value: 'settings', label: t('profileSettings.tabs.settings'), icon: Settings },
+      { value: 'details', label: t('profileSettings.tabs.details'), icon: User },
+      { value: 'password', label: t('profileSettings.tabs.password'), icon: KeyRound },
       { value: '2fa', label: t('profileSettings.tabs.twoFactor'), icon: ShieldCheck },
       { value: 'oauth', label: t('profileSettings.tabs.oauth'), icon: Code },
   ];
@@ -29,11 +29,11 @@ export default function ProfileSettingsPage() {
     <div className="flex flex-col gap-8">
       <PageHeader title={t('profileSettings.title')} description={t('profileSettings.description')} />
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="configuracion" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="settings" className="w-full">
         <div className="md:hidden mb-4">
             <Select value={activeTab} onValueChange={setActiveTab}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Selecciona una sección..." />
+                    <SelectValue placeholder={t('profileSettings.selectTabPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                     {profileSettingsTabs.map((tab) => (
@@ -55,7 +55,7 @@ export default function ProfileSettingsPage() {
                 </TabsTrigger>
             ))}
         </TabsList>
-        <TabsContent value="configuracion">
+        <TabsContent value="settings">
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
@@ -84,7 +84,7 @@ export default function ProfileSettingsPage() {
               </Card>
             </div>
         </TabsContent>
-        <TabsContent value="detalles">
+        <TabsContent value="details">
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
@@ -110,7 +110,7 @@ export default function ProfileSettingsPage() {
               </Card>
             </div>
         </TabsContent>
-        <TabsContent value="contrasena">
+        <TabsContent value="password">
             <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
               <Card className="border-0">
                 <CardHeader>
