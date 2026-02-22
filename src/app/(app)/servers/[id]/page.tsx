@@ -127,21 +127,19 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
   );
 
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <PageHeader title={server.name} />
-        <div className="mt-2 flex items-center gap-4">
-          <ServerAddress ip={server.ipAddress} port={server.port} />
-          <p className="text-sm text-muted-foreground">
-            Detailed metrics and status for this server.
-          </p>
-        </div>
-        <div className="mt-4 flex flex-wrap items-center gap-4">
-            {serverActions}
-        </div>
+    <div className="flex flex-col gap-4">
+      <PageHeader title={server.name} />
+      <div className="flex items-center gap-4">
+        <ServerAddress ip={server.ipAddress} port={server.port} />
+        <p className="text-sm text-muted-foreground">
+          Detailed metrics and status for this server.
+        </p>
+      </div>
+      <div className="flex flex-wrap items-center gap-4">
+          {serverActions}
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full mt-4">
         <div className="md:hidden mb-4">
           <Select value={activeTab} onValueChange={setActiveTab}>
             <SelectTrigger>
