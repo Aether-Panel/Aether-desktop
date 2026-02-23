@@ -27,18 +27,20 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
 
     return (
       <div className="flex flex-col items-center gap-4">
-        <ChartContainer
-          config={chartConfig}
-          className="relative mx-auto aspect-square h-[150px] w-[150px]"
-        >
-          <>
+        <div className="relative mx-auto h-[150px] w-[150px]">
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-square h-full w-full"
+          >
             <RadialBarChart
               startAngle={180}
               endAngle={0}
               innerRadius="80%"
               outerRadius="100%"
-              barSize={12}
+              barSize={10}
               data={[{ name, value, fill: `var(--color-${name})` }]}
+              cx="50%"
+              cy="65%"
             >
               <PolarAngleAxis
                 type="number"
@@ -52,14 +54,14 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
                 cornerRadius={6}
               />
             </RadialBarChart>
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
-              <span className="text-4xl font-bold tracking-tighter text-foreground">
-                {value}
-                <span className="text-lg font-medium text-muted-foreground">%</span>
-              </span>
-            </div>
-          </>
-        </ChartContainer>
+          </ChartContainer>
+          <div className="absolute inset-0 flex flex-col items-center justify-center pt-8">
+            <span className="text-3xl font-bold tracking-tighter text-foreground">
+              {value}
+              <span className="text-sm font-medium text-muted-foreground">%</span>
+            </span>
+          </div>
+        </div>
         <div className="flex items-center gap-2 text-center text-sm font-medium text-muted-foreground">
           <Icon className="h-4 w-4" />
           {config.label}

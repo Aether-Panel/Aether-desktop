@@ -22,90 +22,90 @@ export default function DashboardPage() {
   // FOR USER ROLE
   if (role === 'user') {
     const userServers = user ? allUsers.find(u => u.email === user.email)?.assignedServers.map(id => allServers.find(s => s.id === id)).filter(Boolean) as Server[] || [] : [];
-    
+
     const StatusIndicator = ({ status }: { status: Server['status'] }) => {
-        const statusClasses = {
-          online: 'bg-green-500',
-          offline: 'bg-red-500',
-          pending: 'bg-yellow-500 animate-pulse',
-        };
-        return <div className={`mr-2 h-2.5 w-2.5 rounded-full ${statusClasses[status]}`} />;
+      const statusClasses = {
+        online: 'bg-green-500',
+        offline: 'bg-red-500',
+        pending: 'bg-yellow-500 animate-pulse',
+      };
+      return <div className={`mr-2 h-2.5 w-2.5 rounded-full ${statusClasses[status]}`} />;
     };
 
     return (
-        <div className="flex flex-col gap-8">
-            <PageHeader
-                title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.defaultName') })}
-                description={t('dashboard.user.description')}
-            />
-            <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
-              <Card className="border-0">
-                <CardHeader>
-                  <CardTitle>{t('dashboard.user.myServers')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {userServers.length > 0 ? (
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>{t('dashboard.table.name')}</TableHead>
-                                    <TableHead>{t('dashboard.table.ipAddress')}</TableHead>
-                                    <TableHead>{t('dashboard.table.status')}</TableHead>
-                                    <TableHead className="hidden md:table-cell">{t('dashboard.table.cpu')}</TableHead>
-                                    <TableHead className="hidden md:table-cell">{t('dashboard.table.memory')}</TableHead>
-                                    <TableHead className="hidden lg:table-cell">{t('dashboard.table.storage')}</TableHead>
-                                    <TableHead className="text-right">{t('dashboard.table.actions')}</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {userServers.map((server) => (
-                                <TableRow key={server.id}>
-                                    <TableCell className="font-medium">
-                                        <a href={`/servers/${server.id}`} className="hover:underline">
-                                            {server.name}
-                                        </a>
-                                    </TableCell>
-                                    <TableCell>{server.ipAddress}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
-                                            <StatusIndicator status={server.status} />
-                                            {t(`dashboard.status.${server.status}`)}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="hidden md:table-cell">
-                                        <div className="flex items-center gap-2">
-                                            <Progress value={server.cpuUsage} className="h-2 w-20" />
-                                            <span>{server.cpuUsage}%</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="hidden md:table-cell">
-                                        <div className="flex items-center gap-2">
-                                            <Progress value={server.memoryUsage} className="h-2 w-20" />
-                                            <span>{server.memoryUsage}%</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="hidden lg:table-cell">
-                                        <div className="flex items-center gap-2">
-                                            <Progress value={server.storageUsage} className="h-2 w-20" />
-                                            <span>{server.storageUsage}%</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button asChild variant="ghost" size="sm">
-                                            <a href={`/servers/${server.id}`}>{t('dashboard.table.view')}</a>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    ) : (
-                        <p className="text-center text-muted-foreground py-8">{t('dashboard.user.noServers')}</p>
-                    )}
-                </CardContent>
-              </Card>
-            </div>
+      <div className="flex flex-col gap-8">
+        <PageHeader
+          title={t('dashboard.welcome', { name: user?.name?.split(' ')[0] || t('dashboard.defaultName') })}
+          description={t('dashboard.user.description')}
+        />
+        <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
+          <Card className="border-0">
+            <CardHeader>
+              <CardTitle>{t('dashboard.user.myServers')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {userServers.length > 0 ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t('dashboard.table.name')}</TableHead>
+                      <TableHead>{t('dashboard.table.ipAddress')}</TableHead>
+                      <TableHead>{t('dashboard.table.status')}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t('dashboard.table.cpu')}</TableHead>
+                      <TableHead className="hidden md:table-cell">{t('dashboard.table.memory')}</TableHead>
+                      <TableHead className="hidden lg:table-cell">{t('dashboard.table.storage')}</TableHead>
+                      <TableHead className="text-right">{t('dashboard.table.actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {userServers.map((server) => (
+                      <TableRow key={server.id}>
+                        <TableCell className="font-medium">
+                          <a href={`/servers/${server.id}`} className="hover:underline">
+                            {server.name}
+                          </a>
+                        </TableCell>
+                        <TableCell>{server.ipAddress}</TableCell>
+                        <TableCell>
+                          <Badge variant={server.status === 'online' ? 'default' : server.status === 'offline' ? 'destructive' : 'secondary'} className="capitalize flex items-center gap-2 w-fit">
+                            <StatusIndicator status={server.status} />
+                            {t(`dashboard.status.${server.status}`)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="flex items-center gap-2">
+                            <Progress value={server.cpuUsage} className="h-2 w-20" />
+                            <span>{server.cpuUsage}%</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden md:table-cell">
+                          <div className="flex items-center gap-2">
+                            <Progress value={server.memoryUsage} className="h-2 w-20" />
+                            <span>{server.memoryUsage}%</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="hidden lg:table-cell">
+                          <div className="flex items-center gap-2">
+                            <Progress value={server.storageUsage} className="h-2 w-20" />
+                            <span>{server.storageUsage}%</span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button asChild variant="ghost" size="sm">
+                            <a href={`/servers/${server.id}`}>{t('dashboard.table.view')}</a>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              ) : (
+                <p className="text-center text-muted-foreground py-8">{t('dashboard.user.noServers')}</p>
+              )}
+            </CardContent>
+          </Card>
         </div>
+      </div>
     );
   }
 
@@ -211,9 +211,9 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
           <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
-            <ResourceUsageChart 
-              cpuUsage={avgCpuUsage} 
-              memoryUsage={avgMemoryUsage} 
+            <ResourceUsageChart
+              cpuUsage={avgCpuUsage}
+              memoryUsage={avgMemoryUsage}
               storageUsage={avgStorageUsage}
               className="border-0"
             />
@@ -225,27 +225,27 @@ export default function DashboardPage() {
         <div className="lg:col-span-1 space-y-6">
           <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
             <Card className="border-0">
-                <CardHeader>
-                    <CardTitle>{t('dashboard.admin.systemInfo')}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">{t('dashboard.admin.panelVersion')}</p>
-                        <p className="font-medium">AetherPanel</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">{t('dashboard.admin.totalServers')}</p>
-                        <p className="font-medium">{totalServers}</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">{t('dashboard.admin.totalUsers')}</p>
-                        <p className="font-medium">{totalUsers}</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <p className="text-muted-foreground">{t('dashboard.admin.totalNodes')}</p>
-                        <p className="font-medium">{totalNodes}</p>
-                    </div>
-                </CardContent>
+              <CardHeader>
+                <CardTitle>{t('dashboard.admin.systemInfo')}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground">{t('dashboard.admin.panelVersion')}</p>
+                  <p className="font-medium">AetherPanel</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground">{t('dashboard.admin.totalServers')}</p>
+                  <p className="font-medium">{totalServers}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground">{t('dashboard.admin.totalUsers')}</p>
+                  <p className="font-medium">{totalUsers}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <p className="text-muted-foreground">{t('dashboard.admin.totalNodes')}</p>
+                  <p className="font-medium">{totalNodes}</p>
+                </div>
+              </CardContent>
             </Card>
           </div>
         </div>
