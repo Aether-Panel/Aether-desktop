@@ -6,7 +6,9 @@ import type { ReactNode } from 'react';
 export default function AuthShell({ children }: { children: ReactNode }) {
     return (
         <Providers>
-            {children}
+            <main className="animate-in fade-in duration-500">
+                {children}
+            </main>
             <Toaster />
         </Providers>
     );

@@ -1,7 +1,8 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Settings } from '@/components/PageWrappers';
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Settings as SettingsWrapper } from "@/components/PageWrappers";
 ---
+
 <BaseLayout title="Settings - Aether Panel">
-  <Settings client:only="react" />
+  <SettingsWrapper client:load />
 </BaseLayout>

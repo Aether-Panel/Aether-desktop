@@ -1,7 +1,8 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { Dashboard } from '@/components/PageWrappers';
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Dashboard as DashboardWrapper } from "@/components/PageWrappers";
 ---
+
 <BaseLayout title="Dashboard - Aether Panel">
-  <Dashboard client:only="react" />
+  <DashboardWrapper client:load />
 </BaseLayout>

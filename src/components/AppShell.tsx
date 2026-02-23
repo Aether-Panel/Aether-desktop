@@ -123,7 +123,9 @@ function AppLayoutInner({ children, currentPath }: { children: ReactNode; curren
                     <SidebarTrigger className="md:hidden" />
                     <div className="flex-grow" />
                 </header>
-                {children}
+                <main className="animate-in fade-in duration-500">
+                    {children}
+                </main>
             </SidebarInset>
         </SidebarProvider>
     );
