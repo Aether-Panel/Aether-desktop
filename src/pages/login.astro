@@ -1,0 +1,7 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { Login } from '@/components/PageWrappers';
+---
+<BaseLayout title="Login - Aether Panel">
+  <Login client:only="react" />
+</BaseLayout>

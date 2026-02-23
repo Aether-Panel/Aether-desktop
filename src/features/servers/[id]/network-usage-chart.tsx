@@ -14,15 +14,15 @@ export default function NetworkUsageChart({ serverMetrics, className }: NetworkU
   const { t } = useTranslations();
 
   const chartConfig = {
-    networkIn: { label: t('dashboard.admin.networkTraffic.download'), color: 'hsl(var(--chart-4))' },
-    networkOut: { label: t('dashboard.admin.networkTraffic.upload'), color: 'hsl(var(--chart-5))' },
+    networkIn: { label: t('servers.networkChart.download'), color: 'hsl(var(--chart-4))' },
+    networkOut: { label: t('servers.networkChart.upload'), color: 'hsl(var(--chart-5))' },
   };
 
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle>{t('dashboard.admin.networkTraffic.title')}</CardTitle>
-        <CardDescription>{t('dashboard.admin.networkTraffic.description')}</CardDescription>
+        <CardTitle>{t('servers.networkChart.title')}</CardTitle>
+        <CardDescription>{t('servers.networkChart.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[250px] w-full">

@@ -1,6 +1,7 @@
 'use client';
 
-import React, { createContext, useState, useContext, ReactNode, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import type { ReactNode } from 'react';
 import en from '@/lib/locales/en.json';
 import es from '@/lib/locales/es.json';
 
@@ -13,12 +14,12 @@ const translations: Record<Locale, any> = {
 
 // Helper to get nested values from an object using a dot-separated string.
 const getNestedTranslation = (language: Locale, key: string): string | undefined => {
-    const langFile = translations[language];
-    try {
-        return key.split('.').reduce((obj, k) => (obj as any)?.[k], langFile);
-    } catch (e) {
-        return undefined;
-    }
+  const langFile = translations[language];
+  try {
+    return key.split('.').reduce((obj, k) => (obj as any)?.[k], langFile);
+  } catch (e) {
+    return undefined;
+  }
 }
 
 interface TranslationsContextType {
@@ -35,9 +36,9 @@ export function TranslationsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let storedLang: Locale | null = null;
     try {
-        storedLang = localStorage.getItem('aether_panel_language') as Locale;
+      storedLang = localStorage.getItem('aether_panel_language') as Locale;
     } catch (e) {
-        console.error('localStorage is not available');
+      console.error('localStorage is not available');
     }
 
     if (storedLang && ['en', 'es'].includes(storedLang)) {
@@ -47,9 +48,9 @@ export function TranslationsProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Locale) => {
     try {
-        localStorage.setItem('aether_panel_language', lang);
+      localStorage.setItem('aether_panel_language', lang);
     } catch (e) {
-        console.error('localStorage is not available');
+      console.error('localStorage is not available');
     }
     setLanguageState(lang);
   };
@@ -61,13 +62,13 @@ export function TranslationsProvider({ children }: { children: ReactNode }) {
     if (translation === undefined) {
       translation = getNestedTranslation('en', key);
     }
-    
+
     let result = translation ?? key;
 
     if (options && typeof result === 'string') {
-        Object.keys(options).forEach(k => {
-            result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(options[k]));
-        });
+      Object.keys(options).forEach(k => {
+        result = result.replace(new RegExp(`{{${k}}}`, 'g'), String(options[k]));
+      });
     }
 
     // If still not found, return the key itself.

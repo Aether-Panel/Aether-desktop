@@ -31,33 +31,34 @@ export default function ResourceUsageChart({ cpuUsage, memoryUsage, storageUsage
           config={chartConfig}
           className="relative mx-auto aspect-square h-[150px] w-[150px]"
         >
-          <RadialBarChart
-            startAngle={180}
-            endAngle={0}
-            innerRadius="80%"
-            outerRadius="100%"
-            barSize={12}
-            data={[{ name, value, fill: `var(--color-${name})` }]}
-          >
-            <PolarAngleAxis
-              type="number"
-              domain={[0, 100]}
-              dataKey="value"
-              tick={false}
-            />
-            <RadialBar
-              dataKey="value"
-              background={{ fill: 'hsl(var(--muted))' }}
-              round
-              cornerRadius={6}
-            />
-          </RadialBarChart>
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
+          <>
+            <RadialBarChart
+              startAngle={180}
+              endAngle={0}
+              innerRadius="80%"
+              outerRadius="100%"
+              barSize={12}
+              data={[{ name, value, fill: `var(--color-${name})` }]}
+            >
+              <PolarAngleAxis
+                type="number"
+                domain={[0, 100]}
+                dataKey="value"
+                tick={false}
+              />
+              <RadialBar
+                dataKey="value"
+                background={{ fill: 'hsl(var(--muted))' }}
+                cornerRadius={6}
+              />
+            </RadialBarChart>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-1">
               <span className="text-4xl font-bold tracking-tighter text-foreground">
-                  {value}
-                  <span className="text-lg font-medium text-muted-foreground">%</span>
+                {value}
+                <span className="text-lg font-medium text-muted-foreground">%</span>
               </span>
-          </div>
+            </div>
+          </>
         </ChartContainer>
         <div className="flex items-center gap-2 text-center text-sm font-medium text-muted-foreground">
           <Icon className="h-4 w-4" />
