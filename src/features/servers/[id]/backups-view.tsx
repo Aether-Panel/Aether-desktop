@@ -1,68 +1,221 @@
 'use client';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Archive, PlusCircle } from 'lucide-react';
+import { Archive, PlusCircle, Download, RotateCcw, Trash2, Loader2, Calendar, FileArchive } from 'lucide-react';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
 import { useTranslations } from '@/contexts/translations-context';
+import { api } from '@/lib/api-client';
+import { buildApiUrl } from '@/lib/server-config';
+import { useToast } from '@/hooks/use-toast';
 
-// This is mock data. In a real application, you'd fetch this from your server.
-const initialBackups: any[] = [];
+type BackupInfo = {
+  id: number;
+  name: string;
+  fileName: string;
+  createdAt: string;
+};
 
-export default function BackupsView() {
-  const [backupsList, setBackupsList] = useState(initialBackups);
+type BackupsViewProps = {
+  serverId: string;
+};
+
+export default function BackupsView({ serverId }: BackupsViewProps) {
+  const [backups, setBackups] = useState<BackupInfo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [backupName, setBackupName] = useState('');
+
   const { t } = useTranslations();
+  const { toast } = useToast();
+
+  const fetchBackups = useCallback(async () => {
+    try {
+      setLoading(true);
+      const data = await api.get(`/api/servers/${serverId}/backup`);
+      setBackups(data || []);
+    } catch (err) {
+      console.error('Failed to fetch backups:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [serverId]);
+
+  useEffect(() => {
+    fetchBackups();
+  }, [fetchBackups]);
+
+  const handleCreate = async () => {
+    if (!backupName.trim()) return;
+
+    try {
+      setIsCreating(true);
+      await api.post(`/api/servers/${serverId}/backup/create?name=${encodeURIComponent(backupName)}`, {});
+      toast({
+        title: t('common.success'),
+        description: t('servers.backups.createDialog.success')
+      });
+      setBackupName('');
+      setIsDialogOpen(false);
+      fetchBackups();
+    } catch (err) {
+      console.error('Failed to create backup:', err);
+      toast({
+        variant: 'destructive',
+        title: t('common.error'),
+        description: t('servers.backups.createDialog.error')
+      });
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleRestore = async (backupId: number) => {
+    if (!confirm(t('servers.backups.restore.confirm'))) return;
+
+    try {
+      await api.post(`/api/servers/${serverId}/backup/restore/${backupId}`, {});
+      toast({
+        title: t('common.success'),
+        description: t('servers.backups.restore.success')
+      });
+    } catch (err) {
+      console.error('Failed to restore backup:', err);
+      toast({
+        variant: 'destructive',
+        title: t('common.error'),
+        description: t('servers.backups.restore.error')
+      });
+    }
+  };
+
+  const handleDelete = async (backupId: number) => {
+    if (!confirm(t('servers.backups.delete.confirm'))) return;
+
+    try {
+      await api.delete(`/api/servers/${serverId}/backup/${backupId}`);
+      toast({
+        title: t('common.success'),
+        description: t('servers.backups.delete.success')
+      });
+      fetchBackups();
+    } catch (err) {
+      console.error('Failed to delete backup:', err);
+      toast({
+        variant: 'destructive',
+        title: t('common.error'),
+        description: t('servers.backups.delete.error')
+      });
+    }
+  };
+
+  const handleDownload = (backupId: number) => {
+    const downloadUrl = buildApiUrl(`/api/servers/${serverId}/backup/download/${backupId}`);
+    window.open(downloadUrl, '_blank');
+  };
 
   return (
-    <div className="mt-6 rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
-      <Card className="border-0">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>{t('servers.backups.title')}</CardTitle>
-              <CardDescription>{t('servers.backups.description', { count: backupsList.length })}</CardDescription>
+    <div className="mt-6 flex flex-col gap-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">{t('servers.backups.title')}</h2>
+          <p className="text-muted-foreground">{t('servers.backups.description', { count: backups.length })}</p>
+        </div>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              {t('servers.backups.create')}
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>{t('servers.backups.createDialog.title')}</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="backup-name">{t('servers.backups.createDialog.nameLabel')}</Label>
+                <Input
+                  id="backup-name"
+                  placeholder={t('servers.backups.createDialog.namePlaceholder')}
+                  value={backupName}
+                  onChange={(e) => setBackupName(e.target.value)}
+                />
+              </div>
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  <PlusCircle className="mr-2" />
-                  {t('servers.backups.create')}
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>{t('servers.backups.createDialog.title')}</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="backup-name" className="text-right">
-                      {t('servers.backups.createDialog.nameLabel')}
-                    </Label>
-                    <Input id="backup-name" placeholder={t('servers.backups.createDialog.namePlaceholder')} className="col-span-3" />
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>{t('common.cancel')}</Button>
+              <Button onClick={handleCreate} disabled={isCreating || !backupName.trim()}>
+                {isCreating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {t('servers.backups.createDialog.createButton')}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="grid gap-4">
+        {backups.length === 0 && !loading ? (
+          <Card className="border-0 bg-card/50 backdrop-blur-sm">
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <Archive className="h-12 w-12 text-muted-foreground/30 mb-4" />
+              <h3 className="text-lg font-medium">{t('servers.backups.empty.title')}</h3>
+              <p className="text-sm text-muted-foreground">{t('servers.backups.empty.description')}</p>
+            </CardContent>
+          </Card>
+        ) : (
+          backups.map((backup) => (
+            <Card key={backup.id} className="border-0 bg-card/50 backdrop-blur-sm overflow-hidden border-l-4 border-l-primary">
+              <CardContent className="p-0">
+                <div className="flex flex-col md:flex-row md:items-center justify-between p-4 gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-lg bg-primary/10">
+                      <FileArchive className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-lg">{backup.name}</h4>
+                      <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          {new Date(backup.createdAt).toLocaleString()}
+                        </span>
+                        <span>•</span>
+                        <span className="font-mono">{backup.fileName}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={() => handleDownload(backup.id)}>
+                      <Download className="h-4 w-4 mr-2" />
+                      {t('servers.backups.download')}
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={() => handleRestore(backup.id)}>
+                      <RotateCcw className="h-4 w-4 mr-2" />
+                      {t('servers.backups.restore.button')}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => handleDelete(backup.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
-                <DialogFooter>
-                  <Button type="submit">{t('servers.backups.createDialog.createButton')}</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+              </CardContent>
+            </Card>
+          ))
+        )}
+        {loading && (
+          <div className="flex justify-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-        </CardHeader>
-        <CardContent>
-          {backupsList.length === 0 ? (
-            <div className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-muted-foreground/30 p-8 text-center">
-              <Archive className="h-12 w-12 text-muted-foreground/50" />
-              <h3 className="text-lg font-semibold">{t('servers.backups.empty.title')}</h3>
-              <p className="text-muted-foreground">{t('servers.backups.empty.description')}</p>
-            </div>
-          ) : (
-            // In a real app, you would map over `backupsList` and render a table or list here.
-            <p>Tabla de backups...</p>
-          )}
-        </CardContent>
-      </Card>
+        )}
+      </div>
     </div>
   );
 }

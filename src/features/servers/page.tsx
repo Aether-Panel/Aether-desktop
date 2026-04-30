@@ -16,19 +16,31 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 
 import { useTranslations } from '@/contexts/translations-context';
+import { useServers } from '@/hooks/use-servers';
+import { CreateServerStepper } from './create-server-stepper';
 
 export default function ServersPage() {
-  const { role } = useAuth();
-  const [servers, setServers] = useState<Server[]>(initialServers);
+  const { role, hasScope } = useAuth();
+  const { servers, loading: serversLoading, refresh } = useServers();
   const [isMounted, setIsMounted] = useState(false);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
   const { t } = useTranslations();
 
   useEffect(() => {
     setIsMounted(true);
-    if (role && role !== 'admin') {
-      window.location.href = '/dashboard';
+
+    // Check if we should automatically open the create dialog
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('create') === 'true') {
+      setIsCreateOpen(true);
     }
-  }, [role]);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && role && !hasScope('server.view')) {
+      window.location.href = '/dashboard/';
+    }
+  }, [role, isMounted, hasScope]);
 
   const StatusIndicator = ({ status }: { status: Server['status'] }) => {
     const statusClasses = {
@@ -39,10 +51,10 @@ export default function ServersPage() {
     return <div className={`mr-2 h-2.5 w-2.5 rounded-full ${statusClasses[status]}`} />;
   };
 
-  if (!isMounted || role !== 'admin') {
+  if (!isMounted || !hasScope('server.view') || serversLoading) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <p>Loading...</p>
+      <div className="flex h-full items-center justify-center min-h-[400px]">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     );
   }
@@ -50,33 +62,28 @@ export default function ServersPage() {
   return (
     <div className="flex flex-col gap-8">
       <PageHeader title={t('servers.title')} description={t('servers.description')}>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <PlusCircle className="mr-2" />
-              {t('servers.addServer')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{t('servers.addDialog.title')}</DialogTitle>
-              <DialogDescription>{t('servers.addDialog.description')}</DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">{t('servers.addDialog.nameLabel')}</Label>
-                <Input id="name" defaultValue={t('servers.addDialog.namePlaceholder')} className="col-span-3" />
+        {hasScope('server.create') && (
+          <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <PlusCircle className="mr-2" />
+                {t('servers.addServer')}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-4xl">
+              <DialogHeader>
+                <DialogTitle>{t('servers.addDialog.title')}</DialogTitle>
+                <DialogDescription>{t('servers.addDialog.description')}</DialogDescription>
+              </DialogHeader>
+              <div className="py-4">
+                <CreateServerStepper onComplete={() => {
+                  setIsCreateOpen(false);
+                  refresh();
+                }} />
               </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="ip" className="text-right">{t('servers.addDialog.ipLabel')}</Label>
-                <Input id="ip" defaultValue={t('servers.addDialog.ipPlaceholder')} className="col-span-3" />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button type="submit">{t('servers.addDialog.createButton')}</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogContent>
+          </Dialog>
+        )}
       </PageHeader>
 
       <div className="rounded-lg p-[1px] bg-gradient-to-br from-primary/50 via-accent/40 to-secondary/50">
@@ -101,7 +108,7 @@ export default function ServersPage() {
                   <TableRow key={server.id}>
                     <TableCell>
                       <div className="flex flex-col gap-0.5">
-                        <a href={`/servers/${server.id}`} className="font-medium hover:underline">
+                        <a href={`/servers/view/?id=${server.id}`} className="font-medium hover:underline">
                           {server.name}
                         </a>
                         <div className="text-sm text-muted-foreground font-mono">{server.ipAddress}</div>
@@ -147,7 +154,7 @@ export default function ServersPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>{t('servers.actions.menuLabel')}</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => window.location.href = `/servers/${server.id}`}>{t('servers.actions.viewDetails')}</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => window.location.href = `/servers/view/?id=${server.id}`}>{t('servers.actions.viewDetails')}</DropdownMenuItem>
                           <DropdownMenuItem>{t('servers.actions.edit')}</DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem className="text-red-500">{t('servers.actions.delete')}</DropdownMenuItem>

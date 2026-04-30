@@ -13,5 +13,5 @@ const { id } = Astro.params;
 ---
 
 <BaseLayout title={`Node ${id} - Aether Panel`}>
-  <NodeDetail id={id} client:load />
+  <NodeDetail id={id} client:only="react" />
 </BaseLayout>

@@ -1,0 +1,57 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
+  "productName": "AetherPanel",
+  "version": "0.1.0",
+  "identifier": "com.aether.panel",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:9002",
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    // "devtools": true
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Aether Panel",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; connect-src 'self' http: https: ws: wss:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'"
+    },
+    // "android": {
+    //   "webviewInstallUrl": "https://github.com/nicklockwood/WebViewInstaller/releases/download/5.0/WebView.apk"
+    // }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "linux": {
+      "deb": {
+        "depends": []
+      }
+    }
+    // "android": {
+    //   "debug": {
+    //     "keystore": "android_debug.keystore",
+    //     "storepassword": "android",
+    //     "alias": "androiddebugkey",
+    //     "keypassword": "android"
+    //   }
+    // }
+  }
+}

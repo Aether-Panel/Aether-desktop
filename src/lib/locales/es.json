@@ -58,6 +58,22 @@
       "here": "aquí",
       "noClients": "No hay clientes de OAuth2 configurados para esta cuenta.",
       "create": "Crear nuevo cliente OAuth2"
+    },
+    "messages": {
+      "infoChanged": "Tu información ha sido cambiada",
+      "passwordChanged": "Tu contraseña ha sido cambiada",
+      "otpEnabled": "2FA ha sido habilitado",
+      "otpDisabled": "2FA ha sido deshabilitado",
+      "recoveryCodesRegenerated": "Los códigos de recuperación han sido regenerados"
+    },
+    "twoFactorSetup": {
+      "title": "Configuración de 2FA",
+      "qrCodeHint": "Escanea este código QR con tu aplicación de autenticación.",
+      "secretCode": "Código secreto",
+      "confirmHint": "Ingresa el código de 6 dígitos de tu aplicación para confirmar.",
+      "recoveryTitle": "Códigos de recuperación",
+      "recoveryHint": "Guarda estos códigos en un lugar seguro. ¡No se volverán a mostrar!",
+      "downloadCodes": "Descargar códigos de recuperación"
     }
   },
   "dashboard": {
@@ -153,13 +169,15 @@
         "database": "Base de datos",
         "backups": "Copias de seguridad",
         "plugins": "Plugins",
+        "sftp": "Acceso SFTP",
         "admin": "Administración"
       },
       "overview": {
         "status": "Estado",
         "cpuUsage": "Uso de CPU",
         "memoryUsage": "Uso de Memoria",
-        "storageUsage": "Uso de Almacenamiento"
+        "storageUsage": "Uso de Almacenamiento",
+        "playersOnline": "Jugadores en línea"
       }
     },
     "address": {
@@ -212,9 +230,10 @@
       },
       "editor": {
         "title": "Editando: {{filename}}",
-        "description": "Los cambios no se guardan en esta demostración.",
+        "description": "Realiza los cambios necesarios y pulsa guardar.",
         "cancel": "Cancelar",
-        "save": "Guardar Cambios"
+        "save": "Guardar Cambios",
+        "saveSuccess": "Archivo guardado correctamente."
       }
     },
     "settings": {
@@ -237,6 +256,9 @@
       "portDescription": "A qué puerto vincular el servidor.",
       "projectIdLabel": "ID del Proyecto",
       "projectIdDescription": "ID del proyecto para el modpack deseado. Se encuentra en la página web del modpack, en el lado derecho.",
+      "generalTitle": "Información General",
+      "nameLabel": "Nombre del Servidor",
+      "nameDescription": "El nombre descriptivo de este servidor tal como aparece en la lista.",
       "autoStartTitle": "Condiciones de Inicio Automático",
       "startOnBootLabel": "Iniciar en el Arranque",
       "startOnBootDescription": "Iniciar el servidor cuando el nodo arranque.",
@@ -247,7 +269,9 @@
       "pluginsTitle": "Configuración de Plugins",
       "enablePluginsLabel": "Habilitar Pestaña de Plugins",
       "enablePluginsDescription": "Mostrar u ocultar la pestaña de gestión de plugins para este servidor.",
-      "saveButton": "Guardar Cambios"
+      "saveButton": "Guardar Cambios",
+      "saveSuccess": "Configuración guardada correctamente",
+      "saveError": "Error al guardar la configuración"
     },
     "users": {
       "title": "Acceso de Usuarios",
@@ -265,7 +289,14 @@
         "email": "Correo Electrónico",
         "actions": "Acciones"
       },
-      "revoke": "Revocar"
+      "revoke": "Revocar",
+      "revokeConfirm": "¿Estás seguro de que deseas revocar el acceso a este usuario?",
+      "noUsers": "Ningún usuario tiene acceso a este servidor todavía.",
+      "fetchError": "Error al cargar los usuarios del servidor.",
+      "addSuccess": "Usuario añadido correctamente.",
+      "addError": "Error al añadir el usuario.",
+      "revokeSuccess": "Acceso revocado correctamente.",
+      "revokeError": "Error al revocar el acceso."
     },
     "database": {
       "title": "Bases de Datos",
@@ -279,15 +310,21 @@
         "hostPlaceholder": "Selecciona un host",
         "hostLocal": "Panel (localhost)",
         "hostRemote": "Servidor MySQL Remoto",
-        "createButton": "Crear Base de Datos"
+        "createButton": "Crear Base de Datos",
+        "createSuccess": "Base de datos creada correctamente.",
+        "createError": "Error al crear la base de datos."
       },
+      "deleteConfirm": "¿Estás seguro de que deseas eliminar esta base de datos? Se borrarán todos los datos permanentemente.",
+      "deleteSuccess": "Base de datos eliminada correctamente.",
+      "deleteError": "Error al eliminar la base de datos.",
       "table": {
         "name": "Nombre",
         "user": "Usuario",
         "connections": "Conexiones desde",
         "size": "Tamaño"
       },
-      "anyHost": "% (Cualquier Host)"
+      "anyHost": "% (Cualquier Host)",
+      "empty": "No hay bases de datos creadas para este servidor."
     },
     "backups": {
       "title": "Copia de seguridad",
@@ -297,8 +334,23 @@
         "title": "Crear copia de seguridad",
         "nameLabel": "Nombre",
         "namePlaceholder": "Nombre de la copia de seguridad",
-        "createButton": "Crear copia de seguridad"
+        "createButton": "Crear copia de seguridad",
+        "success": "La copia de seguridad se ha creado correctamente.",
+        "error": "Error al crear la copia de seguridad."
       },
+      "restore": {
+        "button": "Restaurar",
+        "confirm": "¿Estás seguro de que deseas restaurar esta copia de seguridad? Se sobrescribirán todos los archivos actuales.",
+        "success": "La restauración de la copia de seguridad ha comenzado.",
+        "error": "Error al restaurar la copia de seguridad."
+      },
+      "delete": {
+        "button": "Eliminar",
+        "confirm": "¿Estás seguro de que deseas eliminar esta copia de seguridad?",
+        "success": "Copia de seguridad eliminada correctamente.",
+        "error": "Error al eliminar la copia de seguridad."
+      },
+      "download": "Descargar",
       "empty": {
         "title": "No hay copias de seguridad",
         "description": "Crea tu primer backup para comenzar."
@@ -307,11 +359,38 @@
     "plugins": {
       "title": "Plugins",
       "description": "{{count}} plugins instalados",
-      "searchPlaceholder": "Buscar plugins...",
+      "searchPlaceholder": "Buscar en Modrinth (plugins, mods...)",
       "searchButton": "Buscar",
+      "tabs": {
+        "installed": "Instalados",
+        "marketplace": "Marketplace"
+      },
+      "marketplace": {
+        "title": "Mercado de Modrinth",
+        "description": "Busca e instala plugins y mods directamente desde Modrinth.",
+        "install": "Instalar",
+        "installing": "Instalando...",
+        "installed": "Instalado",
+        "downloads": "Descargas",
+        "author": "Autor",
+        "version": "Versión"
+      },
+      "installed": {
+        "title": "Plugins Instalados",
+        "description": "Gestiona los plugins que ya están en tu servidor.",
+        "uninstall": "Eliminar",
+        "uninstallConfirm": "¿Estás seguro de que deseas eliminar este plugin?",
+        "size": "Tamaño"
+      },
       "empty": {
-        "title": "No hay plugins instalados",
-        "description": "Busca e instala plugins desde el buscador."
+        "title": "No hay plugins",
+        "description": "No se encontraron plugins con ese nombre."
+      },
+      "notifications": {
+        "installSuccess": "Plugin {{name}} instalado correctamente. Reinicia el servidor para aplicar cambios.",
+        "installError": "Error al instalar el plugin.",
+        "uninstallSuccess": "Plugin eliminado correctamente.",
+        "uninstallError": "Error al eliminar el plugin."
       }
     },
     "admin": {
@@ -320,17 +399,20 @@
       "editDefinition": {
         "title": "Editar Definición del Servidor",
         "description": "Modifica los detalles fundamentales del servidor.",
-        "button": "Editar Definición"
+        "button": "Editar Definición",
+        "success": "Definición guardada correctamente"
       },
       "installStatus": {
         "title": "Estado de la Instalación",
         "description": "Dispara el proceso de instalación o reinstalación del servidor.",
-        "button": "Instalar"
+        "button": "Instalar",
+        "success": "El proceso de instalación ha comenzado."
       },
       "delete": {
         "title": "Eliminar Servidor",
         "description": "Esta acción es permanente. Se borrarán todos los archivos y datos del servidor.",
-        "button": "Eliminar"
+        "button": "Eliminar",
+        "success": "El servidor ha sido eliminado correctamente."
       },
       "deleteDialog": {
         "title": "¿Estás absolutamente seguro?",
@@ -428,27 +510,53 @@
     }
   },
   "permissions": {
-    "grantAll": "Conceder todos los permisos",
-    "login": "Iniciar sesión",
-    "editOwnAccount": "Editar mi cuenta",
-    "manageOauthClients": "Administrar mis clientes OAuth2",
-    "editPanelSettings": "Editar configuración del panel",
-    "createServer": "Crear nuevos servidores",
-    "viewNodes": "Ver Nodos",
-    "createNodes": "Crear nuevos nodos",
-    "editNodes": "Editar nodos existentes",
-    "deployNodes": "Desplegar nodos",
-    "deleteNodes": "Eliminar nodos",
-    "viewUsers": "Ver lista de todos los usuarios",
-    "viewUserInfo": "Ver información de usuarios",
-    "editUsers": "Editar información de usuarios",
-    "viewUserPermissions": "Ver permisos de usuario",
-    "editUserPermissions": "Editar permisos de usuario",
-    "viewTemplates": "Ver plantillas",
-    "manageLocalTemplates": "Crear/Editar/Eliminar plantillas locales",
-    "viewTemplateRepos": "Ver repositorios de plantillas",
-    "addTemplateRepos": "Añadir repositorios de plantillas",
-    "deleteTemplateRepos": "Eliminar repositorios de plantillas"
+    "admin": "Acceso Total de Administrador",
+    "login": "Iniciar Sesión",
+    "oauth2": {
+      "auth": "Administrar Autorización OAuth2"
+    },
+    "nodes": {
+      "view": "Ver Nodos",
+      "create": "Crear Nodos",
+      "edit": "Editar Nodos",
+      "delete": "Eliminar Nodos",
+      "deploy": "Desplegar Nodos (Avanzado)"
+    },
+    "self": {
+      "edit": "Editar Propia Cuenta",
+      "clients": "Administrar Clientes OAuth2 Propios"
+    },
+    "server": {
+      "create": "Crear Nuevos Servidores"
+    },
+    "settings": {
+      "edit": "Editar Configuración Global del Panel"
+    },
+    "templates": {
+      "view": "Ver Plantillas",
+      "local": {
+        "edit": "Administrar Plantillas Locales"
+      },
+      "repo": {
+        "create": "Añadir Repositorios de Plantillas",
+        "delete": "Eliminar Repositorios de Plantillas"
+      }
+    },
+    "users": {
+      "info": {
+        "search": "Buscar Usuarios",
+        "view": "Ver Información de Usuarios",
+        "edit": "Editar Información de Usuarios"
+      },
+      "perms": {
+        "view": "Ver Permisos de Usuarios",
+        "edit": "Editar Permisos de Usuarios"
+      }
+    },
+    "uptime": {
+      "view": "Ver Estado de Actividad"
+    },
+    "panel": "Acceder al Panel"
   },
   "nodes": {
     "title": "Gestión de Nodos",
@@ -533,7 +641,7 @@
         "title": "Discos"
       },
       "serversOnNode": {
-        "title": "Servidores en este Nodo",
+        "title": "Servers en este Nodo",
         "view": "Ver",
         "empty": "No hay servidores en este nodo."
       },
@@ -559,7 +667,9 @@
       "name": "Nombre",
       "host": "Host",
       "port": "Puerto",
-      "username": "Usuario"
+      "username": "Usuario",
+      "linkedNode": "Nodo Vinculado",
+      "actions": "Acciones"
     },
     "availableHosts": "Hosts Disponibles",
     "addDialog": {
@@ -623,7 +733,8 @@
       "web": "Web",
       "game": "Juego",
       "bot": "Bot",
-      "other": "Otro"
+      "other": "Otro",
+      "NoGroup": "Sin Grupo"
     }
   },
   "common": {
@@ -631,11 +742,16 @@
     "copy": "Copiar",
     "loading": "Cargando...",
     "cancel": "Cancelar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "success": "Éxito",
+    "error": "Error",
+    "save": "Guardar",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar este elemento?"
   },
   "settings": {
     "title": "Configuración del Panel",
     "description": "Administra la configuración global de tu instancia de Aether Panel.",
+    "saveSuccess": "Configuración guardada correctamente",
     "tabs": {
       "general": "General",
       "discord": "Notificaciones Discord",
@@ -669,6 +785,7 @@
       "statusWebhookPlaceholder": "Webhook de Discord - Estado del Nodo",
       "statusWebhookDescription": "URL del webhook de Discord para recibir información sobre el estado del nodo/nodos",
       "testButton": "Probar Webhook",
+      "testSuccess": "Mensaje de prueba enviado correctamente a Discord",
       "saveButton": "Guardar configuración"
     },
     "mail": {
@@ -705,6 +822,7 @@
         "keyPlaceholder": "••••••••"
       },
       "testButton": "Email de prueba",
+      "testSuccess": "Email de prueba enviado correctamente",
       "saveButton": "Guardar configuración"
     }
   }

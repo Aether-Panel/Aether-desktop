@@ -1,39 +1,54 @@
-# Local env files
-.env
-.env.*
-!.env.example
-
-# Node modules
+# Dependencies
 node_modules/
+.pnp/
+.pnp.js
 
-# Mac OS
-.DS_Store
-
-# Astro
+# Build outputs
 dist/
-.astro
+astro.config.mjs
+.astro/
 
-# Log files
+# Testing
+coverage/
+
+# Misc
+.DS_Store
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-firebase-debug.log
-firestore-debug.log
 
-# TypeScript
-tsconfig.tsbuildinfo
+# Local env files
+.env
+.env.local
+.env.*.local
 
-# Genkit
-.genkit/
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# Vercel / App hosting
-.vercel/
+# Tauri build artifacts
+src-tauri/target/
+src-tauri/gen/
+src-tauri/.cargo/
+src-tauri/Cargo.lock
 
-# PnP 
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Rust
+target/
+Cargo.lock
+
+# Android SDK
+android-sdk/
+
+# OS
+Thumbs.db
+
+# Ace Editor (large library - install via npm instead)
+public/js/ace/

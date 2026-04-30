@@ -1,0 +1,101 @@
+import { buildApiUrl, isServerConfigured } from './server-config';
+
+export class ApiError extends Error {
+    constructor(public status: number, message: string, public data?: any) {
+        super(message);
+        this.name = 'ApiError';
+    }
+}
+
+async function handleResponse(response: Response) {
+    const contentType = response.headers.get('content-type');
+    let data = null;
+
+    if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+    } else {
+        data = await response.text();
+    }
+
+    if (!response.ok) {
+        let message = response.statusText;
+        if (data?.error) {
+            if (typeof data.error === 'string') {
+                message = data.error;
+            } else if (typeof data.error === 'object' && data.error.msg) {
+                message = data.error.msg;
+            }
+        }
+        throw new ApiError(response.status, message, data);
+    }
+
+    return data;
+}
+
+function ensureConfigured(): void {
+    if (!isServerConfigured() && typeof window !== 'undefined') {
+        window.location.href = '/setup/';
+    }
+}
+
+export const api = {
+    async get(url: string) {
+        ensureConfigured();
+        const fullUrl = buildApiUrl(url);
+        console.log(`[API GET] ${fullUrl}`);
+        const response = await fetch(fullUrl, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        });
+        return handleResponse(response);
+    },
+
+    async post(url: string, body: any) {
+        ensureConfigured();
+        const fullUrl = buildApiUrl(url);
+        console.log(`[API POST] ${fullUrl}`, body);
+        const response = await fetch(fullUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(body),
+            credentials: 'include',
+        });
+        return handleResponse(response);
+    },
+
+    async put(url: string, body: any) {
+        ensureConfigured();
+        const fullUrl = buildApiUrl(url);
+        console.log(`[API PUT] ${fullUrl}`, body);
+        const response = await fetch(fullUrl, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify(body),
+            credentials: 'include',
+        });
+        return handleResponse(response);
+    },
+
+    async delete(url: string) {
+        ensureConfigured();
+        const fullUrl = buildApiUrl(url);
+        console.log(`[API DELETE] ${fullUrl}`);
+        const response = await fetch(fullUrl, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+            },
+            credentials: 'include',
+        });
+        return handleResponse(response);
+    },
+};

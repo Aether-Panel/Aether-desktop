@@ -1,0 +1,8 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Setup as SetupWrapper } from "@/components/PageWrappers";
+---
+
+<BaseLayout title="Server Setup - Aether Panel">
+  <SetupWrapper client:only="react" />
+</BaseLayout>

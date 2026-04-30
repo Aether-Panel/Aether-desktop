@@ -15,53 +15,62 @@ import SettingsPage from '@/features/settings/page';
 import ProfileSettingsPage from '@/features/profile/settings/page';
 import LoginPage from '@/features/auth/login/page';
 import RegisterPage from '@/features/auth/register/page';
+import SetupPage from '@/features/setup/page';
 
 export function Dashboard() {
-    return <AppShell currentPath="/dashboard"><DashboardPage /></AppShell>;
+    return <AppShell currentPath="/dashboard/"><DashboardPage /></AppShell>;
 }
 
 export function Servers() {
-    return <AppShell currentPath="/servers"><ServersPage /></AppShell>;
+    return <AppShell currentPath="/servers/"><ServersPage /></AppShell>;
 }
 
-export function ServerDetail({ id }: { id: string }) {
-    return <AppShell currentPath={`/servers/${id}`}><ServerDetailPage params={{ id }} /></AppShell>;
+export function ServerDetail({ id }: { id?: string }) {
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const effectiveId = id || searchParams?.get('id') || '';
+    return <AppShell currentPath={`/servers/${effectiveId}`}><ServerDetailPage params={{ id: effectiveId }} /></AppShell>;
 }
 
 export function Nodes() {
-    return <AppShell currentPath="/nodes"><NodesPage /></AppShell>;
+    return <AppShell currentPath="/nodes/"><NodesPage /></AppShell>;
 }
 
-export function NodeDetail({ id }: { id: string }) {
-    return <AppShell currentPath={`/nodes/${id}`}><NodeDetailPage params={{ id }} /></AppShell>;
+export function NodeDetail({ id }: { id?: string }) {
+    const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    const effectiveId = id || searchParams?.get('id') || '';
+    return <AppShell currentPath={`/nodes/${effectiveId}`}><NodeDetailPage params={{ id: effectiveId }} /></AppShell>;
 }
 
 export function Users() {
-    return <AppShell currentPath="/users"><UsersPage /></AppShell>;
+    return <AppShell currentPath="/users/"><UsersPage /></AppShell>;
 }
 
 export function Roles() {
-    return <AppShell currentPath="/roles"><RolesPage /></AppShell>;
+    return <AppShell currentPath="/roles/"><RolesPage /></AppShell>;
 }
 
 export function DatabaseHosts() {
-    return <AppShell currentPath="/database-hosts"><DatabaseHostsPage /></AppShell>;
+    return <AppShell currentPath="/database-hosts/"><DatabaseHostsPage /></AppShell>;
 }
 
 export function Templates() {
-    return <AppShell currentPath="/templates"><TemplatesPage /></AppShell>;
+    return <AppShell currentPath="/templates/"><TemplatesPage /></AppShell>;
 }
 
 export function Settings() {
-    return <AppShell currentPath="/settings"><SettingsPage /></AppShell>;
+    return <AppShell currentPath="/settings/"><SettingsPage /></AppShell>;
 }
 
 export function ProfileSettings() {
-    return <AppShell currentPath="/profile/settings"><ProfileSettingsPage /></AppShell>;
+    return <AppShell currentPath="/profile/settings/"><ProfileSettingsPage /></AppShell>;
 }
 
 export function Login() {
     return <AuthShell><LoginPage /></AuthShell>;
+}
+
+export function Setup() {
+    return <SetupPage />;
 }
 
 export function Register() {

@@ -30,19 +30,25 @@ import { Toaster } from '@/components/ui/toaster';
 import type { ReactNode } from 'react';
 
 function AppLayoutInner({ children, currentPath }: { children: ReactNode; currentPath: string }) {
-    const { role, user, logout } = useAuth();
+    const { role, user, logout, scopes } = useAuth();
     const { t } = useTranslations();
 
     const navItems = [
-        { href: '/dashboard', label: t('sidebar.dashboard'), icon: LayoutDashboard, roles: ['admin', 'user'] },
-        { href: '/servers', label: t('sidebar.servers'), icon: Server, roles: ['admin'] },
-        { href: '/users', label: t('sidebar.users'), icon: Users, roles: ['admin'] },
-        { href: '/roles', label: t('sidebar.roles'), icon: ShieldCheck, roles: ['admin'] },
-        { href: '/nodes', label: t('sidebar.nodes'), icon: Network, roles: ['admin'] },
-        { href: '/database-hosts', label: t('sidebar.databaseHosts'), icon: Database, roles: ['admin'] },
-        { href: '/templates', label: t('sidebar.templates'), icon: FileText, roles: ['admin'] },
-        { href: '/settings', label: t('sidebar.settings'), icon: Settings, roles: ['admin'] },
+        { href: '/dashboard/', label: t('sidebar.dashboard'), icon: LayoutDashboard, requiredScopes: [] },
+        { href: '/servers/', label: t('sidebar.servers'), icon: Server, requiredScopes: ['server.view'] },
+        { href: '/users/', label: t('sidebar.users'), icon: Users, requiredScopes: ['users.info.view'] },
+        { href: '/roles/', label: t('sidebar.roles'), icon: ShieldCheck, requiredScopes: ['admin'] },
+        { href: '/nodes/', label: t('sidebar.nodes'), icon: Network, requiredScopes: ['nodes.view'] },
+        { href: '/database-hosts/', label: t('sidebar.databaseHosts'), icon: Database, requiredScopes: ['admin'] },
+        { href: '/templates/', label: t('sidebar.templates'), icon: FileText, requiredScopes: ['templates.view'] },
+        { href: '/settings/', label: t('sidebar.settings'), icon: Settings, requiredScopes: ['settings.edit'] },
     ];
+
+    const hasPermission = (item: typeof navItems[0]) => {
+        if (role === 'admin') return true;
+        if (item.requiredScopes.length === 0) return true;
+        return item.requiredScopes.some(s => scopes.includes(s));
+    };
 
     return (
         <SidebarProvider>
@@ -53,7 +59,7 @@ function AppLayoutInner({ children, currentPath }: { children: ReactNode; curren
                 <SidebarContent>
                     <SidebarMenu>
                         {navItems.map((item) =>
-                            item.roles.includes(role!) ? (
+                            hasPermission(item) ? (
                                 <SidebarMenuItem key={item.href}>
                                     <SidebarMenuButton
                                         asChild
@@ -77,11 +83,11 @@ function AppLayoutInner({ children, currentPath }: { children: ReactNode; curren
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" className="h-12 w-full justify-start gap-2 px-2">
                                         <Avatar className="h-8 w-8">
-                                            <AvatarImage src={user?.avatar} alt={user?.name} />
-                                            <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
+                                            <AvatarImage src={`https://avatar.vercel.sh/${user?.email}`} alt={user?.username} />
+                                            <AvatarFallback>{user?.username?.charAt(0)}</AvatarFallback>
                                         </Avatar>
                                         <div className="flex-1 min-w-0 flex-col items-start overflow-hidden group-data-[state=collapsed]:hidden flex">
-                                            <span className="w-full truncate font-medium">{user?.name}</span>
+                                            <span className="w-full truncate font-medium">{user?.username}</span>
                                             <span className="w-full truncate text-xs text-muted-foreground">{user?.email}</span>
                                         </div>
                                     </Button>
@@ -89,7 +95,7 @@ function AppLayoutInner({ children, currentPath }: { children: ReactNode; curren
                             </TooltipTrigger>
                             <TooltipContent side="right" align="center" className="hidden group-data-[state=collapsed]:block">
                                 <div className="text-left">
-                                    <p className="font-medium">{user?.name}</p>
+                                    <p className="font-medium">{user?.username}</p>
                                     <p className="text-xs text-muted-foreground">{user?.email}</p>
                                 </div>
                             </TooltipContent>
@@ -97,12 +103,12 @@ function AppLayoutInner({ children, currentPath }: { children: ReactNode; curren
                         <DropdownMenuContent className="w-56" side="right" align="end">
                             <DropdownMenuLabel className="font-normal">
                                 <div className="flex flex-col space-y-1">
-                                    <p className="text-sm font-medium leading-none">{user?.name}</p>
+                                    <p className="text-sm font-medium leading-none">{user?.username}</p>
                                     <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <a href="/profile/settings">
+                            <a href="/profile/settings/">
                                 <DropdownMenuItem className="cursor-pointer">
                                     <Settings className="mr-2" />
                                     <span>{t('userMenu.settings')}</span>
