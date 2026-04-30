@@ -7,8 +7,7 @@
     "frontendDist": "../dist",
     "devUrl": "http://localhost:9002",
     "beforeDevCommand": "npm run dev",
-    "beforeBuildCommand": "npm run build",
-    // "devtools": true
+    "beforeBuildCommand": "npm run build"
   },
   "app": {
     "windows": [
@@ -25,10 +24,7 @@
     ],
     "security": {
       "csp": "default-src 'self'; connect-src 'self' http: https: ws: wss:; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'"
-    },
-    // "android": {
-    //   "webviewInstallUrl": "https://github.com/nicklockwood/WebViewInstaller/releases/download/5.0/WebView.apk"
-    // }
+    }
   },
   "bundle": {
     "active": true,
@@ -45,13 +41,5 @@
         "depends": []
       }
     }
-    // "android": {
-    //   "debug": {
-    //     "keystore": "android_debug.keystore",
-    //     "storepassword": "android",
-    //     "alias": "androiddebugkey",
-    //     "keypassword": "android"
-    //   }
-    // }
   }
 }
