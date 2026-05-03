@@ -70,12 +70,12 @@ export default function ServersPage() {
                 {t('servers.addServer')}
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-4xl">
+            <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto p-6">
               <DialogHeader>
                 <DialogTitle>{t('servers.addDialog.title')}</DialogTitle>
                 <DialogDescription>{t('servers.addDialog.description')}</DialogDescription>
               </DialogHeader>
-              <div className="py-4">
+              <div className="py-4 pr-2">
                 <CreateServerStepper onComplete={() => {
                   setIsCreateOpen(false);
                   refresh();

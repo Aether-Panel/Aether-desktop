@@ -194,31 +194,96 @@ className="p-4 md:p-6 lg:p-8"
 - **Centrado**: `flex justify-center` - Envuelve TabsList y centra su contenido
 - **TabsList**: `inline-flex flex-wrap` - Se adapta al contenido, wrap si no cabe
 - **Sin ancho fijo**: No usa `w-full` en TabsList para que no se estire innecesariamente
-- **Gap adaptativo**: `py-1.5 px-2.5 lg:px-3.5` - Padding reducido en 1280px
 
-### Estrategia de Centrado Usada
-- **Flexbox**: Contenedor exterior con `flex justify-center`
-- **inline-flex**: TabsList se adapta al contenido (no se estira)
-- **flex-wrap**: Los tabs permiten wrap en líneas adicionales si no caben
-- Resultado: Contenido centrado simétricamente, espacio uniforme a izquierda y derecha
-
-### Botones de Acción - Adaptación a 1280px
+### Create Server Stepper - Grid Responsivo
 ```tsx
-<div className="flex items-center gap-2 flex-wrap shrink-0">
-  <Button className="shrink-0">Iniciar</Button>
-  <Button className="shrink-0">Restart</Button>
-  <Button className="shrink-0">Detener</Button>
+// Contenedor principal
+<div className="space-y-6 w-full max-w-full overflow-x-hidden">
+
+// Step 1: Entorno
+<div className="grid gap-6 w-full">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+
+// Step 2: Plantillas (Sección Comunidad)
+<div className="max-h-[300px] overflow-y-auto pr-2 w-full">
+  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 w-full">
+    <div className="w-full min-w-0">...
+
+// Step 3: Configuración
+<div className="w-full max-w-full overflow-x-hidden">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 pt-2 w-full max-w-full overflow-x-hidden">
+```
+- **Contenedor raíz**: `w-full max-w-full overflow-x-hidden` - Evita overflow global
+- **Scroll vertical interno**: `max-h-[300px] overflow-y-auto` - Scroll solo hacia abajo
+- **Grid adaptativo**: `grid-cols-1 sm:grid-cols-2 xl:grid-cols-3` - 1/2/3 columnas según espacio
+- **Tarjetas fluidas**: `w-full min-w-0` - Ancho relativo sin fixed
+- **Footer**: `w-full justify-between` - Botones distribuídos
+
+### Grid de Plantillas de Comunidad (auto-fill)
+```tsx
+<div className="w-full min-w-0">
+  <div className="grid gap-3 w-full" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))' }}>
+    {templateList.map(t => (
+      <div className="p-3 rounded-lg border min-w-0">
+        <Code className="h-4 w-4 shrink-0" />
+        <span className="truncate min-w-0">{t.name}</span>
+      </div>
+    ))}
+  </div>
 </div>
 ```
-- `flex-wrap`: Botones en múltiples líneas si no caben
-- `shrink-0`: Evita que se compriman
+- **Diseño líquido**: `repeat(auto-fill, minmax(200px, 1fr))`
+- Las tarjetas se acomodan automáticamente: 1/2/3/4/5+ según ancho disponible
+- **Sin scroll horizontal**: NUNCA excede el contenedor
+- **min-w-0**: Previene overflow en elementos hijos
 
-### Consola - Scroll Interno
+### Formulario de Configuración (Fase 3) - Diseño Líquido
 ```tsx
-<div className="bg-[#0c0c0c] text-gray-200 font-mono text-sm p-4 rounded-lg h-[500px] overflow-x-auto custom-scrollbar border border-white/5">
+// Header de plantilla
+<div className="bg-primary/5 p-4 sm:p-5 rounded-xl flex items-start gap-4 w-full">
+  <div className="bg-primary/20 p-2 rounded-lg shrink-0">
+    <Code className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
+  </div>
+  <div className="space-y-1 min-w-0">
+    <h4 className="font-bold text-base sm:text-lg leading-none truncate">...</h4>
+    <p className="text-xs text-muted-foreground line-clamp-2">...</p>
+  </div>
+</div>
+
+// Grid de campos
+<div className="grid gap-4 sm:gap-6 w-full" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+  {entries.map(([key, variable]) => (
+    <div className="space-y-2.5 w-full min-w-0">
+      <Label>...</Label>
+      <Input className="w-full" />
+    </div>
+  ))}
+</div>
+
+// Toggle booleano
+<div className="flex items-center gap-3 p-3 rounded-lg border w-full">
+  <div className="... shrink-0">checkbox</div>
+  <span className="text-sm">Habilitar</span>
+</div>
+
+// Footer
+<CardFooter className="flex justify-between items-center mt-8 p-0 w-full">
+  <Button className="shrink-0">Atrás</Button>
+  <Button className="shrink-0">Crear Servidor</Button>
+</CardFooter>
 ```
-- `overflow-x-auto`: Scroll interno solo en la consola
-- No affecta el ancho total de la ventana
+- **auto-fill grid**: `repeat(auto-fill, minmax(280px, 1fr))` - Campos se acomodan automáticamente
+- **w-full**: Todos los elementos filling el espacio disponible
+- **shrink-0**: Botones no se comprimen
+- **line-clamp-2**: Descripción truncada si es muy larga
+- **items-center**: Alineación vertical en footer
+
+### Flujo Completo de Creación - Confirmación
+- ✅ **Fase 1 (Entorno)**: Formularios en grid fluido
+- ✅ **Fase 2 (Plantillas)**: Grid auto-fill con auto-wrap
+- ✅ **Fase 3 (Configuración)**: Campos líquidos auto-fill
+- ✅ **Footer**: Botones distribuídos con shrink-0
+- ✅ **Sin overflow horizontal**: Diseño 100% fluido
 
 ---
 
@@ -242,3 +307,108 @@ className="p-4 md:p-6 lg:p-8"
 - Flexbox y Grid adaptan automáticamente el layout
 - `lg:` breakpoints ajustan tamaños en pantallas grandes
 - Sin intervención manual requerida
+
+---
+
+## Corrección de Regresión - Mayo 2026
+
+### Archivos Modificados
+
+#### 1. `src/features/servers/page.tsx` - DialogContent
+```tsx
+<DialogContent className="max-w-2xl sm:max-w-3xl max-h-[90vh] overflow-y-auto p-6">
+```
+- **max-w-2xl sm:max-w-3xl**: Ancho responsivo (512px-768px)
+- **max-h-[90vh] overflow-y-auto**: Scroll interno en el modal
+- **p-6**: Padding de seguridad
+
+#### 2. `src/features/servers/create-server-stepper.tsx`
+- **Fase 2 (Plantillas)**: Grid `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4` con max-h-[300px] - Líneas 342-358
+- **Fase 3 (Configuración)**: Grid `grid-cols-1 md:grid-cols-2` con layout inteligente - Líneas 389-413
+
+### Distribución Horizontal Mejorada
+
+#### Plantillas en Rejilla (Fase 2)
+```tsx
+<div className="max-h-[300px] overflow-y-auto pr-2">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+```
+- 1-4 columnas según espacio disponible
+- Scroll vertical interno
+- Evita lista vertical larga
+
+#### Formulario Multicolumna (Fase 3)
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div className="sm:col-span-2">/* campos largos */</div>
+</div>
+```
+- 1-3 columnas según espacio
+- col-span para campos largos
+- Grid compactado
+
+### Optimización de Densidad
+
+#### Plantillas Compactas
+```tsx
+<div className="max-h-[280px] overflow-y-auto">
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
+    <div className="p-2 text-xs gap-2">/*tarjeta*/</div>
+  </div>
+</div>
+```
+- Padding reducido: `p-2`, `gap-2`
+- Texto: `text-xs`
+- Icono: `h-3 w-3`
+- Columnas: hasta 5 en resoluciones anchas
+
+#### Inputs Compactos
+```tsx
+<Label className="text-xs font-semibold">/*label*/</Label>
+<Input className="h-8">/*input*/</Input>
+<Badge className="h-4 px-1 text-[9px]">/*tipo*/</Badge>
+```
+- Label: `text-xs font-semibold`
+- Input: `h-8` (altura compacta)
+- Badge: `h-4 text-[9px]`
+- Gap: `gap-1.5`
+
+### Confirmación de Densidad
+- ✅ Más contenido visible
+- ✅ Menos scroll vertical
+- ✅ Diseño fluido
+
+### Aislamiento de Estilos
+- Las plantillas NO heredan estilos del modal
+- El modal tiene sus propias clases de scroll
+- El stepper tiene sus propios estilos de layout
+
+### Confirmación 1280px
+- ✅ Modal con scroll interno
+- ✅ Plantillas fluidas
+- ✅ Configuración sin overflow
+- ✅ Dos visibles al mismo tiempo
+
+---
+
+## Corrección de Modal de Creación de Servidor
+
+### Problemadetectado
+- Modal de creación de servidor sin scroll interno
+- Padding insuficiente en bordes
+- Ancho fijo que no se adaptaba a 1280px
+
+### Solución Aplicada
+```tsx
+// servers/page.tsx - DialogContent
+<DialogContent className="max-w-2xl sm:max-w-3xl max-h-[90vh] overflow-y-auto p-6">
+```
+- **max-w-2xl sm:max-w-3xl**: Ancho responsivo (512px / 768px)
+- **max-h-[90vh] overflow-y-auto**: Scroll interno si es necesario
+- **p-6**: Padding de seguridad en todos los bordes
+
+### Confirmación
+- ✅ Ancho se adapta a la resolución de 1280px
+- ✅ Scroll vertical interno cuando el contenido es largo
+- ✅ Márgenes de seguridad en los bordes laterales
+- ✅ Botón de acción siempre accesible
