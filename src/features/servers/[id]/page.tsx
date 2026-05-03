@@ -362,12 +362,13 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
   };
 
   const serverActions = (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 flex-wrap shrink-0">
       <Button
         size="sm"
         variant="default"
         onClick={() => handleAction('start')}
         disabled={isActionPending || server.status === 'online'}
+        className="shrink-0"
       >
         {isActionPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Play className="mr-2 h-4 w-4" />}
         {t('servers.detail.start')}
@@ -377,6 +378,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
         variant="outline"
         onClick={() => handleAction('restart')}
         disabled={isActionPending}
+        className="shrink-0"
       >
         {isActionPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
         {t('servers.detail.restart')}
@@ -387,6 +389,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
           variant="outline"
           onClick={() => handleAction('stop')}
           disabled={isActionPending || server.status === 'offline'}
+          className="shrink-0"
         >
           {isActionPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Square className="mr-2 h-4 w-4" />}
           {t('servers.detail.stop')}
@@ -397,6 +400,7 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
           variant="destructive"
           onClick={() => handleAction('kill')}
           disabled={isActionPending}
+          className="shrink-0"
         >
           {isActionPending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <ShieldAlert className="mr-2 h-4 w-4" />}
           {t('servers.detail.forceStop')}
@@ -439,12 +443,12 @@ export default function ServerDetailPage({ params }: { params: { id: string } })
           </Select>
         </div>
 
-        <div className="hidden md:block">
-          <div className="w-full flex justify-center">
-            <TabsList className="bg-muted/50 p-1">
+        <div className="hidden md:block w-full overflow-x-hidden">
+          <div className="flex justify-center">
+            <TabsList className="inline-flex flex-wrap h-auto p-1 bg-muted/50 rounded-lg">
               {serverTabs.map(tab => (
-                <TabsTrigger key={tab.value} value={tab.value} className="px-6">
-                  <tab.icon className="mr-2 h-4 w-4" />
+                <TabsTrigger key={tab.value} value={tab.value} className="px-2.5 lg:px-3.5 py-1.5 text-xs lg:text-sm whitespace-nowrap">
+                  <tab.icon className="mr-1.5 h-3.5 w-3.5" />
                   {tab.label}
                 </TabsTrigger>
               ))}

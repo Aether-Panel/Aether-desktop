@@ -1,0 +1,1 @@
+export const chipsHandle6Sound = '/sounds/chips-handle-6.mp3';

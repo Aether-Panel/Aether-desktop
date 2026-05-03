@@ -136,10 +136,18 @@ function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
 
+
+      if (data.session) {
+        console.log('[Auth] Saving session token to localStorage');
+        localStorage.setItem('puffer_session', data.session);
+      } else {
+        console.warn('[Auth] No session token received from backend');
+      }
+
       const scopesList = normalizeScopes(data.scopes || []);
       localStorage.setItem('aether_panel_scopes', JSON.stringify(scopesList));
 
-      // Fetch user info and pass current scopes to avoid race conditions
+
       await fetchSelf(scopesList);
 
       toast({
@@ -202,6 +210,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Logout failed:', e);
     } finally {
       localStorage.removeItem('aether_panel_scopes');
+      localStorage.removeItem('puffer_session');
       setRole(null);
       setUser(null);
       window.location.href = '/login/';

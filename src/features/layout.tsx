@@ -126,13 +126,16 @@ export default function AppLayout({ children, currentPath = '' }: { children: Re
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset className="p-4 md:p-6 lg:p-8">
-        <header className="mb-6 flex items-center justify-between">
-          <SidebarTrigger className="md:hidden" />
-          <div className="flex-grow" />
-          {/* Additional header content can go here */}
-        </header>
-        {children}
+      <SidebarInset className="p-4 md:p-6 lg:p-8 overflow-x-hidden">
+        <div className="mx-auto w-full max-w-full">
+          <header className="mb-6 flex items-center justify-between">
+            <SidebarTrigger className="md:hidden" />
+            <div className="flex-grow" />
+          </header>
+          <main className="w-full overflow-x-hidden">
+            {children}
+          </main>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

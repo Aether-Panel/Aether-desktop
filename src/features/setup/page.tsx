@@ -5,6 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import * as React from 'react';
 import { useServerConfig, type ServerConfig } from '@/hooks/use-server-config';
+import { useSound } from '@/hooks/use-sound';
+import { chipsHandle6Sound } from '@/sounds/chips-handle-6';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -33,7 +35,20 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function ServerConfigPage() {
     const { saveConfig, isConfigured } = useServerConfig();
+    const { playSound, playClick, playPop } = useSound();
     const [isSaving, setIsSaving] = React.useState(false);
+
+    React.useEffect(() => {
+        const hasPlayed = localStorage.getItem('setup-welcome-sound-played');
+        if (!hasPlayed) {
+            // Pequeño retraso para asegurar que la página esté lista y mejorar la compatibilidad del navegador
+            const timer = setTimeout(() => {
+                playSound(chipsHandle6Sound);
+                localStorage.setItem('setup-welcome-sound-played', 'true');
+            }, 600);
+            return () => clearTimeout(timer);
+        }
+    }, [playSound]);
 
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
@@ -127,11 +142,21 @@ export default function ServerConfigPage() {
                                 <Button
                                     size="lg"
                                     type="submit"
-                                    className="w-full text-base py-6 transition-all duration-300 hover:shadow-primary/20 hover:shadow-lg"
+                                    className="group relative w-full overflow-hidden text-base py-7 transition-all duration-300 hover:shadow-primary/40 hover:shadow-2xl hover:-translate-y-1 active:scale-[0.98] bg-primary hover:bg-primary/90"
                                     disabled={isSaving}
+                                    onMouseEnter={() => playPop()}
+                                    onClick={() => playClick()}
                                 >
-                                    {isSaving && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
-                                    Save Configuration
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+                                    <span className="relative flex items-center justify-center gap-2">
+                                        {isSaving ? (
+                                            <Loader2 className="h-5 w-5 animate-spin" />
+                                        ) : (
+                                            <>
+                                                Save Configuration
+                                            </>
+                                        )}
+                                    </span>
                                 </Button>
                             </form>
                         </Form>

@@ -66,7 +66,7 @@ export default function ConsoleView({ serverId, logs, addLog }: { serverId: stri
           </CardHeader>
           <CardContent className="pt-6">
             <div
-              className="bg-[#0c0c0c] text-gray-200 font-mono text-sm p-4 rounded-lg h-[500px] overflow-y-auto custom-scrollbar border border-white/5"
+              className="bg-[#0c0c0c] text-gray-200 font-mono text-sm p-4 rounded-lg h-[500px] overflow-x-auto custom-scrollbar border border-white/5"
               style={{ overflowAnchor: 'none' }}
             >
               {logs.map((log, index) => {
