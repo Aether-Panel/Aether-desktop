@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "tauri:build": "tauri build",
+    "tauri:dev:win": "npx @tauri-apps/cli dev",
+    "tauri:build:win": "npx @tauri-apps/cli build"
   },
   "dependencies": {
     "@astrojs/react": "^4.4.2",

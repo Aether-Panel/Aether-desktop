@@ -108,7 +108,7 @@ export default function ServerConfigPage() {
                                                 <div className="relative">
                                                     <Network className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                                                     <Input
-                                                        placeholder="192.168.1.100 or api.example.com"
+                                                        placeholder="0.0.0.0 or api.example.com"
                                                         {...field}
                                                         className="pl-10"
                                                     />

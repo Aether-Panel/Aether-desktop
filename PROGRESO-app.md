@@ -407,8 +407,110 @@ className="p-4 md:p-6 lg:p-8"
 - **max-h-[90vh] overflow-y-auto**: Scroll interno si es necesario
 - **p-6**: Padding de seguridad en todos los bordes
 
-### Confirmación
-- ✅ Ancho se adapta a la resolución de 1280px
-- ✅ Scroll vertical interno cuando el contenido es largo
-- ✅ Márgenes de seguridad en los bordes laterales
-- ✅ Botón de acción siempre accesible
+---
+
+## Fase Windows
+
+### 1. Configuración del Entorno
+
+### Dependencias Requeridas
+
+| Dependencia | Versión | Propósito |
+|------------|--------|-----------|
+| Visual Studio Build Tools 2022 | 2022 | Compilador C++ para crates Rust |
+| Rust (rustup) | 1.77.2+ | Backend Tauri |
+| WebView2 Runtime | Latest | Runtime de la aplicación |
+| Node.js | 18+ LTS | Frontend |
+| pnpm | 8+ | Gestor de paquetes |
+
+### Instalación de VS Build Tools
+
+**Componentes obligatorios**:
+- "Desktop development with C++"
+- "Windows 10/11 SDK"
+- "MSVC v143 - VS 2022 C++ x64/x86 build tools"
+
+### 2. Configuración de tauri.conf.json
+
+**Cambios realizados**:
+```json
+{
+  "productName": "AetherPanel",
+  "version": "1.0.0",
+  "identifier": "com.aether.panel",
+  "build": {
+    "devtools": true
+  },
+  "bundle": {
+    "targets": ["msi", "nsis"],
+    "windows": {
+      "nsis": {
+        "installerIcon": "icons/icon.ico",
+        "installMode": "currentUser",
+        "languages": ["English", "Spanish"],
+        "displayLanguageSelector": true
+      }
+    }
+  }
+}
+```
+
+### 3. Persistencia y Red
+
+### localStorage
+
+| Clave | Descripción | Compatible |
+|-------|-------------|-------------|
+| `app-server-config` | Configuración del servidor | ✅ Windows/macOS/Linux |
+
+- La API `localStorage` funciona igual en todas las plataformas
+- WebView2 proporciona API de navegador completa
+- No requiere cambios de código
+
+### Políticas de Red
+
+- ✅ HTTP/HTTPS permitido vía CSP
+- ✅ WebSocket (WS/WSS) soportado
+- ⚠️ Puertos <1024 requieren Admin
+
+### CSP configurado:
+```
+connect-src 'self' http: https: ws: wss:
+```
+
+### 4. Iconos para Windows
+
+| Archivo | Estado | Uso |
+|---------|--------|-----|
+| `icon.ico` | ✅ Existe | Instalador Windows |
+| `icon.png` | ✅ Existe | Linux |
+| `icon.icns` | ✅ Existe | macOS |
+
+### 5. Comandos de Build
+
+| Acción | Comando |
+|--------|---------|
+| Desarrollo | `npm run tauri dev` |
+| Build completo | `npm run tauri build` |
+| Solo MSI | `npm run tauri build -- --bundles msi` |
+| Solo NSIS | `npm run tauri build -- --bundles nsis` |
+
+### Output generado:
+```
+src-tauri/target/release/bundle/
+├── msi/AetherPanel_1.0.0_x64-setup.msi
+└── nsis/AetherPanel_1.0.0_x64-setup.exe
+```
+
+### 6. Solución de Problemas
+
+| Error | Causa | Solución |
+|-------|-------|---------|
+| `LNK1181` | Sin VS Build Tools | Instalar componentes C++ |
+| WebView2 not found | Sin runtime | Instalar WebView2 Runtime |
+| permission denied | Antivirus | Añadir exceptions |
+
+### 7. Documentación
+
+- ✅ Guía completa: `docs/WINDOWS.md`
+- ✅ Documentación general: `docs/TAURI.md`
